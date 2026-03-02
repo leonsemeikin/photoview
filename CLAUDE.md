@@ -34,6 +34,23 @@ photoview/
 - **Image/Video**: ImageMagick, FFmpeg (jellyfin-ffmpeg), libheif for RAW support
 - **Face Detection**: go-face (dlib-based)
 
+### Performance Architecture
+
+Photoview achieves high performance through several key mechanisms:
+
+1. **Multi-tier Media Processing**: Generates three versions of each media:
+   - **Thumbnail**: Max 1024x1024 JPEG for gallery views
+   - **HighRes**: Web-compatible JPEG for full-screen viewing (RAW photos converted)
+   - **VideoWeb**: Web-optimized MP4 for streaming
+
+2. **BlurHash Placeholders**: Generates compact string representations (~20-30 chars) that create blurred placeholders while images load, eliminating empty white screens
+
+3. **Native Lazy Loading**: Uses browser's native `loading="lazy"` attribute with IntersectionObserver fallback for loading images only when they enter the viewport
+
+4. **Dataloader Pattern**: Batches GraphQL queries to solve N+1 problems (e.g., thumbnail requests are batched into single SQL queries)
+
+5. **Persistent Media Cache**: All processed media is cached to disk at `PHOTOVIEW_MEDIA_CACHE`, avoiding reprocessing on subsequent views
+
 ### Scanner Architecture
 
 The scanner is the core background processing system:
@@ -46,6 +63,7 @@ The scanner is the core background processing system:
    - `video_metadata_task.go`: Extract video metadata via ffprobe
    - `sidecar_task.go`: Handle XMP sidecar files
    - `ignorefile_task.go`: Process .photoviewignore files
+   - `notification_task.go`: Handle scan completion notifications
 
 ## Development Commands
 
@@ -73,8 +91,14 @@ cd api
 cp example.env .env
 # Edit .env to configure database driver and connection
 go mod download
+
+# Optional: Set compiler environment for Debian/Ubuntu
+source ../scripts/set_compiler_env.sh
+
 # Patch go-face for compilation (remove -lcblas, -march=native)
-sed -i 's/-lcblas//g' $(go env GOMODCACHE)/github.com/\!kagami/go-face*/face.go
+sed -i 's/-lcblas//g' $(go env GOMODCACHE)/github.com/\!kagami/go-face*/face.go  # Linux
+sed -i '' 's/-lcblas//g' $(go env GOMODCACHE)/github.com/\!kagami/go-face*/face.go  # macOS
+
 go run .  # Or: reflex -g '*.go' -s -- go run .
 ```
 
@@ -162,10 +186,21 @@ chmod -R 750 /path/to/photos
 - `api/graphql/models/`: GraphQL type definitions
 - `api/graphql/resolvers/*.graphql`: Query/mutation definitions by domain
 - `api/graphql/resolvers/*.go`: Corresponding resolver implementations
+- `api/graphql/directive.go`: Implementation of `@isAdmin` and `@isAuthorized` directives
 - `api/scanner/scanner_queue/queue.go`: Task queue implementation with worker pool
 - `api/scanner/periodic_scanner/`: Background periodic scanning logic
 - `ui/src/apolloClient.ts`: Apollo Client setup with WebSocket subscriptions
+- `ui/src/components/photoGallery/ProtectedMedia.tsx`: Image loading with blurhash and lazy loading
 - `Dockerfile`: Multi-stage build (UI → API → release with compression)
+
+## GraphQL Directives
+
+The API uses two custom directives for access control (defined in `api/graphql/resolvers/root.graphql`):
+
+- `@isAuthorized`: Requires any authenticated user (token-based auth via cookie)
+- `@isAdmin`: Requires user with `admin: true` flag
+
+These directives are implemented in `api/graphql/directive.go` and wrap resolver execution.
 
 ## Known Limitations
 
@@ -205,6 +240,27 @@ The workflow in `.github/workflows/build.yml` demonstrates proper multi-platform
 - Users whose albums are all sub-albums of another user's root album couldn't see albums in UI
 - Fixed by adding `getTopLevelAlbumIDs()` function to properly identify top-level albums per user
 - Affects scenarios where: User A scans `/photos` first, then User B is added with `/photos/userB` - User B's albums all have `parent_album_id` pointing to User A's album tree
+
+## Security Model
+
+**Read-only Media Access**: The API does NOT provide mutations to delete media or albums from the filesystem. Even if an attacker gains access, they cannot delete photos.
+
+**User Capabilities** (regular user):
+- View own media, EXIF metadata (including GPS), face groups
+- Mark media as favorites
+- Change album covers
+- Edit face group labels
+- Create/delete share tokens (public links with optional password/expiry)
+- Change language preferences
+
+**Admin Capabilities** (in addition to user):
+- Create/update/delete users
+- Change user admin status
+- Manage user root paths
+- Trigger scans
+- Configure scanner settings
+
+**Media Protection**: All media URLs require authentication tokens (cookie-based). Public access is only through share tokens.
 
 ## OpenWrt Deployment Notes
 
