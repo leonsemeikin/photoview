@@ -173,6 +173,39 @@ chmod -R 750 /path/to/photos
 - **Face Detection**: Requires significant CPU; can be disabled per user in settings
 - **Large Libraries**: Initial scan of 10k+ photos can take hours; thumbnails are cached persistently
 
+## Important Architecture Patterns
+
+### Album-User Relationship
+
+Albums and users have a **many-to-many** relationship via the `user_albums` junction table. This allows multiple users to share access to the same albums (e.g., a family photo directory structure).
+
+**Key implication**: When multiple users share a directory tree, albums are created once with `parent_album_id` references. Users whose root album is a sub-album of another user's root album will have NO albums with `parent_album_id IS NULL`.
+
+The `MyAlbums()` function in `api/graphql/models/actions/album_actions.go` handles this via `getTopLevelAlbumIDs()`, which finds albums that are "top-level" for a specific user (either root albums or direct children of albums NOT owned by the user).
+
+### Scanner Owner Propagation
+
+When `FindAlbumsForUser()` runs in `api/scanner/scanner_user.go`:
+1. New albums get their parent's owners appended (`tx.Model(&album).Association("Owners").Append(parentOwners)`)
+2. Existing albums get the current user added as an owner if not already present
+3. This creates a shared ownership model where users can have overlapping album access
+
+### Cross-Platform Docker Builds
+
+Building multi-platform Docker images locally has limitations:
+- **Cross-compilation with buildx** fails at stages that run architecture-specific binaries (e.g., `api` stage binaries run during `release` stage)
+- **GitHub Actions** uses QEMU emulation and has more resources (~7GB RAM vs ~1GB on low-end devices)
+- For ARM64 builds on resource-constrained devices, use GitHub Actions or native ARM64 build environments
+
+The workflow in `.github/workflows/build.yml` demonstrates proper multi-platform builds using `docker/setup-buildx-action` and `docker/setup-qemu-action`.
+
+### Recent Fixes
+
+**Album Visibility for Users Without Root Albums** (2026-03)
+- Users whose albums are all sub-albums of another user's root album couldn't see albums in UI
+- Fixed by adding `getTopLevelAlbumIDs()` function to properly identify top-level albums per user
+- Affects scenarios where: User A scans `/photos` first, then User B is added with `/photos/userB` - User B's albums all have `parent_album_id` pointing to User A's album tree
+
 ## OpenWrt Deployment Notes
 
 This repository contains deployment configurations for OpenWrt (NanoPi R2S Plus):
