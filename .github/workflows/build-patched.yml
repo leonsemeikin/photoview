@@ -2,7 +2,7 @@ name: Build Patched Image
 
 on:
   push:
-    branches: [ master ]
+    branches: [ '**' ]
   workflow_dispatch:
 
 jobs:
