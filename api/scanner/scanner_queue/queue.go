@@ -102,7 +102,6 @@ func (queue *ScannerQueue) startBackgroundWorker() {
 	notifyThrottle := utils.NewThrottle(500 * time.Millisecond)
 
 	for {
-		log.Println("Queue waiting")
 		<-queue.idle_chan
 
 		queue.mutex.Lock()
