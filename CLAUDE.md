@@ -236,6 +236,17 @@ The workflow in `.github/workflows/build.yml` demonstrates proper multi-platform
 
 ### Recent Fixes
 
+**Scanner Queue Notification Race Condition** (2026-03)
+- Fixed race condition where `idle_chan` buffer size of 1 caused notifications to be lost when multiple jobs completed simultaneously
+- Increased buffer to 100 and made `notify()` non-blocking to prevent deadlocks
+- Added re-notification logic when jobs remain in queue after processing
+
+**Non-Fatal Scanner Error Handling** (2026-03)
+- `AddUserToQueue()` was aborting if `FindAlbumsForUser()` returned ANY errors (e.g., permission denied on single directory)
+- This prevented ALL albums from being queued for media scanning when one directory had permission issues
+- Changed behavior to log non-fatal errors but continue queuing discovered albums
+- Example: A permission error on `/photos/Моё Др 2023` was blocking scanning of all other albums
+
 **Album Visibility for Users Without Root Albums** (2026-03)
 - Users whose albums are all sub-albums of another user's root album couldn't see albums in UI
 - Fixed by adding `getTopLevelAlbumIDs()` function to properly identify top-level albums per user
@@ -282,6 +293,18 @@ This repository contains deployment configurations for OpenWrt (NanoPi R2S Plus)
    nft add rule inet fw4 raw_prerouting iifname eth0 tcp dport 8000 drop
    ```
 4. **SSL Certificates**: Mounted from `/etc/acme/funspace.duckdns.org_ecc/` (acme.sh managed)
+
+### Custom Build Workflow
+
+The `.github/workflows/build-patched.yml` workflow builds a custom ARM64 image with local patches:
+- Triggered on push to any branch or manual dispatch
+- Produces `photoview-patched:latest` image
+- Artifact downloadable as `docker-image-arm64.zip`
+- Load and deploy on OpenWrt:
+   ```bash
+   docker load < /opt/photoview/docker-image-arm64.zip
+   docker tag photoview-patched:latest photoview-patched:latest
+   ```
 
 ### Monitoring Scanning Progress
 
