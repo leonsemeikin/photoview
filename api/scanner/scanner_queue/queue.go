@@ -71,7 +71,7 @@ func InitializeScannerQueue(db *gorm.DB) error {
 	log.Printf("Initializing scanner queue with %d workers", concurrentWorkers)
 
 	global_scanner_queue = ScannerQueue{
-		idle_chan:   make(chan bool, 1),
+		idle_chan:   make(chan bool, 100), // Increased buffer to prevent lost notifications
 		in_progress: make([]ScannerJob, 0),
 		up_next:     make([]ScannerJob, 0),
 		db:          db,
@@ -166,6 +166,11 @@ func (queue *ScannerQueue) processQueue(notifyThrottle *utils.Throttle) {
 		}()
 	}
 
+	// If there are still jobs in up_next, trigger another notification to process them
+	if len(queue.up_next) > 0 {
+		queue.notify()
+	}
+
 	inProgressLength := len(global_scanner_queue.in_progress)
 	upNextLength := len(global_scanner_queue.up_next)
 
@@ -192,12 +197,12 @@ func (queue *ScannerQueue) processQueue(notifyThrottle *utils.Throttle) {
 }
 
 // Notifies the queue that the jobs has changed
-func (queue *ScannerQueue) notify() bool {
+func (queue *ScannerQueue) notify() {
 	select {
 	case queue.idle_chan <- true:
-		return true
+		// Notification sent successfully
 	default:
-		return false
+		// Channel full, but notification is pending - worker will check again after processing
 	}
 }
 
