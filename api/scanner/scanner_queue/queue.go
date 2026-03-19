@@ -229,10 +229,10 @@ func AddUserToQueue(user *models.User) error {
 	albumCache := scanner_cache.MakeAlbumCache()
 	albums, album_errors := scanner.FindAlbumsForUser(global_scanner_queue.db, user, albumCache)
 	for _, err := range album_errors {
-		return errors.Wrapf(err, "find albums for user (user_id: %d)", user.ID)
+		log.Printf("AddUserToQueue: Non-fatal error during album discovery: %v", err)
 	}
 
-	log.Printf("AddUserToQueue: Found %d albums for user %s", len(albums), user.Username)
+	log.Printf("AddUserToQueue: Found %d albums for user %s (with %d non-fatal errors)", len(albums), user.Username, len(album_errors))
 
 	global_scanner_queue.mutex.Lock()
 	for _, album := range albums {
