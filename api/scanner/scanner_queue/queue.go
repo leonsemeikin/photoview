@@ -232,13 +232,18 @@ func AddUserToQueue(user *models.User) error {
 		return errors.Wrapf(err, "find albums for user (user_id: %d)", user.ID)
 	}
 
+	log.Printf("AddUserToQueue: Found %d albums for user %s", len(albums), user.Username)
+
 	global_scanner_queue.mutex.Lock()
 	for _, album := range albums {
+		log.Printf("AddUserToQueue: Adding album %s (ID %d) to queue", album.Title, album.ID)
 		global_scanner_queue.addJob(&ScannerJob{
 			ctx: scanner_task.NewTaskContext(context.Background(), global_scanner_queue.db, album, albumCache),
 		})
 	}
 	global_scanner_queue.mutex.Unlock()
+
+	log.Printf("AddUserToQueue: Queue size - up_next: %d, in_progress: %d", len(global_scanner_queue.up_next), len(global_scanner_queue.in_progress))
 
 	return nil
 }
