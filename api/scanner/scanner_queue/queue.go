@@ -134,13 +134,10 @@ func (queue *ScannerQueue) CloseBackgroundWorker() {
 }
 
 func (queue *ScannerQueue) processQueue(notifyThrottle *utils.Throttle) {
-	log.Println("Queue waiting for lock")
 	queue.mutex.Lock()
 	maxJobs := queue.settings.max_concurrent_tasks
-	log.Printf("Queue running: in_progress: %d, max_tasks: %d, queue_len: %d\n", len(queue.in_progress), maxJobs, len(queue.up_next))
 
 	for len(queue.in_progress) < maxJobs && len(queue.up_next) > 0 {
-		log.Println("Queue starting job")
 		nextJob := queue.up_next[0]
 		queue.up_next = queue.up_next[1:]
 		queue.in_progress = append(queue.in_progress, nextJob)
