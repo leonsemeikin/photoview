@@ -6,11 +6,9 @@ cache/
 /photos_path
 photoview.db*
 
-# .env  # Custom OpenWrt env - no secrets, tracked
 testing.env
 
 # docker
-# docker-compose.yml  # Custom OpenWrt deployment config - tracked
 /Makefile
 /storage
 /database
