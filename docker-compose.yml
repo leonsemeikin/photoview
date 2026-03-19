@@ -1,0 +1,58 @@
+services:
+  photoview-prepare:
+    image: photoview/photoview:2
+    hostname: photoview-prepare
+    container_name: photoview-prepare
+    network_mode: "none"
+    user: root
+    entrypoint: []
+    command: /bin/bash -c "sleep 1 && chown -R photoview:photoview /home/photoview/media-cache"
+    cap_add:
+      - CHOWN
+    volumes:
+      - "${HOST_PHOTOVIEW_LOCATION}/storage:/home/photoview/media-cache"
+
+  photoview:
+    image: photoview/photoview:2
+    hostname: photoview
+    container_name: photoview
+    restart: unless-stopped
+    stop_grace_period: 10s
+    expose:
+      - "80"
+    depends_on:
+      photoview-prepare:
+        condition: service_completed_successfully
+    security_opt:
+      - seccomp:unconfined
+      - apparmor:unconfined
+    environment:
+      PHOTOVIEW_DATABASE_DRIVER: sqlite
+      PHOTOVIEW_SQLITE_PATH: /home/photoview/database/photoview.db
+      PHOTOVIEW_UI_ENDPOINTS: ${PHOTOVIEW_UI_ENDPOINTS}
+      PHOTOVIEW_LISTEN_IP: "0.0.0.0"
+      PHOTOVIEW_DISABLE_FACE_RECOGNITION: "1"
+      LANG: C.UTF-8
+    volumes:
+      - "${HOST_PHOTOVIEW_LOCATION}/database:/home/photoview/database"
+      - "${HOST_PHOTOVIEW_LOCATION}/storage:/home/photoview/media-cache"
+      - "${HOST_PHOTOVIEW_MEDIA_ROOT}:/photos:ro"
+
+  nginx:
+    image: nginx:alpine
+    container_name: nginx-photoview
+    restart: unless-stopped
+    ports:
+      - "443:443"
+    volumes:
+      - /opt/photoview/nginx/nginx.conf:/etc/nginx/nginx.conf:ro
+      - /opt/photoview/nginx/conf.d:/etc/nginx/conf.d:ro
+      - /etc/acme/funspace.duckdns.org_ecc:/etc/ssl/acme:ro
+      - /opt/photoview/nginx/logs:/var/log/nginx
+    depends_on:
+      - photoview
+
+networks:
+  default:
+    name: photoview_net
+    driver: bridge

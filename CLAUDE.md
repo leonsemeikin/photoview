@@ -225,6 +225,25 @@ When `FindAlbumsForUser()` runs in `api/scanner/scanner_user.go`:
 2. Existing albums get the current user added as an owner if not already present
 3. This creates a shared ownership model where users can have overlapping album access
 
+### Symlink Scanning Behavior
+
+**Important**: Photoview does NOT share scanning or media records between users, even when accessing the same files via symlinks.
+
+When multiple users have root paths that point to the same physical files via symlinks:
+1. **Each user gets separate media records** in the database
+2. **Scanning is duplicated** - each file is scanned once per user
+3. **Thumbnails are NOT shared** - each user gets their own cached thumbnails
+4. **EXIF, face detection, blurhash** are all processed independently per user
+
+**Example scenario**:
+- User A has root path `/photos` containing 10,000 files
+- User B has root path `/home/userb/photos` which is a symlink to `/photos`
+- Result: The database will have 20,000 media records (10,000 per user), and scanning will process all files twice
+
+**Why this happens**: The scanner uses file paths as the primary key, not inodes or filesystem hashes. When User B's scan encounters `/home/userb/photos/photo.jpg`, it creates a new media record even if User A already has `/photos/photo.jpg` scanned.
+
+**Implication**: Using symlinks to share a photo library between users effectively doubles (or more) the storage requirements for thumbnails and duplicates all scanning work.
+
 ### Cross-Platform Docker Builds
 
 Building multi-platform Docker images locally has limitations:
