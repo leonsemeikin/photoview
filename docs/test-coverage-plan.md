@@ -46,7 +46,29 @@ Photoview — это production-система с 20,000+ фото, работа
 
 **Приоритет:** MUST DO FIRST
 
-- [ ] **Шаг 0.1: Создать docker-compose для тестирования**
+- [ ] **Шаг 0.1: Проверить и исправить текущие тесты в GitHub**
+
+```bash
+# 1. Запустить сборку в GitHub Actions для проверки текущих тестов
+git push origin HEAD:fix-current-tests  # Создать ветку, запустить CI
+
+# 2. Дождаться завершения тестов на GitHub
+# 3. Проанализировать ошибки в логах тестов
+# 4. Зафиксировать проблемы в файле docs/current-test-issues.md
+# 5. Применить исправления в коде
+# 6. Повторять push до тех пор, пока все тесты не пройдут
+
+# Команды для локальной отладки (если нужно):
+cd api
+go test ./... -v -database -filesystem -p 1  # Запуск как в CI
+
+cd ../ui
+CI=true vitest --reporter=junit --reporter=verbose --run --coverage  # Запуск как в CI
+```
+
+Ожидается: Все существующие тесты PASS в GitHub Actions
+
+- [ ] **Шаг 0.2: Создать docker-compose для тестирования**
 
 ```bash
 # Создать файл docker-compose.test.yml
@@ -87,14 +109,14 @@ volumes:
   test-db:
 ```
 
-- [ ] **Шаг 0.2: Создать директорию для тестовых данных**
+- [ ] **Шаг 0.3: Создать директорию для тестовых данных**
 
 ```bash
 mkdir -p test-data
 # Добавить несколько тестовых изображений (можно symlink на существующие)
 ```
 
-- [ ] **Шаг 0.3: Проверить что базовый контейнер собирается и стартует**
+- [ ] **Шаг 0.4: Проверить что базовый контейнер собирается и стартует**
 
 ```bash
 # Сборка
@@ -117,7 +139,7 @@ docker compose -f docker-compose.test.yml down
 
 Ожидается: Контейнер переходит в статус `healthy`
 
-- [ ] **Шаг 0.4: Установить Go зависимости для тестирования**
+- [ ] **Шаг 0.5: Установить Go зависимости для тестирования**
 
 ```bash
 cd api
@@ -127,28 +149,58 @@ go get github.com/stretchr/testify/mock
 go mod tidy
 ```
 
-- [ ] **Шаг 0.5: Установить Node.js зависимости для тестирования**
+- [ ] **Шаг 0.6: Установить Node.js зависимости для тестирования**
 
 ```bash
 cd ui
 npm install --save-dev @testing-library/react @testing-library/jest-dom @testing-library/user-event vitest @vitest/ui jsdom msw
 ```
 
-- [ ] **Шаг 0.6: Проверить что базовые тесты запускаются**
+- [ ] **Шаг 0.7: Проверить существующие тесты (как в GitHub Actions)**
 
 ```bash
-# Go тесты
+# Запуск Go тестов с coverage (как в CI)
 cd api
-go test ./... -short -count=1 -v
+go test ./... -v -database -filesystem -p 1 \
+  -cover -coverpkg=./... -coverprofile=coverage.txt -covermode=atomic
 
-# Node тесты
-cd ui
-npm test -- --run
+# Проверить coverage
+go tool cover -func=coverage.txt | grep total
+
+# Запуск UI тестов с coverage (как в CI)
+cd ../ui
+CI=true vitest --reporter=junit --reporter=verbose --run --coverage
 ```
 
-Ожидается: Все существующие тесты PASS
+Ожидается:
+- Go тесты: PASS (29 тестовых файлов)
+- UI тесты: PASS (21 тестовый файл)
+- Покрытие фиксируется как baseline
 
-- [ ] **Шаг 0.7: Создать скрипт для валидации после каждой задачи**
+**Существующие тесты (29 Go, 21 TS):**
+- Go: `api/scanner/*_test.go`, `api/graphql/**/*_test.go`, `api/routes/*_test.go`, `api/database/**/*_test.go`
+- UI: `ui/src/**/*.test.ts`, `ui/src/**/*.test.tsx`
+
+- [ ] **Шаг 0.8: Проверить генерируемый код (как в CI)**
+
+```bash
+# Проверить что GraphQL сгенерирован корректно
+cd api
+go generate ./...
+
+# Проверить что нет изменений
+if [ "$(git status -s 2>/dev/null | head -1)" != "" ]; then
+  echo 'FAIL: Generated code is out of sync'
+  git status -s
+  exit 1
+fi
+
+echo 'PASS: All generated code is in sync'
+```
+
+Ожидается: PASS — весь сгенерированный код в синхронизации
+
+- [ ] **Шаг 0.9: Создать скрипт для валидации после каждой задачи**
 
 ```bash
 # Создать файл scripts/validate-test-build.sh
@@ -159,18 +211,29 @@ npm test -- --run
 #!/bin/bash
 set -e
 
-echo "=== 1. Running Go tests ==="
+echo "=== 1. Checking generated code sync ==="
 cd api
-go test ./... -short -count=1 -race
+go generate ./...
+if [ "$(git status -s 2>/dev/null | head -1)" != "" ]; then
+    echo "FAILED: Generated code is out of sync"
+    git status -s
+    exit 1
+fi
+echo "PASS: Generated code is in sync"
 
-echo "=== 2. Building test container ==="
+echo "=== 2. Running Go tests (as in CI) ==="
+cd api
+go test ./... -v -database -filesystem -p 1 \
+  -cover -coverpkg=./... -coverprofile=coverage.txt -covermode=atomic
+
+echo "=== 3. Building test container ==="
 cd ..
 docker compose -f docker-compose.test.yml build --no-cache
 
-echo "=== 3. Starting container ==="
+echo "=== 4. Starting container ==="
 docker compose -f docker-compose.test.yml up -d
 
-echo "=== 4. Waiting for healthy status (timeout 60s) ==="
+echo "=== 5. Waiting for healthy status (timeout 60s) ==="
 timeout 60s bash -c 'until docker compose -f docker-compose.test.yml ps | grep -q "healthy"; do sleep 2; done' || {
     echo "FAILED: Container did not become healthy"
     docker compose -f docker-compose.test.yml logs
@@ -178,11 +241,15 @@ timeout 60s bash -c 'until docker compose -f docker-compose.test.yml ps | grep -
     exit 1
 }
 
-echo "=== 5. Checking health status ==="
+echo "=== 6. Checking health status ==="
 docker compose -f docker-compose.test.yml ps
 
-echo "=== 6. Stopping container ==="
+echo "=== 7. Stopping container ==="
 docker compose -f docker-compose.test.yml down
+
+echo "=== 8. Running UI tests (as in CI) ==="
+cd ui
+CI=true vitest --reporter=junit --reporter=verbose --run --coverage
 
 echo "=== VALIDATION PASSED ==="
 ```
@@ -191,7 +258,7 @@ echo "=== VALIDATION PASSED ==="
 chmod +x scripts/validate-test-build.sh
 ```
 
-- [ ] **Шаг 0.8: Commit подготовительных файлов**
+- [ ] **Шаг 0.10: Commit подготовительных файлов**
 
 ```bash
 git add docker-compose.test.yml test-data/.gitkeep scripts/validate-test-build.sh api/go.sum ui/package.json ui/package-lock.json
