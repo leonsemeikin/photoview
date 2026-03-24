@@ -1,0 +1,34 @@
+version: 2
+updates:
+  # Maintain dependencies for GitHub Actions
+  - package-ecosystem: "github-actions"
+    directory: "/.github/workflows"
+    schedule:
+      interval: "weekly"
+
+  # Maintain dependencies for Dockerfiles
+  - package-ecosystem: "docker"
+    directories:
+      - "/"
+      - "/dependencies"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "node"
+
+  # Maintain dependencies for Docker Compose
+  - package-ecosystem: "docker-compose"
+    directories:
+      - "/docker-compose example"
+    schedule:
+      interval: "weekly"
+    ignore:
+      - dependency-name: "node"
+
+  # Disable automatic PRs with NPM updates
+  - package-ecosystem: "npm"
+    directory: "/ui"
+    schedule:
+      interval: "monthly"
+    ignore:
+      - dependency-name: "*"

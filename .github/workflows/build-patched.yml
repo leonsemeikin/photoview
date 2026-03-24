@@ -1,0 +1,41 @@
+name: Build Patched Image
+
+on:
+  push:
+    branches: [ '**' ]
+  workflow_dispatch:
+
+jobs:
+  build:
+    name: Build Docker Image
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Set up QEMU
+        uses: docker/setup-qemu-action@v3
+        with:
+          platforms: amd64,arm64
+
+      - name: Set up Docker Buildx
+        uses: docker/setup-buildx-action@v3
+
+      - name: Build ARM64 image
+        uses: docker/build-push-action@v6
+        with:
+          context: .
+          platforms: linux/arm64
+          load: true
+          tags: photoview-patched:latest
+          build-args: |
+            NODE_ENV=production
+            VERSION=patched
+            COMMIT_SHA=manual
+          outputs: type=docker,dest=/tmp/photoview-patched-arm64.tar
+
+      - name: Upload artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: docker-image-arm64
+          path: /tmp/photoview-patched-arm64.tar
