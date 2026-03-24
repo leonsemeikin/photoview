@@ -127,6 +127,48 @@ cd ui && npm run lint
 cd ui && npm run format:check
 ```
 
+### Test Infrastructure
+
+Photoview includes comprehensive test infrastructure for validation:
+
+**Files:**
+- `docker-compose.test.yml`: Test container configuration with health checks
+- `scripts/validate-test-build.sh`: Complete validation script
+
+**Running Full Validation:**
+```bash
+./scripts/validate-test-build.sh
+```
+
+This script:
+1. Checks GraphQL code generation sync (`go generate ./...`)
+2. Runs Go tests (skipped locally without Docker/CI environment)
+3. Builds test container with `docker-compose.test.yml`
+4. Starts container and waits for healthy status
+5. Runs UI tests with coverage
+
+**Test Container:**
+```bash
+# Build and start test container
+docker compose -f docker-compose.test.yml build
+docker compose -f docker-compose.test.yml up -d
+
+# Wait for healthy status (timeout 60s)
+timeout 60s bash -c 'until docker compose -f docker-compose.test.yml ps | grep -q "healthy"; do sleep 2; done'
+
+# Check status
+docker compose -f docker-compose.test.yml ps
+
+# Stop
+docker compose -f docker-compose.test.yml down
+```
+
+**Important Notes:**
+- Go tests require Docker for dependencies (dlib, ImageMagick for face detection)
+- The validation script detects CI environment and runs Go tests only in CI
+- UI tests use MSW for mocking GraphQL requests
+- Test coverage is tracked in CI with codecov
+
 ### GraphQL Schema Generation
 
 After modifying GraphQL schema files (*.graphql in `api/graphql/resolvers/`):

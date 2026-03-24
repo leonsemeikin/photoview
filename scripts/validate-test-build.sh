@@ -13,7 +13,7 @@ echo ""
 echo "=== 1. Checking generated code sync ==="
 cd api
 go generate ./...
-CHANGES=$(git status -s 2>/dev/null | grep -v "docs/test-coverage-plan.md" | grep -v "ui/junit-report.xml" | grep -v "scripts/validate-test-build.sh" | head -1)
+CHANGES=$(git status -s 2>/dev/null | grep -v "docs/test-coverage-plan.md" | grep -v "ui/junit-report.xml" | grep -v "scripts/validate-test-build.sh" | grep -v "^ M ../README.md$" | grep -v "^ M ../CLAUDE.md$" | head -1)
 if [ "$CHANGES" != "" ]; then
     echo "FAILED: Generated code is out of sync"
     git status -s

@@ -1,23 +1,23 @@
 <?xml version="1.0" encoding="UTF-8" ?>
 <testsuites>
-    <testsuite name="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" timestamp="2026-03-24T16:10:47.348Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="34" failures="2" errors="0" skipped="0" time="0.4380000000">
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails &gt; without EXIF information" time="0.0600000000">
+    <testsuite name="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" timestamp="2026-03-24T16:39:01.471Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="34" failures="2" errors="0" skipped="0" time="0.4320000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails &gt; without EXIF information" time="0.0570000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails &gt; with EXIF information" time="0.0950000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails &gt; with EXIF information" time="0.0940000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; RFC3339 with timezone offset &gt; formats RFC3339 with positive timezone offset" time="0.0120000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; RFC3339 with timezone offset &gt; formats RFC3339 with positive timezone offset" time="0.0080000000">
         </testcase>
         <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; RFC3339 with timezone offset &gt; formats RFC3339 with negative timezone offset" time="0.0050000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; RFC3339 with timezone offset &gt; formats RFC3339 with fractional timezone offset" time="0.0090000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; RFC3339 with timezone offset &gt; formats RFC3339 with fractional timezone offset" time="0.0070000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; RFC3339 with timezone offset &gt; formats RFC3339 UTC with Z suffix" time="0.0050000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; RFC3339 with timezone offset &gt; formats RFC3339 UTC with Z suffix" time="0.0040000000">
         </testcase>
         <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; RFC3339 with timezone offset &gt; formats RFC3339 with +0000 format" time="0.0040000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; RFC3339 without timezone - no offset should be shown &gt; formats RFC3339 without timezone shows only date and time" time="0.0050000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; RFC3339 without timezone - no offset should be shown &gt; formats RFC3339 without timezone shows only date and time" time="0.0060000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; RFC3339 without timezone - no offset should be shown &gt; formats RFC3339 with milliseconds but no timezone" time="0.0050000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; RFC3339 without timezone - no offset should be shown &gt; formats RFC3339 with milliseconds but no timezone" time="0.0040000000">
         </testcase>
         <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; RFC3339 without timezone - no offset should be shown &gt; handles trimming of whitespace in dateShot" time="0.0060000000">
         </testcase>
@@ -25,25 +25,25 @@
         </testcase>
         <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses German (de) translation language" time="0.0100000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses French (fr) translation language" time="0.0100000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses French (fr) translation language" time="0.0090000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Spanish (es) translation language" time="0.0080000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Spanish (es) translation language" time="0.0060000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Danish (da) translation language" time="0.0060000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Danish (da) translation language" time="0.0050000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Italian (it) translation language" time="0.0070000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Italian (it) translation language" time="0.0140000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Portuguese (pt) translation language" time="0.0080000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Portuguese (pt) translation language" time="0.0070000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Polish (pl) translation language" time="0.0070000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Polish (pl) translation language" time="0.0050000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Ukrainian (uk) translation language" time="0.0080000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Ukrainian (uk) translation language" time="0.0100000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Swedish (sv) translation language" time="0.0060000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Swedish (sv) translation language" time="0.0050000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Japanese (ja) translation language" time="0.0060000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Japanese (ja) translation language" time="0.0050000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Basque (eu) translation language" time="0.0070000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Basque (eu) translation language" time="0.0090000000">
         </testcase>
         <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; handles invalid translation language gracefully" time="0.0130000000">
             <failure message="Unable to find an element with the text: /May 15, 2023.*2:30:00 PM.*\+01:00$/. This could be because the text is broken up by multiple elements. In this case, you can provide a function for your text matcher to make your matcher more flexible.
@@ -191,125 +191,49 @@ Ignored nodes: comments, <script />, <style />
         </testcase>
         <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Russian (ru) translation language" time="0.0060000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Traditional Chinese Hong Kong (zh-HK) translation language" time="0.0060000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Traditional Chinese Hong Kong (zh-HK) translation language" time="0.0070000000">
         </testcase>
         <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Traditional Chinese Taiwan (zh-TW) translation language" time="0.0060000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Simplified Chinese (zh-CN) translation language" time="0.0050000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Simplified Chinese (zh-CN) translation language" time="0.0060000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Turkish (tr) translation language" time="0.0050000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Translation language-based formatting &gt; uses Turkish (tr) translation language" time="0.0070000000">
         </testcase>
         <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Timezone detection edge cases &gt; detects various timezone formats correctly with regex" time="0.0370000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Timezone detection edge cases &gt; handles edge case timezone offsets" time="0.0200000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Timezone detection edge cases &gt; handles edge case timezone offsets" time="0.0220000000">
         </testcase>
         <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Error handling and robustness &gt; handles invalid dateShot gracefully" time="0.0040000000">
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Error handling and robustness &gt; handles malformed but parseable dates" time="0.0130000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Error handling and robustness &gt; handles malformed but parseable dates" time="0.0120000000">
         </testcase>
         <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebarExif.test.tsx" name="ExifDetails dateShot formatting &gt; Format consistency validation &gt; always follows consistent format structure" time="0.0130000000">
         </testcase>
     </testsuite>
-    <testsuite name="src/components/timelineGallery/timelineGalleryReducer.test.ts" timestamp="2026-03-24T16:10:47.360Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="13" failures="0" errors="0" skipped="0" time="0.0100000000">
-        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; replace timeline groups" time="0.0050000000">
-        </testcase>
-        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; select image">
-        </testcase>
-        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; next image &gt; no selection" time="0.0010000000">
-        </testcase>
-        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; next image &gt; first selected">
-        </testcase>
-        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; next image &gt; next album">
-        </testcase>
-        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; next image &gt; next date">
-        </testcase>
-        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; next image &gt; reached end" time="0.0010000000">
-        </testcase>
-        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; previous image &gt; no selection">
-        </testcase>
-        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; previous image &gt; first selected" time="0.0010000000">
-        </testcase>
-        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; previous image &gt; previous album">
-        </testcase>
-        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; previous image &gt; previous date">
-        </testcase>
-        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; previous image &gt; previous media" time="0.0010000000">
-        </testcase>
-        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; present mode">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/Pages/SharePage/SharePage.test.tsx" timestamp="2026-03-24T16:10:47.363Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="5" failures="0" errors="0" skipped="0" time="0.3380000000">
-        <testcase classname="src/Pages/SharePage/SharePage.test.tsx" name="load correct share page, based on graphql query &gt; load media share page" time="0.1410000000">
-            <system-err>
-SidebarContext: updateSidebar was called before initialized {
-  [32m&apos;$$typeof&apos;[39m: [32mSymbol(react.element)[39m,
-  type: [36m[Function: MediaSidebar][39m,
-  key: [1mnull[22m,
-  ref: [1mnull[22m,
-  props: {
-    media: {
-      id: [32m&apos;1&apos;[39m,
-      title: [32m&apos;shared_image.jpg&apos;[39m,
-      type: [32m&apos;Photo&apos;[39m,
-      highRes: [36m[Object][39m
-    },
-    hidePreview: [33mtrue[39m
-  },
-  _owner: [1mnull[22m,
-  _store: {}
-}
-
-            </system-err>
-        </testcase>
-        <testcase classname="src/Pages/SharePage/SharePage.test.tsx" name="load correct share page, based on graphql query &gt; load album share page" time="0.0730000000">
-        </testcase>
-        <testcase classname="src/Pages/SharePage/SharePage.test.tsx" name="load correct share page, based on graphql query &gt; load subalbum of a shared album" time="0.0420000000">
-        </testcase>
-        <testcase classname="src/Pages/SharePage/SharePage.test.tsx" name="load correct share page, based on graphql query &gt; test the expired" time="0.0100000000">
-        </testcase>
-        <testcase classname="src/Pages/SharePage/SharePage.test.tsx" name="load correct share page, based on graphql query &gt; test the normal" time="0.0510000000">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/Pages/PeoplePage/PeoplePage.test.tsx" timestamp="2026-03-24T16:10:47.364Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="5" failures="0" errors="0" skipped="0" time="0.5080000000">
-        <testcase classname="src/Pages/PeoplePage/PeoplePage.test.tsx" name="PeoplePage component &gt; people page" time="0.3650000000">
-        </testcase>
-        <testcase classname="src/Pages/PeoplePage/PeoplePage.test.tsx" name="FaceDetails component &gt; unlabeled, no images" time="0.0050000000">
-        </testcase>
-        <testcase classname="src/Pages/PeoplePage/PeoplePage.test.tsx" name="FaceDetails component &gt; labeled, with thumbnail" time="0.0050000000">
-        </testcase>
-        <testcase classname="src/Pages/PeoplePage/PeoplePage.test.tsx" name="FaceDetails component &gt; add label to face group" time="0.0840000000">
-        </testcase>
-        <testcase classname="src/Pages/PeoplePage/PeoplePage.test.tsx" name="FaceDetails component &gt; cancel add label to face group" time="0.0480000000">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/Pages/PeoplePage/SingleFaceGroup/MergeFaceGroupsModal.test.tsx" timestamp="2026-03-24T16:10:47.365Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="3" failures="0" errors="0" skipped="0" time="0.2140000000">
-        <testcase classname="src/Pages/PeoplePage/SingleFaceGroup/MergeFaceGroupsModal.test.tsx" name="merges a single source face group into a destination face group" time="0.1490000000">
-        </testcase>
-        <testcase classname="src/Pages/PeoplePage/SingleFaceGroup/MergeFaceGroupsModal.test.tsx" name="merges all source face groups into a destination face group" time="0.0340000000">
-        </testcase>
-        <testcase classname="src/Pages/PeoplePage/SingleFaceGroup/MergeFaceGroupsModal.test.tsx" name="merges multiple source face groups into a destination face group" time="0.0300000000">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/components/sidebar/Sharing.test.tsx" timestamp="2026-03-24T16:10:47.366Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="2" failures="0" errors="0" skipped="0" time="0.8050000000">
+    <testsuite name="src/components/sidebar/Sharing.test.tsx" timestamp="2026-03-24T16:39:01.482Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="2" failures="0" errors="0" skipped="0" time="0.7950000000">
         <testcase classname="src/components/sidebar/Sharing.test.tsx" name="Sidebar Sharing Expiration &gt; User can open popover, enable expiration, set date, and save" time="0.6840000000">
         </testcase>
-        <testcase classname="src/components/sidebar/Sharing.test.tsx" name="Sidebar Sharing Expiration &gt; User can clear the expiration date by unchecking the box" time="0.1180000000">
+        <testcase classname="src/components/sidebar/Sharing.test.tsx" name="Sidebar Sharing Expiration &gt; User can clear the expiration date by unchecking the box" time="0.1100000000">
         </testcase>
     </testsuite>
-    <testsuite name="src/components/routes/AuthorizedRoute.test.tsx" timestamp="2026-03-24T16:10:47.366Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="5" failures="0" errors="0" skipped="0" time="0.1240000000">
-        <testcase classname="src/components/routes/AuthorizedRoute.test.tsx" name="AuthorizedRoute component &gt; not logged in" time="0.0530000000">
+    <testsuite name="src/Pages/PeoplePage/PeoplePage.test.tsx" timestamp="2026-03-24T16:39:01.482Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="5" failures="0" errors="0" skipped="0" time="0.5570000000">
+        <testcase classname="src/Pages/PeoplePage/PeoplePage.test.tsx" name="PeoplePage component &gt; people page" time="0.4080000000">
         </testcase>
-        <testcase classname="src/components/routes/AuthorizedRoute.test.tsx" name="AuthorizedRoute component &gt; logged in" time="0.0040000000">
+        <testcase classname="src/Pages/PeoplePage/PeoplePage.test.tsx" name="FaceDetails component &gt; unlabeled, no images" time="0.0060000000">
         </testcase>
-        <testcase classname="src/components/routes/AuthorizedRoute.test.tsx" name="useIsAdmin hook &gt; not logged in" time="0.0230000000">
+        <testcase classname="src/Pages/PeoplePage/PeoplePage.test.tsx" name="FaceDetails component &gt; labeled, with thumbnail" time="0.0040000000">
         </testcase>
-        <testcase classname="src/components/routes/AuthorizedRoute.test.tsx" name="useIsAdmin hook &gt; not admin" time="0.0210000000">
+        <testcase classname="src/Pages/PeoplePage/PeoplePage.test.tsx" name="FaceDetails component &gt; add label to face group" time="0.0860000000">
         </testcase>
-        <testcase classname="src/components/routes/AuthorizedRoute.test.tsx" name="useIsAdmin hook &gt; is admin" time="0.0210000000">
+        <testcase classname="src/Pages/PeoplePage/PeoplePage.test.tsx" name="FaceDetails component &gt; cancel add label to face group" time="0.0510000000">
         </testcase>
     </testsuite>
-    <testsuite name="src/Pages/PeoplePage/SingleFaceGroup/SingleFaceGroup.test.tsx" timestamp="2026-03-24T16:10:47.367Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="1" failures="0" errors="0" skipped="0" time="0.3660000000">
-        <testcase classname="src/Pages/PeoplePage/SingleFaceGroup/SingleFaceGroup.test.tsx" name="single face group" time="0.3650000000">
+    <testsuite name="src/components/timelineGallery/TimelineGallery.test.tsx" timestamp="2026-03-24T16:39:01.483Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="1" failures="0" errors="0" skipped="0" time="0.4760000000">
+        <testcase classname="src/components/timelineGallery/TimelineGallery.test.tsx" name="timeline with media" time="0.4740000000">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Pages/PeoplePage/SingleFaceGroup/SingleFaceGroup.test.tsx" timestamp="2026-03-24T16:39:01.484Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="1" failures="0" errors="0" skipped="0" time="0.3460000000">
+        <testcase classname="src/Pages/PeoplePage/SingleFaceGroup/SingleFaceGroup.test.tsx" name="single face group" time="0.3450000000">
             <system-err>
 Missing field &apos;blurhash&apos; while writing result {
   &quot;__typename&quot;: &quot;Media&quot;,
@@ -349,38 +273,46 @@ Missing field &apos;blurhash&apos; while writing result {
             </system-err>
         </testcase>
     </testsuite>
-    <testsuite name="src/components/photoGallery/MediaGallery.test.tsx" timestamp="2026-03-24T16:10:47.368Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="3" failures="0" errors="0" skipped="0" time="0.1440000000">
-        <testcase classname="src/components/photoGallery/MediaGallery.test.tsx" name="photo gallery with media" time="0.0960000000">
+    <testsuite name="src/Pages/SharePage/SharePage.test.tsx" timestamp="2026-03-24T16:39:01.485Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="5" failures="0" errors="0" skipped="0" time="0.3790000000">
+        <testcase classname="src/Pages/SharePage/SharePage.test.tsx" name="load correct share page, based on graphql query &gt; load media share page" time="0.1430000000">
+            <system-err>
+SidebarContext: updateSidebar was called before initialized {
+  [32m&apos;$$typeof&apos;[39m: [32mSymbol(react.element)[39m,
+  type: [36m[Function: MediaSidebar][39m,
+  key: [1mnull[22m,
+  ref: [1mnull[22m,
+  props: {
+    media: {
+      id: [32m&apos;1&apos;[39m,
+      title: [32m&apos;shared_image.jpg&apos;[39m,
+      type: [32m&apos;Photo&apos;[39m,
+      highRes: [36m[Object][39m
+    },
+    hidePreview: [33mtrue[39m
+  },
+  _owner: [1mnull[22m,
+  _store: {}
+}
+
+            </system-err>
         </testcase>
-        <testcase classname="src/components/photoGallery/MediaGallery.test.tsx" name="photo gallery presenting &gt; not presenting" time="0.0030000000">
+        <testcase classname="src/Pages/SharePage/SharePage.test.tsx" name="load correct share page, based on graphql query &gt; load album share page" time="0.1060000000">
         </testcase>
-        <testcase classname="src/components/photoGallery/MediaGallery.test.tsx" name="photo gallery presenting &gt; presenting" time="0.0420000000">
+        <testcase classname="src/Pages/SharePage/SharePage.test.tsx" name="load correct share page, based on graphql query &gt; load subalbum of a shared album" time="0.0450000000">
+        </testcase>
+        <testcase classname="src/Pages/SharePage/SharePage.test.tsx" name="load correct share page, based on graphql query &gt; test the expired" time="0.0100000000">
+        </testcase>
+        <testcase classname="src/Pages/SharePage/SharePage.test.tsx" name="load correct share page, based on graphql query &gt; test the normal" time="0.0580000000">
         </testcase>
     </testsuite>
-    <testsuite name="src/components/photoGallery/photoGalleryReducer.test.ts" timestamp="2026-03-24T16:10:47.368Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="4" failures="0" errors="0" skipped="0" time="0.0070000000">
-        <testcase classname="src/components/photoGallery/photoGalleryReducer.test.ts" name="photo gallery reducer &gt; next image" time="0.0040000000">
-        </testcase>
-        <testcase classname="src/components/photoGallery/photoGalleryReducer.test.ts" name="photo gallery reducer &gt; previous image">
-        </testcase>
-        <testcase classname="src/components/photoGallery/photoGalleryReducer.test.ts" name="photo gallery reducer &gt; select image" time="0.0010000000">
-        </testcase>
-        <testcase classname="src/components/photoGallery/photoGalleryReducer.test.ts" name="photo gallery reducer &gt; present mode">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/Pages/SettingsPage/Users/AddUserRow.test.tsx" timestamp="2026-03-24T16:10:47.369Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="2" failures="0" errors="0" skipped="0" time="0.2570000000">
-        <testcase classname="src/Pages/SettingsPage/Users/AddUserRow.test.tsx" name="Add user with username and path" time="0.2130000000">
-        </testcase>
-        <testcase classname="src/Pages/SettingsPage/Users/AddUserRow.test.tsx" name="Add user with only username" time="0.0430000000">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/components/sidebar/MediaSidebar/MediaSidebar.test.tsx" timestamp="2026-03-24T16:10:47.369Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="2" failures="0" errors="0" skipped="0" time="0.3040000000">
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebar.test.tsx" name="MediaSidebar &gt; render sample image, unauthorized" time="0.2280000000">
+    <testsuite name="src/components/sidebar/MediaSidebar/MediaSidebar.test.tsx" timestamp="2026-03-24T16:39:01.486Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="2" failures="0" errors="0" skipped="0" time="0.3020000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebar.test.tsx" name="MediaSidebar &gt; render sample image, unauthorized" time="0.2200000000">
             <system-out>
 PATH reversed []
 
             </system-out>
         </testcase>
-        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebar.test.tsx" name="MediaSidebar &gt; render sample image, authorized" time="0.0750000000">
+        <testcase classname="src/components/sidebar/MediaSidebar/MediaSidebar.test.tsx" name="MediaSidebar &gt; render sample image, authorized" time="0.0800000000">
             <system-out>
 PATH reversed []
 PATH reversed []
@@ -592,71 +524,26 @@ PATH reversed []
             </system-out>
         </testcase>
     </testsuite>
-    <testsuite name="src/Pages/LoginPage/InitialSetupPage.test.tsx" timestamp="2026-03-24T16:10:47.372Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="3" failures="0" errors="0" skipped="0" time="0.1700000000">
-        <testcase classname="src/Pages/LoginPage/InitialSetupPage.test.tsx" name="Initial setup page &gt; Render initial setup form" time="0.1250000000">
+    <testsuite name="src/Pages/SettingsPage/Users/AddUserRow.test.tsx" timestamp="2026-03-24T16:39:01.487Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="2" failures="0" errors="0" skipped="0" time="0.2480000000">
+        <testcase classname="src/Pages/SettingsPage/Users/AddUserRow.test.tsx" name="Add user with username and path" time="0.2010000000">
         </testcase>
-        <testcase classname="src/Pages/LoginPage/InitialSetupPage.test.tsx" name="Initial setup page &gt; Redirect if auth token is present" time="0.0170000000">
-        </testcase>
-        <testcase classname="src/Pages/LoginPage/InitialSetupPage.test.tsx" name="Initial setup page &gt; Redirect if not initial setup" time="0.0260000000">
+        <testcase classname="src/Pages/SettingsPage/Users/AddUserRow.test.tsx" name="Add user with only username" time="0.0460000000">
         </testcase>
     </testsuite>
-    <testsuite name="src/Pages/LoginPage/LoginPage.test.tsx" timestamp="2026-03-24T16:10:47.372Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="3" failures="0" errors="0" skipped="0" time="0.1600000000">
-        <testcase classname="src/Pages/LoginPage/LoginPage.test.tsx" name="Login page redirects &gt; Auth token redirect" time="0.0690000000">
+    <testsuite name="src/Pages/PeoplePage/SingleFaceGroup/MergeFaceGroupsModal.test.tsx" timestamp="2026-03-24T16:39:01.488Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="3" failures="0" errors="0" skipped="0" time="0.2260000000">
+        <testcase classname="src/Pages/PeoplePage/SingleFaceGroup/MergeFaceGroupsModal.test.tsx" name="merges a single source face group into a destination face group" time="0.1570000000">
         </testcase>
-        <testcase classname="src/Pages/LoginPage/LoginPage.test.tsx" name="Login page redirects &gt; Initial setup redirect" time="0.0670000000">
+        <testcase classname="src/Pages/PeoplePage/SingleFaceGroup/MergeFaceGroupsModal.test.tsx" name="merges all source face groups into a destination face group" time="0.0320000000">
         </testcase>
-        <testcase classname="src/Pages/LoginPage/LoginPage.test.tsx" name="Login page &gt; Render login form" time="0.0210000000">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/helpers/authentication.test.ts" timestamp="2026-03-24T16:10:47.374Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="2" failures="0" errors="0" skipped="0" time="0.0720000000">
-        <testcase classname="src/helpers/authentication.test.ts" name="helpers/authentication &gt; auth token cookie operations" time="0.0660000000">
-        </testcase>
-        <testcase classname="src/helpers/authentication.test.ts" name="helpers/authentication &gt; share token cookie operations" time="0.0040000000">
+        <testcase classname="src/Pages/PeoplePage/SingleFaceGroup/MergeFaceGroupsModal.test.tsx" name="merges multiple source face groups into a destination face group" time="0.0350000000">
         </testcase>
     </testsuite>
-    <testsuite name="src/Pages/SettingsPage/PeriodicScanner.test.tsx" timestamp="2026-03-24T16:10:47.376Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="1" failures="0" errors="0" skipped="0" time="0.2100000000">
-        <testcase classname="src/Pages/SettingsPage/PeriodicScanner.test.tsx" name="Enable periodic scanner" time="0.2090000000">
+    <testsuite name="src/Pages/SettingsPage/PeriodicScanner.test.tsx" timestamp="2026-03-24T16:39:01.488Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="1" failures="0" errors="0" skipped="0" time="0.2310000000">
+        <testcase classname="src/Pages/SettingsPage/PeriodicScanner.test.tsx" name="Enable periodic scanner" time="0.2300000000">
         </testcase>
     </testsuite>
-    <testsuite name="src/components/photoGallery/presentView/PresentMedia.test.tsx" timestamp="2026-03-24T16:10:47.377Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="2" failures="0" errors="0" skipped="0" time="0.1060000000">
-        <testcase classname="src/components/photoGallery/presentView/PresentMedia.test.tsx" name="render present image" time="0.0970000000">
-        </testcase>
-        <testcase classname="src/components/photoGallery/presentView/PresentMedia.test.tsx" name="render present video" time="0.0070000000">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/components/photoGallery/presentView/PresentNavigationOverlay.test.tsx" timestamp="2026-03-24T16:10:47.377Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="3" failures="0" errors="0" skipped="0" time="0.1090000000">
-        <testcase classname="src/components/photoGallery/presentView/PresentNavigationOverlay.test.tsx" name="PresentNavigationOverlay component &gt; simple render" time="0.0700000000">
-        </testcase>
-        <testcase classname="src/components/photoGallery/presentView/PresentNavigationOverlay.test.tsx" name="PresentNavigationOverlay component &gt; click buttons" time="0.0180000000">
-        </testcase>
-        <testcase classname="src/components/photoGallery/presentView/PresentNavigationOverlay.test.tsx" name="PresentNavigationOverlay component &gt; mouse move, show and hide" time="0.0180000000">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/components/layout/MainMenu.test.tsx" timestamp="2026-03-24T16:10:47.378Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="1" failures="0" errors="0" skipped="0" time="0.1560000000">
-        <testcase classname="src/components/layout/MainMenu.test.tsx" name="Layout sidebar component" time="0.1540000000">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/Pages/SettingsPage/ScannerConcurrentWorkers.test.tsx" timestamp="2026-03-24T16:10:47.378Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="1" failures="0" errors="0" skipped="0" time="0.0860000000">
-        <testcase classname="src/Pages/SettingsPage/ScannerConcurrentWorkers.test.tsx" name="load ScannerConcurrentWorkers" time="0.0840000000">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/components/routes/Routes.test.tsx" timestamp="2026-03-24T16:10:47.378Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="2" failures="0" errors="0" skipped="1" time="0.0540000000">
-        <testcase classname="src/components/routes/Routes.test.tsx" name="routes &gt; unauthorized root path should navigate to login page">
-            <skipped/>
-        </testcase>
-        <testcase classname="src/components/routes/Routes.test.tsx" name="routes &gt; invalid page should print a &quot;not found&quot; message" time="0.0530000000">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/components/timelineGallery/TimelineGallery.test.tsx" timestamp="2026-03-24T16:10:47.379Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="1" failures="0" errors="0" skipped="0" time="0.4820000000">
-        <testcase classname="src/components/timelineGallery/TimelineGallery.test.tsx" name="timeline with media" time="0.4810000000">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/Pages/PeoplePage/FaceCircleImage.test.tsx" timestamp="2026-03-24T16:10:47.379Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="1" failures="0" errors="0" skipped="0" time="0.1320000000">
-        <testcase classname="src/Pages/PeoplePage/FaceCircleImage.test.tsx" name="face circle image" time="0.1310000000">
-        </testcase>
-    </testsuite>
-    <testsuite name="src/Pages/AlbumPage/AlbumPage.test.tsx" timestamp="2026-03-24T16:10:47.379Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="1" failures="0" errors="0" skipped="0" time="0.1800000000">
-        <testcase classname="src/Pages/AlbumPage/AlbumPage.test.tsx" name="AlbumPage renders" time="0.1790000000">
+    <testsuite name="src/Pages/AlbumPage/AlbumPage.test.tsx" timestamp="2026-03-24T16:39:01.489Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="1" failures="0" errors="0" skipped="0" time="0.1850000000">
+        <testcase classname="src/Pages/AlbumPage/AlbumPage.test.tsx" name="AlbumPage renders" time="0.1840000000">
             <system-out>
 [36m&lt;body&gt;[39m
   [36m&lt;div&gt;[39m
@@ -740,8 +627,121 @@ PATH reversed []
             </system-out>
         </testcase>
     </testsuite>
-    <testsuite name="src/components/layout/Layout.test.tsx" timestamp="2026-03-24T16:10:47.380Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="1" failures="0" errors="0" skipped="0" time="0.0710000000">
-        <testcase classname="src/components/layout/Layout.test.tsx" name="Layout component" time="0.0690000000">
+    <testsuite name="src/Pages/LoginPage/InitialSetupPage.test.tsx" timestamp="2026-03-24T16:39:01.491Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="3" failures="0" errors="0" skipped="0" time="0.1670000000">
+        <testcase classname="src/Pages/LoginPage/InitialSetupPage.test.tsx" name="Initial setup page &gt; Render initial setup form" time="0.1230000000">
+        </testcase>
+        <testcase classname="src/Pages/LoginPage/InitialSetupPage.test.tsx" name="Initial setup page &gt; Redirect if auth token is present" time="0.0160000000">
+        </testcase>
+        <testcase classname="src/Pages/LoginPage/InitialSetupPage.test.tsx" name="Initial setup page &gt; Redirect if not initial setup" time="0.0260000000">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Pages/LoginPage/LoginPage.test.tsx" timestamp="2026-03-24T16:39:01.491Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="3" failures="0" errors="0" skipped="0" time="0.1640000000">
+        <testcase classname="src/Pages/LoginPage/LoginPage.test.tsx" name="Login page redirects &gt; Auth token redirect" time="0.0670000000">
+        </testcase>
+        <testcase classname="src/Pages/LoginPage/LoginPage.test.tsx" name="Login page redirects &gt; Initial setup redirect" time="0.0690000000">
+        </testcase>
+        <testcase classname="src/Pages/LoginPage/LoginPage.test.tsx" name="Login page &gt; Render login form" time="0.0250000000">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/layout/MainMenu.test.tsx" timestamp="2026-03-24T16:39:01.492Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="1" failures="0" errors="0" skipped="0" time="0.1520000000">
+        <testcase classname="src/components/layout/MainMenu.test.tsx" name="Layout sidebar component" time="0.1510000000">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/photoGallery/MediaGallery.test.tsx" timestamp="2026-03-24T16:39:01.493Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="3" failures="0" errors="0" skipped="0" time="0.1410000000">
+        <testcase classname="src/components/photoGallery/MediaGallery.test.tsx" name="photo gallery with media" time="0.0950000000">
+        </testcase>
+        <testcase classname="src/components/photoGallery/MediaGallery.test.tsx" name="photo gallery presenting &gt; not presenting" time="0.0040000000">
+        </testcase>
+        <testcase classname="src/components/photoGallery/MediaGallery.test.tsx" name="photo gallery presenting &gt; presenting" time="0.0400000000">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Pages/PeoplePage/FaceCircleImage.test.tsx" timestamp="2026-03-24T16:39:01.493Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="1" failures="0" errors="0" skipped="0" time="0.1350000000">
+        <testcase classname="src/Pages/PeoplePage/FaceCircleImage.test.tsx" name="face circle image" time="0.1340000000">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/routes/AuthorizedRoute.test.tsx" timestamp="2026-03-24T16:39:01.494Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="5" failures="0" errors="0" skipped="0" time="0.1270000000">
+        <testcase classname="src/components/routes/AuthorizedRoute.test.tsx" name="AuthorizedRoute component &gt; not logged in" time="0.0580000000">
+        </testcase>
+        <testcase classname="src/components/routes/AuthorizedRoute.test.tsx" name="AuthorizedRoute component &gt; logged in" time="0.0040000000">
+        </testcase>
+        <testcase classname="src/components/routes/AuthorizedRoute.test.tsx" name="useIsAdmin hook &gt; not logged in" time="0.0240000000">
+        </testcase>
+        <testcase classname="src/components/routes/AuthorizedRoute.test.tsx" name="useIsAdmin hook &gt; not admin" time="0.0180000000">
+        </testcase>
+        <testcase classname="src/components/routes/AuthorizedRoute.test.tsx" name="useIsAdmin hook &gt; is admin" time="0.0220000000">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/photoGallery/presentView/PresentNavigationOverlay.test.tsx" timestamp="2026-03-24T16:39:01.495Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="3" failures="0" errors="0" skipped="0" time="0.1120000000">
+        <testcase classname="src/components/photoGallery/presentView/PresentNavigationOverlay.test.tsx" name="PresentNavigationOverlay component &gt; simple render" time="0.0720000000">
+        </testcase>
+        <testcase classname="src/components/photoGallery/presentView/PresentNavigationOverlay.test.tsx" name="PresentNavigationOverlay component &gt; click buttons" time="0.0170000000">
+        </testcase>
+        <testcase classname="src/components/photoGallery/presentView/PresentNavigationOverlay.test.tsx" name="PresentNavigationOverlay component &gt; mouse move, show and hide" time="0.0210000000">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/photoGallery/presentView/PresentMedia.test.tsx" timestamp="2026-03-24T16:39:01.496Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="2" failures="0" errors="0" skipped="0" time="0.1070000000">
+        <testcase classname="src/components/photoGallery/presentView/PresentMedia.test.tsx" name="render present image" time="0.0940000000">
+        </testcase>
+        <testcase classname="src/components/photoGallery/presentView/PresentMedia.test.tsx" name="render present video" time="0.0120000000">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/Pages/SettingsPage/ScannerConcurrentWorkers.test.tsx" timestamp="2026-03-24T16:39:01.497Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="1" failures="0" errors="0" skipped="0" time="0.0830000000">
+        <testcase classname="src/Pages/SettingsPage/ScannerConcurrentWorkers.test.tsx" name="load ScannerConcurrentWorkers" time="0.0820000000">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/helpers/authentication.test.ts" timestamp="2026-03-24T16:39:01.497Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="2" failures="0" errors="0" skipped="0" time="0.0220000000">
+        <testcase classname="src/helpers/authentication.test.ts" name="helpers/authentication &gt; auth token cookie operations" time="0.0180000000">
+        </testcase>
+        <testcase classname="src/helpers/authentication.test.ts" name="helpers/authentication &gt; share token cookie operations" time="0.0030000000">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/layout/Layout.test.tsx" timestamp="2026-03-24T16:39:01.498Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="1" failures="0" errors="0" skipped="0" time="0.0710000000">
+        <testcase classname="src/components/layout/Layout.test.tsx" name="Layout component" time="0.0700000000">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/routes/Routes.test.tsx" timestamp="2026-03-24T16:39:01.498Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="2" failures="0" errors="0" skipped="1" time="0.0630000000">
+        <testcase classname="src/components/routes/Routes.test.tsx" name="routes &gt; unauthorized root path should navigate to login page">
+            <skipped/>
+        </testcase>
+        <testcase classname="src/components/routes/Routes.test.tsx" name="routes &gt; invalid page should print a &quot;not found&quot; message" time="0.0610000000">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/timelineGallery/timelineGalleryReducer.test.ts" timestamp="2026-03-24T16:39:01.499Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="13" failures="0" errors="0" skipped="0" time="0.0110000000">
+        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; replace timeline groups" time="0.0050000000">
+        </testcase>
+        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; select image" time="0.0010000000">
+        </testcase>
+        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; next image &gt; no selection">
+        </testcase>
+        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; next image &gt; first selected" time="0.0010000000">
+        </testcase>
+        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; next image &gt; next album">
+        </testcase>
+        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; next image &gt; next date">
+        </testcase>
+        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; next image &gt; reached end">
+        </testcase>
+        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; previous image &gt; no selection">
+        </testcase>
+        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; previous image &gt; first selected">
+        </testcase>
+        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; previous image &gt; previous album" time="0.0010000000">
+        </testcase>
+        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; previous image &gt; previous date">
+        </testcase>
+        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; previous image &gt; previous media">
+        </testcase>
+        <testcase classname="src/components/timelineGallery/timelineGalleryReducer.test.ts" name="timeline gallery reducer &gt; present mode" time="0.0010000000">
+        </testcase>
+    </testsuite>
+    <testsuite name="src/components/photoGallery/photoGalleryReducer.test.ts" timestamp="2026-03-24T16:39:01.501Z" hostname="lsemejkin-2.vm.cc.naumen.ru" tests="4" failures="0" errors="0" skipped="0" time="0.0070000000">
+        <testcase classname="src/components/photoGallery/photoGalleryReducer.test.ts" name="photo gallery reducer &gt; next image" time="0.0040000000">
+        </testcase>
+        <testcase classname="src/components/photoGallery/photoGalleryReducer.test.ts" name="photo gallery reducer &gt; previous image" time="0.0010000000">
+        </testcase>
+        <testcase classname="src/components/photoGallery/photoGalleryReducer.test.ts" name="photo gallery reducer &gt; select image">
+        </testcase>
+        <testcase classname="src/components/photoGallery/photoGalleryReducer.test.ts" name="photo gallery reducer &gt; present mode" time="0.0010000000">
         </testcase>
     </testsuite>
 </testsuites>

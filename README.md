@@ -228,6 +228,90 @@ See [docker-compose.example.yml](./docker-compose%20example/docker-compose.examp
 
 If you confirm other acceleration backends, please let us know.
 
+## Testing
+
+Photoview includes a comprehensive test suite to ensure reliability and prevent regressions.
+
+### Running Tests Locally
+
+**Prerequisites:**
+- Docker and Docker Compose
+- All dependencies installed as described in the development sections
+
+**Quick test validation:**
+```bash
+# Run the complete validation script (builds container, runs tests, checks health)
+./scripts/validate-test-build.sh
+```
+
+**Manual testing steps:**
+
+1. **Build test container:**
+```bash
+docker compose -f docker-compose.test.yml build
+```
+
+2. **Start test container:**
+```bash
+docker compose -f docker-compose.test.yml up -d
+```
+
+3. **Wait for healthy status:**
+```bash
+# Wait up to 60 seconds for container to become healthy
+timeout 60s bash -c 'until docker compose -f docker-compose.test.yml ps | grep -q "healthy"; do sleep 2; done'
+```
+
+4. **Check container status:**
+```bash
+docker compose -f docker-compose.test.yml ps
+```
+
+5. **Stop container:**
+```bash
+docker compose -f docker-compose.test.yml down
+```
+
+### Running Test Suites
+
+**Go Backend Tests:**
+```bash
+cd api
+go test ./... -v -database -filesystem -p 1 \
+  -cover -coverpkg=./... -coverprofile=coverage.txt -covermode=atomic
+```
+
+**React Frontend Tests:**
+```bash
+cd ui
+CI=true npm test -- --reporter=verbose --run --coverage
+```
+
+### Test Infrastructure
+
+- **`docker-compose.test.yml`**: Test container configuration with health checks
+- **`scripts/validate-test-build.sh`**: Complete validation script that:
+  - Checks GraphQL code generation sync
+  - Runs Go tests (in CI environment with Docker)
+  - Builds and validates test container
+  - Runs UI tests with coverage
+- **`test-data/`**: Directory for test media files
+
+### Important Notes
+
+- Go tests require Docker for full dependencies (face detection, ImageMagick)
+- The validation script automatically skips Go tests when not in CI environment
+- UI tests use MSW for mocking GraphQL requests
+- Test coverage is tracked and should be maintained above current baseline
+
+### CI/CD Testing
+
+GitHub Actions runs the complete test suite on every push:
+- Builds multi-platform Docker images
+- Runs Go tests with coverage reporting
+- Runs UI tests with JUnit reports
+- Validates container health and functionality
+
 ## Contributing
 
 🎉 First off, thanks for your interest in contribution! 🎉
