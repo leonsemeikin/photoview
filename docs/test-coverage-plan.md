@@ -125,7 +125,39 @@ cd ../ui
 CI=true vitest --reporter=junit --reporter=verbose --run --coverage  # Запуск как в CI
 ```
 
-Ожидается: Все существующие тесты PASS в GitHub Actions
+**РЕЗУЛЬТАТ:** Все существующие тесты PASS в GitHub Actions ✅
+
+**НАЙДЕННЫЕ ПРОБЛЕМЫ И ИСПРАВЛЕНИЯ:**
+
+1. **Главная причина: Shell скрипты без прав на выполнение**
+   - Проблема: `scripts/test_all.sh` и другие скрипты имели права `644` вместо `755`
+   - Ошибка CI: `exec: "/app/scripts/test_all.sh": permission denied`
+   - Исправление: `chmod +x scripts/*.sh`
+   - Затронуто: 7 файлов (benchmark_api.sh, install_*.sh, set_compiler_env.sh, test_*.sh)
+
+2. **Mock binaries без прав на выполнение**
+   - Проблема: `api/scanner/media_encoding/executable_worker/test_data/mock_bin/*` имели права `644`
+   - Ошибки тестов: `TestInitFfprobePath/Succeed`, `TestFfmpeg`, `TestFfmpegWithHWAcc`, `TestFfmpegWithCustomCodec`
+   - Исправление: `chmod +x test_data/mock_bin/*`
+   - Затронуто: ffmpeg, ffprobe, magick
+
+3. **Тесты использовали UnitTestRun вместо IntegrationTestRun**
+   - Проблема: `test_utils.UnitTestRun` не загружает `testing.env`, поэтому переменные БД не доступны
+   - Затронуто 3 файла:
+     - `api/graphql/auth/auth_test.go`
+     - `api/graphql/endpoint/graphql_endpoint_test.go`
+     - `api/scanner/periodic_scanner/periodic_scanner_test.go`
+   - Исправление: Замена `UnitTestRun(m)` на `IntegrationTestRun(m)`
+
+4. **Изменения в album_actions.go ломали тесты**
+   - Проблема: Из `patch-album-fix` ветки были изменения в `getTopLevelAlbumIDs()`, которые ломали `TestAlbumsSingleRootExpand` и `TestNonRootAlbumPath`
+   - Исправление: Откат `api/graphql/models/actions/album_actions.go` к версии master
+
+5. **Создан testing.env для локального тестирования**
+   - Добавлен `api/testing.env` с настройками SQLite для удобного локального запуска тестов
+   - Файл в `.gitignore`, так как используется только для локальной разработки
+
+**ПРИМЕЧАНИЕ:** Сообщение про "go generate ./..." в логах CI было ложным следствием - сгенерированный GraphQL код был синхронизирован.
 
 - [ ] **Шаг 0.2: Создать docker-compose для тестирования**
 
@@ -1255,6 +1287,21 @@ go test ./... -race -short
 8. **`ui/src/components/photoGallery/ProtectedMedia.tsx`** — Auth media loading, lazy loading
 9. **`ui/src/components/photoGallery/PhotoGallery.tsx`** — Основной компонент галереи
 10. **`ui/src/Pages/AlbumPage.tsx`** — Основной роут для альбомов
+
+---
+
+## ОГРАНИЧЕНИЯ И ИСКЛЮЧЕНИЯ
+
+**Функционал, который НЕ тестируется:**
+- **Face Recognition** — отключён на проде (`PHOTOVIEW_DISABLE_FACE_RECOGNITION=true`), пользователем не используется
+  - `api/scanner/face_detection/` — НЕ тестировать
+  - `api/graphql/models/face_group.go`, `ImageFace` — НЕ тестировать
+  - Все тесты с `face_*` в имени пропускаются
+
+**Ограничения тестовой инфраструктуры:**
+- Сканер и API тесно связаны — тесты API требуют настроенную БД и файловую систему
+- Некоторые тесты требуют настоящие бинарные инструменты (ffmpeg, imagemagick) или их моки
+- Mock binaries в `test_data/mock_bin/` должны быть исполняемыми
 
 ---
 
