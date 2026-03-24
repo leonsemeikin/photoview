@@ -296,6 +296,19 @@ CI=true npm test -- --reporter=verbose --run --coverage
   - Builds and validates test container
   - Runs UI tests with coverage
 - **`test-data/`**: Directory for test media files
+- **`api/test_utils/fixtures.go`**: Test helpers for database setup and cleanup
+
+### Test Coverage by Module
+
+**Backend (Stage 1 - Completed ✅):**
+- `api/database/`: Database connection, migrations, retry logic (SQLite, MySQL, PostgreSQL)
+- `api/scanner/scanner_queue/`: Concurrent job processing, graceful shutdown, error handling
+- `api/graphql/directive.go`: `@isAuthorized` and `@isAdmin` directive tests
+
+**Frontend (Stage 3 - In Progress):**
+- UI component tests with MSW mocking
+- Apollo Client configuration tests
+- ProtectedMedia loading and lazy loading tests
 
 ### Important Notes
 

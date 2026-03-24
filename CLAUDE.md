@@ -169,6 +169,24 @@ docker compose -f docker-compose.test.yml down
 - UI tests use MSW for mocking GraphQL requests
 - Test coverage is tracked in CI with codecov
 
+### Test Coverage Progress (as of 2026-03-24)
+
+**Stage 1: Backend Stability Tests ✅ COMPLETED**
+- Database layer: Connection, migrations, retry logic (SQLite, MySQL, PostgreSQL)
+- Scanner queue: Concurrent jobs, graceful shutdown, non-fatal error handling
+- GraphQL directives: `@isAuthorized`, `@isAdmin` authorization tests
+
+**Test Files Created:**
+- `api/database/database_test.go`: Database connection and migration tests
+- `api/database/address_test.go`: SQLite address generation with WAL mode tests
+- `api/scanner/scanner_queue/queue_race_test.go`: Concurrency and race condition tests
+- `api/graphql/directive_test.go`: Authorization directive tests
+- `api/test_utils/fixtures.go`: Test helper utilities
+
+**Overall Progress:** 13/69 steps (19%)
+
+For detailed test plan, see `docs/test-coverage-plan.md`
+
 ### GraphQL Schema Generation
 
 After modifying GraphQL schema files (*.graphql in `api/graphql/resolvers/`):
