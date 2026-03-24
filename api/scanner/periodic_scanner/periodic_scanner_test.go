@@ -23,7 +23,7 @@ func (m *MockScannerQueue) AddAllToQueue() error {
 }
 
 func TestMain(m *testing.M) {
-	test_utils.UnitTestRun(m)
+	test_utils.IntegrationTestRun(m)
 }
 
 func resetPeriodicScanner() {

@@ -15,7 +15,7 @@ import (
 )
 
 func TestMain(m *testing.M) {
-	test_utils.UnitTestRun(m)
+	test_utils.IntegrationTestRun(m)
 }
 
 func TestTokenFromBearer(t *testing.T) {
