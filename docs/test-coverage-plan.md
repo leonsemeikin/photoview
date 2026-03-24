@@ -10,7 +10,7 @@
 
 ---
 
-## Контекст
+## КОНТЕКСТ
 
 ### Почему это важно
 
@@ -38,6 +38,168 @@ Photoview — это production-система с 20,000+ фото, работа
 
 ---
 
+## ЭТАП 0: ПОДГОТОВКА
+
+**Перед началом реализации необходимо подготовить инфраструктуру для тестирования и валидации.**
+
+### Задача 0: Подготовка тестовой инфраструктуры
+
+**Приоритет:** MUST DO FIRST
+
+- [ ] **Шаг 0.1: Создать docker-compose для тестирования**
+
+```bash
+# Создать файл docker-compose.test.yml
+```
+
+Содержимое `docker-compose.test.yml`:
+```yaml
+version: '3.8'
+
+services:
+  photoview-test:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      target: release
+    image: photoview-test:latest
+    container_name: photoview-test-container
+    environment:
+      - PHOTOVIEW_DATABASE_DRIVER=sqlite
+      - PHOTOVIEW_DATABASE_PATH=/app/data/photoview-test.db
+      - PHOTOVIEW_LISTEN_IP=0.0.0.0
+      - PHOTOVIEW_LISTEN_PORT=80
+    volumes:
+      - ./test-data:/photos:ro
+      - test-cache:/home/photoview/media-cache
+      - test-db:/app/data
+    healthcheck:
+      test: ["CMD", "wget", "--quiet", "--tries=1", "--spider", "http://localhost:80/api"]
+      interval: 5s
+      timeout: 10s
+      retries: 3
+      start_period: 30s
+    ports:
+      - "4001:80"
+
+volumes:
+  test-cache:
+  test-db:
+```
+
+- [ ] **Шаг 0.2: Создать директорию для тестовых данных**
+
+```bash
+mkdir -p test-data
+# Добавить несколько тестовых изображений (можно symlink на существующие)
+```
+
+- [ ] **Шаг 0.3: Проверить что базовый контейнер собирается и стартует**
+
+```bash
+# Сборка
+docker compose -f docker-compose.test.yml build
+
+# Запуск в фоне
+docker compose -f docker-compose.test.yml up -d
+
+# Ожидание старта (макс 60 секунд)
+timeout 60s bash -c 'until docker compose -f docker-compose.test.yml ps | grep -q "healthy"; do sleep 2; done' || echo "Timeout waiting for healthy status"
+
+# Проверка статуса
+docker compose -f docker-compose.test.yml ps
+
+# Ожидается: Status: healthy (или Up + healthy)
+
+# Остановка
+docker compose -f docker-compose.test.yml down
+```
+
+Ожидается: Контейнер переходит в статус `healthy`
+
+- [ ] **Шаг 0.4: Установить Go зависимости для тестирования**
+
+```bash
+cd api
+go get github.com/DATA-DOG/go-sqlmock
+go get github.com/stretchr/testify/assert
+go get github.com/stretchr/testify/mock
+go mod tidy
+```
+
+- [ ] **Шаг 0.5: Установить Node.js зависимости для тестирования**
+
+```bash
+cd ui
+npm install --save-dev @testing-library/react @testing-library/jest-dom @testing-library/user-event vitest @vitest/ui jsdom msw
+```
+
+- [ ] **Шаг 0.6: Проверить что базовые тесты запускаются**
+
+```bash
+# Go тесты
+cd api
+go test ./... -short -count=1 -v
+
+# Node тесты
+cd ui
+npm test -- --run
+```
+
+Ожидается: Все существующие тесты PASS
+
+- [ ] **Шаг 0.7: Создать скрипт для валидации после каждой задачи**
+
+```bash
+# Создать файл scripts/validate-test-build.sh
+```
+
+Содержимое `scripts/validate-test-build.sh`:
+```bash
+#!/bin/bash
+set -e
+
+echo "=== 1. Running Go tests ==="
+cd api
+go test ./... -short -count=1 -race
+
+echo "=== 2. Building test container ==="
+cd ..
+docker compose -f docker-compose.test.yml build --no-cache
+
+echo "=== 3. Starting container ==="
+docker compose -f docker-compose.test.yml up -d
+
+echo "=== 4. Waiting for healthy status (timeout 60s) ==="
+timeout 60s bash -c 'until docker compose -f docker-compose.test.yml ps | grep -q "healthy"; do sleep 2; done' || {
+    echo "FAILED: Container did not become healthy"
+    docker compose -f docker-compose.test.yml logs
+    docker compose -f docker-compose.test.yml down
+    exit 1
+}
+
+echo "=== 5. Checking health status ==="
+docker compose -f docker-compose.test.yml ps
+
+echo "=== 6. Stopping container ==="
+docker compose -f docker-compose.test.yml down
+
+echo "=== VALIDATION PASSED ==="
+```
+
+```bash
+chmod +x scripts/validate-test-build.sh
+```
+
+- [ ] **Шаг 0.8: Commit подготовительных файлов**
+
+```bash
+git add docker-compose.test.yml test-data/.gitkeep scripts/validate-test-build.sh api/go.sum ui/package.json ui/package-lock.json
+git commit -m "test: prepare testing infrastructure"
+```
+
+---
+
 ## ЭТАП 1: КРИТИЧЕСКИЕ ТЕСТЫ ДЛЯ BACKEND STABILITY
 
 ### Задача 1: Database Layer Tests
@@ -45,11 +207,11 @@ Photoview — это production-система с 20,000+ фото, работа
 **Файлы:**
 - Создать: `api/database/database_test.go`
 - Создать: `api/database/address_test.go`
-- Модифицировать: `api/test_utils/env_test.go` (добавить helper'ы)
+- Создать: `api/test_utils/fixtures.go`
 
 **Приоритет:** CRITICAL
 
-- [ ] **Шаг 1: Создать helpers для тестов БД**
+- [ ] **Шаг 1.1: Создать helpers для тестов БД**
 
 ```go
 // api/test_utils/fixtures.go
@@ -59,22 +221,57 @@ func CreateTestDatabase(t *testing.T) *gorm.DB
 func CleanupTestDatabase(db *gorm.DB)
 ```
 
-- [ ] **Шаг 2: Написать тест для SQLite подключения**
+Запуск: `cd api && go test ./test_utils -v`
+Ожидается: PASS, helpers компилируются
+
+```bash
+git add api/test_utils/fixtures.go
+git commit -m "test: add database test helpers"
+```
+
+- [ ] **Шаг 1.2: Написать тест для SQLite подключения**
+
+```go
+func TestSetupDatabase_SQLite(t *testing.T)
+```
 
 Запуск: `cd api && go test ./database -run TestSetupDatabase_SQLite -v`
 Ожидается: PASS
 
-- [ ] **Шаг 3: Написать тест для MySQL подключения**
+```bash
+git add api/database/database_test.go
+git commit -m "test: add SQLite connection test"
+```
+
+- [ ] **Шаг 1.3: Написать тест для MySQL подключения**
+
+```go
+func TestSetupDatabase_MySQL(t *testing.T)
+```
 
 Запуск: `cd api && go test ./database -run TestSetupDatabase_MySQL -v`
 Ожидается: PASS (или SKIP если нет MySQL)
 
-- [ ] **Шаг 4: Написать тест для PostgreSQL подключения**
+```bash
+git add api/database/database_test.go
+git commit -m "test: add MySQL connection test"
+```
+
+- [ ] **Шаг 1.4: Написать тест для PostgreSQL подключения**
+
+```go
+func TestSetupDatabase_Postgres(t *testing.T)
+```
 
 Запуск: `cd api && go test ./database -run TestSetupDatabase_Postgres -v`
 Ожидается: PASS (или SKIP если нет PostgreSQL)
 
-- [ ] **Шаг 5: Написать тест для retry логики**
+```bash
+git add api/database/database_test.go
+git commit -m "test: add PostgreSQL connection test"
+```
+
+- [ ] **Шаг 1.5: Написать тест для retry логики**
 
 ```go
 func TestSetupDatabase_RetryLogic(t *testing.T)
@@ -83,7 +280,12 @@ func TestSetupDatabase_RetryLogic(t *testing.T)
 Запуск: `cd api && go test ./database -run TestSetupDatabase_RetryLogic -v`
 Ожидается: 5 попыток при ошибке
 
-- [ ] **Шаг 6: Написать тест для WAL режима SQLite**
+```bash
+git add api/database/database_test.go
+git commit -m "test: add database retry logic test"
+```
+
+- [ ] **Шаг 1.6: Написать тест для WAL режима SQLite**
 
 ```go
 func TestGetSqliteAddress_WALMode(t *testing.T)
@@ -92,7 +294,12 @@ func TestGetSqliteAddress_WALMode(t *testing.T)
 Запуск: `cd api && go test ./database -run TestGetSqliteAddress_WALMode -v`
 Ожидается: `_journal_mode=WAL` в URL
 
-- [ ] **Шаг 7: Написать тесты для миграций**
+```bash
+git add api/database/address_test.go
+git commit -m "test: add SQLite WAL mode test"
+```
+
+- [ ] **Шаг 1.7: Написать тесты для миграций**
 
 ```go
 func TestMigrateDatabase_AutoMigrate(t *testing.T)
@@ -102,12 +309,18 @@ func TestClearDatabase_AllModels(t *testing.T)
 Запуск: `cd api && go test ./database -run TestMigrate -v`
 Ожидается: PASS
 
-- [ ] **Шаг 8: Commit**
+```bash
+git add api/database/database_test.go
+git commit -m "test: add database migration tests"
+```
+
+- [ ] **Шаг 1.8: Валидация задачи — проверить сборку и запуск контейнера**
 
 ```bash
-git add api/database/database_test.go api/test_utils/fixtures.go
-git commit -m "test: add database layer integration tests"
+./scripts/validate-test-build.sh
 ```
+
+Ожидается: VALIDATION PASSED
 
 ---
 
@@ -119,19 +332,21 @@ git commit -m "test: add database layer integration tests"
 
 **Приоритет:** CRITICAL
 
-- [ ] **Шаг 1: Написать тест concurrent jobs**
+- [ ] **Шаг 2.1: Написать тест concurrent jobs**
 
 ```go
-func TestScannerQueue_ConcurrentJobs(t *testing.T) {
-    // Запустить 10 job одновременно
-    // Проверить что все завершены
-}
+func TestScannerQueue_ConcurrentJobs(t *testing.T)
 ```
 
 Запуск: `cd api && go test ./scanner/scanner_queue -race -run TestScannerQueue_ConcurrentJobs -v`
 Ожидается: PASS, NO RACE CONDITIONS
 
-- [ ] **Шаг 2: Написать тест для notify channel blocking**
+```bash
+git add api/scanner/scanner_queue/queue_test.go
+git commit -m "test: add concurrent jobs test"
+```
+
+- [ ] **Шаг 2.2: Написать тест для notify channel blocking**
 
 ```go
 func TestScannerQueue_NotifyChannelBlocking(t *testing.T)
@@ -140,7 +355,12 @@ func TestScannerQueue_NotifyChannelBlocking(t *testing.T)
 Запуск: `cd api && go test ./scanner/scanner_queue -run TestScannerQueue_NotifyChannelBlocking -v`
 Ожидается: Buffer 100 предотвращает deadlock
 
-- [ ] **Шаг 3: Написать тест graceful shutdown**
+```bash
+git add api/scanner/scanner_queue/queue_test.go
+git commit -m "test: add notify channel blocking test"
+```
+
+- [ ] **Шаг 2.3: Написать тест graceful shutdown**
 
 ```go
 func TestScannerQueue_CloseBackgroundWorker(t *testing.T)
@@ -149,7 +369,12 @@ func TestScannerQueue_CloseBackgroundWorker(t *testing.T)
 Запуск: `cd api && go test ./scanner/scanner_queue -run TestScannerQueue_CloseBackgroundWorker -v`
 Ожидается: Все jobs завершены перед shutdown
 
-- [ ] **Шаг 4: Написать тест non-fatal errors**
+```bash
+git add api/scanner/scanner_queue/queue_test.go
+git commit -m "test: add graceful shutdown test"
+```
+
+- [ ] **Шаг 2.4: Написать тест non-fatal errors**
 
 ```go
 func TestAddUserToQueue_NonFatalErrors(t *testing.T)
@@ -158,12 +383,18 @@ func TestAddUserToQueue_NonFatalErrors(t *testing.T)
 Запуск: `cd api && go test ./scanner/scanner_queue -run TestAddUserToQueue_NonFatalErrors -v`
 Ожидается: Permission errors не блокируют очередь
 
-- [ ] **Шаг 5: Commit**
+```bash
+git add api/scanner/scanner_queue/queue_test.go
+git commit -m "test: add non-fatal errors test"
+```
+
+- [ ] **Шаг 2.5: Валидация задачи — проверить сборку и запуск контейнера**
 
 ```bash
-git add api/scanner/scanner_queue/queue_test.go api/scanner/scanner_queue/queue_race_test.go
-git commit -m "test: add scanner queue concurrency tests"
+./scripts/validate-test-build.sh
 ```
+
+Ожидается: VALIDATION PASSED
 
 ---
 
@@ -174,7 +405,7 @@ git commit -m "test: add scanner queue concurrency tests"
 
 **Приоритет:** CRITICAL
 
-- [ ] **Шаг 1: Написать тест @isAuthorized**
+- [ ] **Шаг 3.1: Написать тест @isAuthorized**
 
 ```go
 func TestIsAuthorized_WithUser(t *testing.T)
@@ -184,7 +415,12 @@ func TestIsAuthorized_WithoutUser(t *testing.T)
 Запуск: `cd api && go test ./graphql -run TestIsAuthorized -v`
 Ожидается: ErrUnauthorized без user
 
-- [ ] **Шаг 2: Написать тест @isAdmin**
+```bash
+git add api/graphql/directive_test.go
+git commit -m "test: add @isAuthorized directive tests"
+```
+
+- [ ] **Шаг 3.2: Написать тест @isAdmin**
 
 ```go
 func TestIsAdmin_AdminUser(t *testing.T)
@@ -195,12 +431,18 @@ func TestIsAdmin_NoUser(t *testing.T)
 Запуск: `cd api && go test ./graphql -run TestIsAdmin -v`
 Ожидается: Error для non-admin
 
-- [ ] **Шаг 3: Commit**
-
 ```bash
 git add api/graphql/directive_test.go
-git commit -m "test: add GraphQL directive security tests"
+git commit -m "test: add @isAdmin directive tests"
 ```
+
+- [ ] **Шаг 3.3: Валидация задачи — проверить сборку и запуск контейнера**
+
+```bash
+./scripts/validate-test-build.sh
+```
+
+Ожидается: VALIDATION PASSED
 
 ---
 
@@ -213,7 +455,7 @@ git commit -m "test: add GraphQL directive security tests"
 
 **Приоритет:** HIGH
 
-- [ ] **Шаг 1: Написать тест для getTopLevelAlbumIDs**
+- [ ] **Шаг 4.1: Написать тест для getTopLevelAlbumIDs**
 
 ```go
 func TestGetTopLevelAlbumIDs_SingleUser(t *testing.T)
@@ -224,12 +466,18 @@ func TestGetTopLevelAlbumIDs_SubAlbumScenario(t *testing.T)
 Запуск: `cd api && go test ./graphql/models/actions -run TestGetTopLevelAlbumIDs -v`
 Ожидается: Правильная фильтрация top-level albums
 
-- [ ] **Шаг 2: Commit**
-
 ```bash
 git add api/graphql/models/actions/album_actions_detail_test.go
-git commit -m "test: add album ownership logic tests"
+git commit -m "test: add getTopLevelAlbumIDs tests"
 ```
+
+- [ ] **Шаг 4.2: Валидация задачи — проверить сборку и запуск контейнера**
+
+```bash
+./scripts/validate-test-build.sh
+```
+
+Ожидается: VALIDATION PASSED
 
 ---
 
@@ -240,7 +488,7 @@ git commit -m "test: add album ownership logic tests"
 
 **Приоритет:** HIGH
 
-- [ ] **Шаг 1: Написать тест Thumbnail с dataloader**
+- [ ] **Шаг 5.1: Написать тест Thumbnail с dataloader**
 
 ```go
 func TestMediaResolver_Thumbnail_Dataloader(t *testing.T)
@@ -249,7 +497,12 @@ func TestMediaResolver_Thumbnail_Dataloader(t *testing.T)
 Запуск: `cd api && go test ./graphql/resolvers -run TestMediaResolver_Thumbnail -v`
 Ожидается: Батчинг работает (1 SQL запрос вместо N)
 
-- [ ] **Шаг 2: Написать тест favorite авторизации**
+```bash
+git add api/graphql/resolvers/media_resolver_test.go
+git commit -m "test: add Thumbnail dataloader test"
+```
+
+- [ ] **Шаг 5.2: Написать тест favorite авторизации**
 
 ```go
 func TestMediaResolver_Favorite_Unauthorized(t *testing.T)
@@ -258,12 +511,18 @@ func TestMediaResolver_Favorite_Unauthorized(t *testing.T)
 Запуск: `cd api && go test ./graphql/resolvers -run TestMediaResolver_Favorite -v`
 Ожидается: Ошибка без авторизации
 
-- [ ] **Шаг 3: Commit**
-
 ```bash
 git add api/graphql/resolvers/media_resolver_test.go
-git commit -m "test: add media resolver tests"
+git commit -m "test: add Favorite authorization test"
 ```
+
+- [ ] **Шаг 5.3: Валидация задачи — проверить сборку и запуск контейнера**
+
+```bash
+./scripts/validate-test-build.sh
+```
+
+Ожидается: VALIDATION PASSED
 
 ---
 
@@ -276,32 +535,57 @@ git commit -m "test: add media resolver tests"
 
 **Приоритет:** MEDIUM
 
-- [ ] **Шаг 1: EXIF task тесты**
+- [ ] **Шаг 6.1: Написать EXIF task тесты**
 
 ```go
 func TestSaveEXIF_NewMedia(t *testing.T)
 func TestSaveEXIF_ParseError(t *testing.T)
 ```
 
-- [ ] **Шаг 2: Blurhash task тесты**
+Запуск: `cd api && go test ./scanner/scanner_tasks -run TestSaveEXIF -v`
+Ожидается: PASS
+
+```bash
+git add api/scanner/scanner_tasks/exif_task_test.go
+git commit -m "test: add EXIF task tests"
+```
+
+- [ ] **Шаг 6.2: Написать Blurhash task тесты**
 
 ```go
 func TestGenerateBlurhashFromThumbnail_ValidImage(t *testing.T)
 ```
 
-- [ ] **Шаг 3: Video metadata тесты**
+Запуск: `cd api && go test ./scanner/scanner_tasks -run TestGenerateBlurhash -v`
+Ожидается: PASS
+
+```bash
+git add api/scanner/scanner_tasks/blurhash_task_test.go
+git commit -m "test: add Blurhash task tests"
+```
+
+- [ ] **Шаг 6.3: Написать Video metadata тесты**
 
 ```go
 func TestVideoMetadataTask_ValidVideo(t *testing.T)
 func TestVideoMetadataTask_FFprobeError(t *testing.T)
 ```
 
-- [ ] **Шаг 4: Commit**
+Запуск: `cd api && go test ./scanner/scanner_tasks -run TestVideoMetadataTask -v`
+Ожидается: PASS
 
 ```bash
-git add api/scanner/scanner_tasks/*_test.go
-git commit -m "test: add scanner task unit tests"
+git add api/scanner/scanner_tasks/video_metadata_task_test.go
+git commit -m "test: add Video metadata task tests"
 ```
+
+- [ ] **Шаг 6.4: Валидация задачи — проверить сборку и запуск контейнера**
+
+```bash
+./scripts/validate-test-build.sh
+```
+
+Ожидается: VALIDATION PASSED
 
 ---
 
@@ -314,14 +598,7 @@ git commit -m "test: add scanner task unit tests"
 
 **Приоритет:** HIGH
 
-- [ ] **Шаг 1: Установить зависимости**
-
-```bash
-cd ui
-npm install --save-dev @testing-library/react @testing-library/jest-dom vitest
-```
-
-- [ ] **Шаг 2: Написать тест HTTP link конфигурации**
+- [ ] **Шаг 7.1: Написать тест HTTP link конфигурации**
 
 ```typescript
 test('configures HTTP link correctly', () => {
@@ -332,33 +609,61 @@ test('configures HTTP link correctly', () => {
 Запуск: `cd ui && npm test apolloClient.test.ts`
 Ожидается: PASS
 
-- [ ] **Шаг 3: Написать тест WebSocket split**
-
-```typescript
-test('splits subscriptions to WebSocket', () => {
-  // Проверить что subscription идет через WS
-})
+```bash
+git add ui/src/apolloClient.test.ts
+git commit -m "test: add Apollo HTTP link test"
 ```
 
-- [ ] **Шаг 4: Написать тест error handler**
+- [ ] **Шаг 7.2: Написать тест WebSocket split**
+
+```typescript
+test('splits subscriptions to WebSocket', () => {})
+```
+
+Запуск: `cd ui && npm test apolloClient.test.ts`
+Ожидается: PASS
+
+```bash
+git add ui/src/apolloClient.test.ts
+git commit -m "test: add Apollo WebSocket split test"
+```
+
+- [ ] **Шаг 7.3: Написать тест error handler**
 
 ```typescript
 test('error handler clears token on 401', () => {})
 test('error handler shows GraphQL errors', () => {})
 ```
 
-- [ ] **Шаг 5: Написать тест cache pagination**
+Запуск: `cd ui && npm test apolloClient.test.ts`
+Ожидается: PASS
+
+```bash
+git add ui/src/apolloClient.test.ts
+git commit -m "test: add Apollo error handler tests"
+```
+
+- [ ] **Шаг 7.4: Написать тест cache pagination**
 
 ```typescript
 test('cache pagination merges correctly', () => {})
 ```
 
-- [ ] **Шаг 6: Commit**
+Запуск: `cd ui && npm test apolloClient.test.ts`
+Ожидается: PASS
 
 ```bash
-git add ui/src/apolloClient.test.ts ui/package.json ui/package-lock.json
-git commit -m "test: add Apollo client configuration tests"
+git add ui/src/apolloClient.test.ts
+git commit -m "test: add Apollo cache pagination test"
 ```
+
+- [ ] **Шаг 7.5: Валидация задачи — проверить сборку и запуск контейнера**
+
+```bash
+./scripts/validate-test-build.sh
+```
+
+Ожидается: VALIDATION PASSED
 
 ---
 
@@ -369,34 +674,57 @@ git commit -m "test: add Apollo client configuration tests"
 
 **Приоритет:** HIGH
 
-- [ ] **Шаг 1: Написать тест token appending**
+- [ ] **Шаг 8.1: Написать тест token appending**
 
 ```typescript
-test('appends token to URL from share path', () => {
-  // Проверить что ?token=X добавляется к URL
-})
+test('appends token to URL from share path', () => {})
 ```
 
-- [ ] **Шаг 2: Написать тест lazy loading**
+Запуск: `cd ui && npm test ProtectedMedia.test.tsx`
+Ожидается: PASS
+
+```bash
+git add ui/src/components/photoGallery/ProtectedMedia.test.tsx
+git commit -m "test: add ProtectedMedia token appending test"
+```
+
+- [ ] **Шаг 8.2: Написать тест lazy loading**
 
 ```typescript
 test('uses native lazy loading when supported', () => {})
 test('falls back to IntersectionObserver', () => {})
 ```
 
-- [ ] **Шаг 3: Написать тест blurhash**
+Запуск: `cd ui && npm test ProtectedMedia.test.tsx`
+Ожидается: PASS
+
+```bash
+git add ui/src/components/photoGallery/ProtectedMedia.test.tsx
+git commit -m "test: add ProtectedMedia lazy loading tests"
+```
+
+- [ ] **Шаг 8.3: Написать тест blurhash**
 
 ```typescript
 test('shows blurhash while loading', () => {})
 test('hides blurhash after loaded', () => {})
 ```
 
-- [ ] **Шаг 4: Commit**
+Запуск: `cd ui && npm test ProtectedMedia.test.tsx`
+Ожидается: PASS
 
 ```bash
 git add ui/src/components/photoGallery/ProtectedMedia.test.tsx
-git commit -m "test: add ProtectedMedia component tests"
+git commit -m "test: add ProtectedMedia blurhash tests"
 ```
+
+- [ ] **Шаг 8.4: Валидация задачи — проверить сборку и запуск контейнера**
+
+```bash
+./scripts/validate-test-build.sh
+```
+
+Ожидается: VALIDATION PASSED
 
 ---
 
@@ -409,32 +737,57 @@ git commit -m "test: add ProtectedMedia component tests"
 
 **Приоритет:** MEDIUM
 
-- [ ] **Шаг 1: Написать тесты для useURLParameters**
+- [ ] **Шаг 9.1: Написать тесты для useURLParameters**
 
 ```typescript
 test('reads parameters from URL', () => {})
 test('updates URL on change', () => {})
 ```
 
-- [ ] **Шаг 2: Написать тесты для useOrderingParams**
+Запуск: `cd ui && npm test useURLParameters.test.ts`
+Ожидается: PASS
+
+```bash
+git add ui/src/hooks/useURLParameters.test.ts
+git commit -m "test: add useURLParameters hook tests"
+```
+
+- [ ] **Шаг 9.2: Написать тесты для useOrderingParams**
 
 ```typescript
 test('toggles order direction', () => {})
 ```
 
-- [ ] **Шаг 3: Написать тесты для useScrollPagination**
+Запуск: `cd ui && npm test useOrderingParams.test.ts`
+Ожидается: PASS
+
+```bash
+git add ui/src/hooks/useOrderingParams.test.ts
+git commit -m "test: add useOrderingParams hook tests"
+```
+
+- [ ] **Шаг 9.3: Написать тесты для useScrollPagination**
 
 ```typescript
 test('triggers load on scroll', () => {})
 test('cleans up event listener', () => {})
 ```
 
-- [ ] **Шаг 4: Commit**
+Запуск: `cd ui && npm test useScrollPagination.test.ts`
+Ожидается: PASS
 
 ```bash
-git add ui/src/hooks/*.test.ts
-git commit -m "test: add custom hooks tests"
+git add ui/src/hooks/useScrollPagination.test.ts
+git commit -m "test: add useScrollPagination hook tests"
 ```
+
+- [ ] **Шаг 9.4: Валидация задачи — проверить сборку и запуск контейнера**
+
+```bash
+./scripts/validate-test-build.sh
+```
+
+Ожидается: VALIDATION PASSED
 
 ---
 
@@ -447,7 +800,7 @@ git commit -m "test: add custom hooks tests"
 
 **Приоритет:** MEDIUM
 
-- [ ] **Шаг 1: Написать базовые рендер тесты**
+- [ ] **Шаг 10.1: Написать базовые рендер тесты**
 
 ```typescript
 test('renders page without crashing', () => {})
@@ -455,12 +808,31 @@ test('shows loading state', () => {})
 test('shows error state', () => {})
 ```
 
-- [ ] **Шаг 2: Commit**
+Запуск: `cd ui && npm test -- --run`
+Ожидается: PASS
 
 ```bash
-git add ui/src/Pages/*.test.tsx
-git commit -m "test: add page component tests"
+git add ui/src/Pages/AlbumsPage.test.tsx
+git commit -m "test: add AlbumsPage render tests"
 ```
+
+```bash
+git add ui/src/Pages/TimelinePage.test.tsx
+git commit -m "test: add TimelinePage render tests"
+```
+
+```bash
+git add ui/src/Pages/SettingsPage.test.tsx
+git commit -m "test: add SettingsPage render tests"
+```
+
+- [ ] **Шаг 10.2: Валидация задачи — проверить сборку и запуск контейнера**
+
+```bash
+./scripts/validate-test-build.sh
+```
+
+Ожидается: VALIDATION PASSED
 
 ---
 
@@ -474,7 +846,7 @@ git commit -m "test: add page component tests"
 
 **Приоритет:** LOW
 
-- [ ] **Шаг 1: Написать бенчмарки**
+- [ ] **Шаг 11.1: Написать бенчмарки**
 
 ```go
 func BenchmarkFindAlbumsForUser_100Albums(b *testing.B)
@@ -484,16 +856,27 @@ func BenchmarkScannerQueue_Process_100Jobs(b *testing.B)
 Запуск: `cd api && go test -bench=. ./scanner ./database -benchmem`
 Ожидается: Базовая производительность
 
-- [ ] **Шаг 2: Commit**
+```bash
+git add api/scanner/scanner_benchmark_test.go
+git commit -m "test: add scanner benchmarks"
+```
 
 ```bash
-git add api/*/*_benchmark_test.go
-git commit -m "test: add performance benchmarks"
+git add api/database/database_benchmark_test.go
+git commit -m "test: add database benchmarks"
 ```
+
+- [ ] **Шаг 11.2: Валидация задачи — проверить сборку и запуск контейнера**
+
+```bash
+./scripts/validate-test-build.sh
+```
+
+Ожидается: VALIDATION PASSED
 
 ---
 
-## ПРОВЕРКА
+## ФИНАЛЬНАЯ ПРОВЕРКА
 
 ### Backend Verification
 
@@ -526,6 +909,14 @@ go test ./... -race -short
 ```
 
 Ожидается: NO RACE CONDITIONS
+
+### Full Container Validation
+
+```bash
+./scripts/validate-test-build.sh
+```
+
+Ожидается: VALIDATION PASSED
 
 ---
 
@@ -572,7 +963,7 @@ go test ./... -race -short
 ### Go
 ```bash
 go get github.com/DATA-DOG/go-sqlmock
-go get golang.org/x/sync
+go get github.com/stretchr/testify
 ```
 
 ### TypeScript
