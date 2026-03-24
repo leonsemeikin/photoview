@@ -7,7 +7,6 @@ import (
 	"github.com/photoview/photoview/api/graphql/auth"
 	"github.com/photoview/photoview/api/test_utils"
 	"github.com/stretchr/testify/assert"
-	"github.com/stretchr/testify/require"
 )
 
 // mockResolver is a mock GraphQL resolver for testing
