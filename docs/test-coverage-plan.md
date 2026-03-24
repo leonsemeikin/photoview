@@ -10,6 +10,55 @@
 
 ---
 
+## ПРОГРЕСС
+
+- [ ] Этап 0: Подготовка (0/10)
+- [ ] Этап 1: Backend Stability (0/3 задачи)
+- [ ] Этап 2: GraphQL (0/4 задачи) — обновлено
+- [ ] Этап 3: UI (0/5 задач) — обновлено
+- [ ] Этап 4: Performance (0/1 задача)
+
+Overall: 0/69 шагов (0%)
+
+---
+
+## MOCKING STRATEGY
+
+### Backend
+- **sqlmock** для database layer (изолированные unit тесты)
+- **httptest** для GraphQL endpoints (интеграционные тесты)
+- **test fixtures** в `api/test_utils/fixtures.go` для повторного использования данных
+
+### UI
+- **MSW (Mock Service Worker)** для перехвата GraphQL запросов и ответов
+- **MockApolloProvider** для component tests с мокированным клиентом
+- **Jest mocks** для IntersectionObserver, Image loading API
+
+---
+
+## CHECKPOINTS FOR MERGE
+
+После завершения этапа → PR + CI pass:
+
+- [ ] **Checkpoint 1:** Этап 0 + Задачи 1-3 (Database + Concurrency + Security)
+  - Покрытие database: ~80%
+  - Покрытие scanner_queue: ~90%
+  - Покрытие graphql/directive: 100%
+- [ ] **Checkpoint 2:** Этап 2 (GraphQL Resolvers + Scanner User)
+  - Покрытие graphql/resolvers: ~70%
+  - Альбом actions, media resolvers, scanner_user протестированы
+  - periodic_scanner и routes протестированы
+- [ ] **Checkpoint 3:** Этап 3 (UI Components)
+  - Покрытие UI: ~60%
+  - Apollo Client, ProtectedMedia, PhotoGallery, AlbumPage протестированы
+  - Hooks и pages протестированы
+- [ ] **Checkpoint 4:** Этап 4 (Performance + Edge Cases)
+  - Бенчмарки для критических путей с acceptance criteria
+  - N+1 detection тесты
+  - Full stack validation
+
+---
+
 ## КОНТЕКСТ
 
 ### Почему это важно
@@ -656,6 +705,73 @@ git commit -m "test: add Video metadata task tests"
 
 ---
 
+### Задача 6a: Scanner User & Periodic Scanner Tests
+
+**Файлы:**
+- Создать: `api/scanner/scanner_user_test.go`
+- Создать: `api/scanner/periodic_scanner/periodic_scanner_test.go`
+- Создать: `api/routes/routes_test.go`
+
+**Приоритет:** HIGH
+
+**Почему это критично:** `FindAlbumsForUser()` содержит owner propagation логику, которая была источником багов. Periodic scanner может крашиться при ошибке БД.
+
+- [ ] **Шаг 6a.1: Написать тест FindAlbumsForUser owner propagation**
+
+```go
+func TestFindAlbumsForUser_OwnerPropagation(t *testing.T)
+func TestFindAlbumsForUser_NestedAlbums(t *testing.T)
+func TestFindAlbumsForUser_PermissionDenied(t *testing.T)
+```
+
+Запуск: `cd api && go test ./scanner -run TestFindAlbumsForUser -v`
+Ожидается: PASS, корректная propagation owners
+
+```bash
+git add api/scanner/scanner_user_test.go
+git commit -m "test: add FindAlbumsForUser owner propagation tests"
+```
+
+- [ ] **Шаг 6a.2: Написать тест periodic scanner restart**
+
+```go
+func TestPeriodicScanner_RestartOnError(t *testing.T)
+func TestPeriodicScanner_GracefulShutdown(t *testing.T)
+```
+
+Запуск: `cd api && go test ./scanner/periodic_scanner -v`
+Ожидается: PASS, корректный restart и shutdown
+
+```bash
+git add api/scanner/periodic_scanner/periodic_scanner_test.go
+git commit -m "test: add periodic scanner restart tests"
+```
+
+- [ ] **Шаг 6a.3: Написать тест routes 401 handling**
+
+```go
+func TestRoutes_AuthRequired_WithoutToken(t *testing.T)
+func TestRoutes_CORS_Headers(t *testing.T)
+```
+
+Запуск: `cd api && go test ./routes -v`
+Ожидается: PASS, 401 без токена
+
+```bash
+git add api/routes/routes_test.go
+git commit -m "test: add routes auth and CORS tests"
+```
+
+- [ ] **Шаг 6a.4: Валидация задачи — проверить сборку и запуск контейнера**
+
+```bash
+./scripts/validate-test-build.sh
+```
+
+Ожидается: VALIDATION PASSED
+
+---
+
 ## ЭТАП 3: UI COMPONENTS И USER FLOWS
 
 ### Задача 7: Apollo Client Tests
@@ -867,6 +983,72 @@ git commit -m "test: add useScrollPagination hook tests"
 
 **Приоритет:** MEDIUM
 
+---
+
+### Задача 11: PhotoGallery Component Tests
+
+**Файлы:**
+- Создать: `ui/src/components/photoGallery/PhotoGallery.test.tsx`
+- Создать: `ui/src/Pages/AlbumPage.test.tsx`
+
+**Приоритет:** HIGH
+
+**Почему это критично:** PhotoGallery — основной компонент для отображения медиа, AlbumPage — основной роут. Отсутствие тестов означает риск краша при edge cases (пустой альбом, загрузка ошибок).
+
+- [ ] **Шаг 11.1: Написать тест PhotoGallery**
+
+```typescript
+test('renders empty state when no media', () => {})
+test('renders media grid with items', () => {})
+test('handles loading state', () => {})
+test('handles error state', () => {})
+test('calls onScrollEnd when scrolling', () => {})
+```
+
+Запуск: `cd ui && npm test PhotoGallery.test.tsx`
+Ожидается: PASS
+
+```bash
+git add ui/src/components/photoGallery/PhotoGallery.test.tsx
+git commit -m "test: add PhotoGallery component tests"
+```
+
+- [ ] **Шаг 11.2: Написать тест AlbumPage**
+
+```typescript
+test('renders album info', () => {})
+test('redirects on 404', () => {})
+test('shows loading skeleton', () => {})
+test('handles share token', () => {})
+```
+
+Запуск: `cd ui && npm test AlbumPage.test.tsx`
+Ожидается: PASS
+
+```bash
+git add ui/src/Pages/AlbumPage.test.tsx
+git commit -m "test: add AlbumPage tests"
+```
+
+- [ ] **Шаг 11.3: Валидация задачи — проверить сборку и запуск контейнера**
+
+```bash
+./scripts/validate-test-build.sh
+```
+
+Ожидается: VALIDATION PASSED
+
+---
+
+### Задача 12: Pages Tests (Update)
+
+**Файлы:**
+- Создать: `ui/src/Pages/AlbumsPage.test.tsx`
+- Создать: `ui/src/Pages/TimelinePage.test.tsx`
+- Создать: `ui/src/Pages/SettingsPage.test.tsx`
+
+**Приоритет:** MEDIUM
+
 - [ ] **Шаг 10.1: Написать базовые рендер тесты**
 
 ```typescript
@@ -905,7 +1087,7 @@ git commit -m "test: add SettingsPage render tests"
 
 ## ЭТАП 4: EDGE CASES, PERFORMANCE, E2E
 
-### Задача 11: Performance Benchmarks
+### Задача 13: Performance Benchmarks
 
 **Файлы:**
 - Создать: `api/scanner/scanner_benchmark_test.go`
@@ -913,27 +1095,88 @@ git commit -m "test: add SettingsPage render tests"
 
 **Приоритет:** LOW
 
-- [ ] **Шаг 11.1: Написать бенчмарки**
+**ACCEPTANCE CRITERIA:**
+| Benchmark | Target | Notes |
+|-----------|--------|-------|
+| `BenchmarkFindAlbumsForUser_100` | < 1ms/op | на dev machine |
+| `BenchmarkFindAlbumsForUser_1000` | < 10ms/op | N+1 detection |
+| `BenchmarkScannerQueue_Process_100` | < 5ms/op | per job |
+| `BenchmarkDatabase_SQLite_Insert` | < 0.1ms/op | single insert |
+| `BenchmarkDatabase_SQLite_Select` | < 0.5ms/op | indexed query |
+
+- [ ] **Шаг 13.1: Написать бенчмарки для FindAlbumsForUser**
 
 ```go
-func BenchmarkFindAlbumsForUser_100Albums(b *testing.B)
-func BenchmarkScannerQueue_Process_100Jobs(b *testing.B)
+func BenchmarkFindAlbumsForUser_10(b *testing.B)
+func BenchmarkFindAlbumsForUser_100(b *testing.B)
+func BenchmarkFindAlbumsForUser_1000(b *testing.B)
 ```
 
-Запуск: `cd api && go test -bench=. ./scanner ./database -benchmem`
-Ожидается: Базовая производительность
+**Критерий:** О(N) или лучше, не O(N²). Если 1000 albums > 100× медленнее чем 10 albums — есть N+1 проблема.
+
+Запуск: `cd api && go test -bench=BenchmarkFindAlbumsForUser -benchmem ./graphql/models/actions`
+Ожидается: Линейная или sub-linear сложность
 
 ```bash
-git add api/scanner/scanner_benchmark_test.go
-git commit -m "test: add scanner benchmarks"
+git add api/graphql/models/actions/album_actions_benchmark_test.go
+git commit -m "test: add FindAlbumsForUser benchmarks"
 ```
+
+- [ ] **Шаг 13.2: Написать бенчмарки для Scanner Queue**
+
+```go
+func BenchmarkScannerQueue_Process_10Jobs(b *testing.B)
+func BenchmarkScannerQueue_Process_100Jobs(b *testing.B)
+func BenchmarkScannerQueue_Process_1000Jobs(b *testing.B)
+```
+
+**Критерий:** Const latency per job независимо от queue size
+
+Запуск: `cd api && go test -bench=BenchmarkScannerQueue -benchmem ./scanner/scanner_queue`
+Ожидается: < 5ms/op
+
+```bash
+git add api/scanner/scanner_queue/queue_benchmark_test.go
+git commit -m "test: add ScannerQueue benchmarks"
+```
+
+- [ ] **Шаг 13.3: Написать бенчмарки для Database операций**
+
+```go
+func BenchmarkDatabase_SQLite_Insert(b *testing.B)
+func BenchmarkDatabase_SQLite_Select_Indexed(b *testing.B)
+func BenchmarkDatabase_SQLite_Select_FullScan(b *testing.B)
+```
+
+**Критерий:** Indexed select > 10× быстрее чем full scan
+
+Запуск: `cd api && go test -bench=BenchmarkDatabase -benchmem ./database`
+Ожидается: Indexed queries значительно быстрее
 
 ```bash
 git add api/database/database_benchmark_test.go
-git commit -m "test: add database benchmarks"
+git commit -m "test: add database operation benchmarks"
 ```
 
-- [ ] **Шаг 11.2: Валидация задачи — проверить сборку и запуск контейнера**
+- [ ] **Шаг 13.4: N+1 Detection тест**
+
+```go
+func TestAlbumResolvers_NoNPlusOneQueries(t *testing.T)
+```
+
+Использовать `sqltrace` или `go-sqlmock` для подсчёта SQL запросов.
+
+**Критерий:** 1 запрос для album, +1 запрос для всех thumbnails (batched), NOT 1 запрос per thumbnail.
+
+Запуск: `cd api && go test ./graphql/resolvers -run TestAlbumResolvers_NoNPlusOneQueries -v`
+Ожидается: PASS (количество запросов не зависит от количества media)
+
+```bash
+git add api/graphql/resolvers/resolver_nplusone_test.go
+git commit -m "test: add N+1 query detection test"
+```
+
+- [ ] **Шаг 13.5: Валидация задачи — проверить сборку и запуск контейнера**
 
 ```bash
 ./scripts/validate-test-build.sh
@@ -989,11 +1232,19 @@ go test ./... -race -short
 
 ## КРИТИЧЕСКИЕ ФАЙЛЫ ДЛЯ РЕАЛИЗАЦИИ
 
+**Backend:**
 1. **`api/database/database.go`** — Ядро стабильности: подключение, миграции, retry logic
 2. **`api/scanner/scanner_queue/queue.go`** — Concurrent worker pool, recent race condition fixes
 3. **`api/graphql/directive.go`** — Security слой: @isAuthorized, @isAdmin
-4. **`ui/src/apolloClient.ts`** — GraphQL конфигурация: WebSocket, error handling
-5. **`ui/src/components/photoGallery/ProtectedMedia.tsx`** — Auth media loading, lazy loading
+4. **`api/scanner/scanner_user.go`** — Owner propagation, источник прошлых багов
+5. **`api/scanner/periodic_scanner/`** — Periodic scanning, может крашиться
+6. **`api/routes/routes.go`** — Auth handling, CORS
+
+**Frontend:**
+7. **`ui/src/apolloClient.ts`** — GraphQL конфигурация: WebSocket, error handling
+8. **`ui/src/components/photoGallery/ProtectedMedia.tsx`** — Auth media loading, lazy loading
+9. **`ui/src/components/photoGallery/PhotoGallery.tsx`** — Основной компонент галереи
+10. **`ui/src/Pages/AlbumPage.tsx`** — Основной роут для альбомов
 
 ---
 
@@ -1003,14 +1254,21 @@ go test ./... -race -short
 |--------|---------|---------|-----|
 | database/ | 0% | 80% | Integration |
 | scanner_queue/ | 30% | 90% | Unit + Race |
+| scanner/scanner_user.go | 0% | 85% | Integration |
+| scanner/periodic_scanner/ | 0% | 75% | Unit |
 | graphql/directive | 0% | 100% | Unit |
 | graphql/resolvers | 20% | 70% | Integration |
+| routes/ | 10% | 60% | Integration |
 | apolloClient.ts | 0% | 80% | Unit |
 | ProtectedMedia.tsx | 0% | 80% | Unit |
+| PhotoGallery.tsx | 0% | 75% | Component |
+| AlbumPage.tsx | 0% | 70% | Component |
+| hooks/ | 0% | 70% | Unit |
 
 **До:** ~15-20% покрытия
-**После:** ~65-75% покрытия
+**После:** ~68-75% покрытия
 **Критические модули:** 80%+
+**Всего файлов тестов:** 29 Go → ~55 Go, 3 TS → ~35 TS
 
 ---
 
