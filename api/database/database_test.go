@@ -6,8 +6,8 @@ import (
 	"testing"
 	"time"
 
-	"github.com/photoview/photoview/api/utils"
 	"github.com/photoview/photoview/api/graphql/models"
+	"github.com/photoview/photoview/api/utils"
 	"github.com/stretchr/testify/assert"
 	"github.com/stretchr/testify/require"
 	"gorm.io/gorm"
