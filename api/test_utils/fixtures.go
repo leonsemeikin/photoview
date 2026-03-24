@@ -5,8 +5,8 @@ import (
 	"testing"
 
 	"github.com/photoview/photoview/api/database"
-	"github.com/photoview/photoview/api/database/drivers"
 	"github.com/photoview/photoview/api/graphql/models"
+	"github.com/photoview/photoview/api/utils"
 	"gorm.io/gorm"
 )
 
@@ -17,11 +17,11 @@ func CreateTestDatabase(t *testing.T) *gorm.DB {
 	t.Helper()
 
 	// Set test environment variables if not already set
-	if os.Getenv(drivers.EnvDatabaseDriver.GetName()) == "" {
-		os.Setenv(drivers.EnvDatabaseDriver.GetName(), "sqlite")
+	if os.Getenv(utils.EnvDatabaseDriver.GetName()) == "" {
+		os.Setenv(utils.EnvDatabaseDriver.GetName(), "sqlite")
 	}
-	if os.Getenv(drivers.EnvSqlitePath.GetName()) == "" {
-		os.Setenv(drivers.EnvSqlitePath.GetName(), "file::memory:?cache=shared")
+	if os.Getenv(utils.EnvSqlitePath.GetName()) == "" {
+		os.Setenv(utils.EnvSqlitePath.GetName(), "file::memory:?cache=shared")
 	}
 
 	// Use logger that doesn't output in tests
@@ -55,10 +55,11 @@ func CleanupTestDatabase(t *testing.T, db *gorm.DB) {
 func CreateTestUser(t *testing.T, db *gorm.DB, username string, admin bool) *models.User {
 	t.Helper()
 
+	password := "test-password"
 	user := &models.User{
 		Username: username,
 		Admin:    admin,
-		Password: "test-password",
+		Password: &password,
 	}
 
 	if err := db.Create(user).Error; err != nil {
