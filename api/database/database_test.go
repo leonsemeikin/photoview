@@ -1,7 +1,6 @@
 package database
 
 import (
-	"flag"
 	"os"
 	"testing"
 	"time"
@@ -12,9 +11,6 @@ import (
 	"golang.org/x/crypto/bcrypt"
 	"gorm.io/gorm"
 )
-
-var _ = flag.Bool("database", false, "run database integration tests")
-var _ = flag.Bool("filesystem", false, "run filesystem integration tests")
 
 // Test helpers
 func createTestUser(db *gorm.DB, username string, admin bool) *models.User {

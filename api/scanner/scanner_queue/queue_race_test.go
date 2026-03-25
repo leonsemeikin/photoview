@@ -1,15 +1,11 @@
 package scanner_queue
 
 import (
-	"flag"
 	"sync"
 	"sync/atomic"
 	"testing"
 	"time"
 )
-
-var _ = flag.Bool("database", false, "run database integration tests")
-var _ = flag.Bool("filesystem", false, "run filesystem integration tests")
 
 // TestScannerQueue_ConcurrentJobs tests that multiple jobs can be processed
 // concurrently without race conditions
