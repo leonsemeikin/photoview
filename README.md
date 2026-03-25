@@ -292,7 +292,26 @@ docker compose -f docker-compose.test.yml down
 
 ### Running Test Suites
 
-**Go Backend Tests:**
+**Quick Commands (Local Development):**
+```bash
+cd api
+
+# All tests with CI flags
+go test ./... -database -filesystem
+
+# Verbose output
+go test ./... -database -filesystem -v
+
+# With coverage
+go test ./... -database -filesystem -cover -coverprofile=coverage.txt
+
+# Stage 1: Run specific component tests
+go test github.com/photoview/photoview/api/database -v
+go test github.com/photoview/photoview/api/graphql -run "TestIsAuthorized|TestIsAdmin" -v
+go test github.com/photoview/photoview/api/scanner/scanner_queue -v
+```
+
+**Full Test Suite (as in CI):**
 ```bash
 cd api
 go test ./... -v -database -filesystem -p 1 \
@@ -303,6 +322,13 @@ go test ./... -v -database -filesystem -p 1 \
 ```bash
 cd ui
 CI=true npm test -- --reporter=verbose --run --coverage
+```
+
+**Environment Setup for Database Tests:**
+```bash
+# Optional: Set MySQL/PostgreSQL URLs for full database tests
+export PHOTOVIEW_MYSQL_URL="photoview:photosecret@tcp(localhost:3306)/photoview_test"
+export PHOTOVIEW_POSTGRES_URL="photoview:photosecret@localhost:5432/photoview_test?sslmode=disable"
 ```
 
 ### Test Infrastructure

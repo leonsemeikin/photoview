@@ -120,6 +120,14 @@ go test ./... -v
 # With database and filesystem flags (as in CI)
 go test ./... -database -filesystem
 
+# With coverage report
+go test ./... -database -filesystem -cover -coverprofile=coverage.txt
+
+# Stage 1: Run specific component tests
+go test github.com/photoview/photoview/api/database -v
+go test github.com/photoview/photoview/api/graphql -run "TestIsAuthorized|TestIsAdmin" -v
+go test github.com/photoview/photoview/api/scanner/scanner_queue -v
+
 # UI tests (Vitest)
 cd ui
 npm test
@@ -129,6 +137,8 @@ npm run test:ci    # CI mode with coverage
 cd ui && npm run lint
 cd ui && npm run format:check
 ```
+
+**Note**: Some tests require C dependencies (ImageMagick, dlib, FFmpeg) and may fail locally without them. These tests pass in CI Docker environment. For quick validation, run database and GraphQL directive tests which have no external dependencies.
 
 ### Test Coverage Progress
 
