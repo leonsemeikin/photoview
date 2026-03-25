@@ -232,6 +232,24 @@ If you confirm other acceleration backends, please let us know.
 
 Photoview includes a comprehensive test suite to ensure reliability and prevent regressions.
 
+### Test Coverage Status
+
+**Stage 1: Backend Stability Tests** ✅ Completed
+
+| Component | Tests | Coverage |
+|-----------|-------|----------|
+| Database Layer | 14 | GORM migrations, URL parsing, retry logic |
+| Scanner Queue | 5 | Race conditions, concurrent jobs, notify channels |
+| GraphQL Directives | 9 | Authorization directives, error handling |
+| **Stage 1 Total** | **30** | ~38% of planned coverage |
+
+**Next Stages**:
+- Stage 2: Scanner Task Tests
+- Stage 3: GraphQL Resolvers Tests
+- Stage 4: UI Tests
+
+See `docs/test-coverage-plan.md` for the full roadmap and `TEST_PROGRESS.md` for detailed status.
+
 ### Running Tests Locally
 
 **Prerequisites:**

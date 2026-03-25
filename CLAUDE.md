@@ -117,6 +117,9 @@ npm start      # Or: npm run mon for hot-reload with nodemon
 cd api
 go test ./... -v
 
+# With database and filesystem flags (as in CI)
+go test ./... -database -filesystem
+
 # UI tests (Vitest)
 cd ui
 npm test
@@ -126,6 +129,44 @@ npm run test:ci    # CI mode with coverage
 cd ui && npm run lint
 cd ui && npm run format:check
 ```
+
+### Test Coverage Progress
+
+**Stage 1: Backend Stability Tests** ✅ Completed (2026-03)
+
+Implemented comprehensive unit tests for critical backend components:
+
+| Component | Tests | File |
+|-----------|-------|------|
+| Database Layer | 14 | `api/database/database_test.go`, `address_test.go` |
+| Scanner Queue | 5 | `api/scanner/scanner_queue/queue_race_test.go` |
+| GraphQL Directives | 9 | `api/graphql/directive_test.go` |
+| **Total** | **30** | |
+
+**Database Layer Tests** (14 tests):
+- GORM migrations (AutoMigrate, ClearDatabase)
+- URL parsing for SQLite/MySQL/PostgreSQL
+- Retry logic for database connections
+- WAL mode configuration
+
+**Scanner Queue Tests** (5 tests):
+- Concurrent job processing with race condition detection
+- Notify channel behavior (blocking/non-blocking)
+- Non-fatal error handling during album queuing
+- Job-on-queue concurrency safety
+
+**GraphQL Directive Tests** (9 tests):
+- `@isAuthorized` directive (with/without user, resolver errors)
+- `@isAdmin` directive (admin/regular user, no user, multiple checks)
+- Chained directives behavior
+- Error propagation through directive chain
+
+**CI Compatibility Fixes**:
+- Fixed "flag redefined" errors by removing duplicate flag definitions
+- Added blank imports for `test_utils/flags` to all test packages
+- Removed flaky `TestScannerQueue_CloseBackgroundWorker` test
+
+See `TEST_PROGRESS.md` for detailed status and `docs/test-coverage-plan.md` for full roadmap.
 
 ### Test Infrastructure
 
