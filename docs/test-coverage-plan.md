@@ -36,12 +36,12 @@
 ## ПРОГРЕСС
 
 - [x] Этап 0: Подготовка (10/10) ✅ ВСЕ ШАГИ ВЫПОЛНЕНЫ
-- [x] Этап 1: Backend Stability (3/3 задачи) ✅ ВЫПОЛНЕНО
+- [ ] Этап 1: Backend Stability (0/3 задачи)
 - [ ] Этап 2: GraphQL (0/4 задачи) — обновлено
 - [ ] Этап 3: UI (0/5 задач) — обновлено
 - [ ] Этап 4: Performance (0/1 задача)
 
-Overall: 13/69 шагов (19%)
+Overall: 10/69 шагов (14%)
 
 ---
 
@@ -397,13 +397,13 @@ git commit -m "test: prepare testing infrastructure"
 ### Задача 1: Database Layer Tests
 
 **Файлы:**
-- Создать: `api/database/database_test.go` ✅
-- Создать: `api/database/address_test.go` ✅
-- Создать: `api/test_utils/fixtures.go` ✅
+- Создать: `api/database/database_test.go`
+- Создать: `api/database/address_test.go`
+- Создать: `api/test_utils/fixtures.go`
 
 **Приоритет:** CRITICAL
 
-- [x] **Шаг 1.1: Создать helpers для тестов БД** ✅ ВЫПОЛНЕНО
+- [ ] **Шаг 1.1: Создать helpers для тестов БД**
 
 ```go
 // api/test_utils/fixtures.go
@@ -421,21 +421,21 @@ git add api/test_utils/fixtures.go
 git commit -m "test: add database test helpers"
 ```
 
-- [x] **Шаг 1.2: Написать тест для SQLite подключения** ✅ ВЫПОЛНЕНО
+- [ ] **Шаг 1.2: Написать тест для SQLite подключения**
 
 ```go
 func TestSetupDatabase_SQLite(t *testing.T)
 ```
 
 Запуск: `cd api && go test ./database -run TestSetupDatabase_SQLite -v`
-Ожидается: PASS ✅
+Ожидается: PASS
 
 ```bash
 git add api/database/database_test.go
 git commit -m "test: add SQLite connection test"
 ```
 
-- [x] **Шаг 1.3: Написать тест для MySQL подключения** ✅ ВЫПОЛНЕНО
+- [ ] **Шаг 1.3: Написать тест для MySQL подключения**
 
 ```go
 func TestSetupDatabase_MySQL(t *testing.T)
@@ -449,7 +449,7 @@ git add api/database/database_test.go
 git commit -m "test: add MySQL connection test"
 ```
 
-- [x] **Шаг 1.4: Написать тест для PostgreSQL подключения**
+- [ ] **Шаг 1.4: Написать тест для PostgreSQL подключения**
 
 ```go
 func TestSetupDatabase_Postgres(t *testing.T)
@@ -463,7 +463,7 @@ git add api/database/database_test.go
 git commit -m "test: add PostgreSQL connection test"
 ```
 
-- [x] **Шаг 1.5: Написать тест для retry логики**
+- [ ] **Шаг 1.5: Написать тест для retry логики**
 
 ```go
 func TestSetupDatabase_RetryLogic(t *testing.T)
@@ -477,7 +477,7 @@ git add api/database/database_test.go
 git commit -m "test: add database retry logic test"
 ```
 
-- [x] **Шаг 1.6: Написать тест для WAL режима SQLite**
+- [ ] **Шаг 1.6: Написать тест для WAL режима SQLite**
 
 ```go
 func TestGetSqliteAddress_WALMode(t *testing.T)
@@ -491,7 +491,7 @@ git add api/database/address_test.go
 git commit -m "test: add SQLite WAL mode test"
 ```
 
-- [x] **Шаг 1.7: Написать тесты для миграций**
+- [ ] **Шаг 1.7: Написать тесты для миграций**
 
 ```go
 func TestMigrateDatabase_AutoMigrate(t *testing.T)
@@ -506,7 +506,7 @@ git add api/database/database_test.go
 git commit -m "test: add database migration tests"
 ```
 
-- [x] **Шаг 1.8: Валидация задачи — проверить сборку и запуск контейнера**
+- [ ] **Шаг 1.8: Валидация задачи — проверить сборку и запуск контейнера**
 
 ```bash
 ./scripts/validate-test-build.sh
@@ -524,7 +524,7 @@ git commit -m "test: add database migration tests"
 
 **Приоритет:** CRITICAL
 
-- [x] **Шаг 2.1: Написать тест concurrent jobs**
+- [ ] **Шаг 2.1: Написать тест concurrent jobs**
 
 ```go
 func TestScannerQueue_ConcurrentJobs(t *testing.T)
@@ -538,7 +538,7 @@ git add api/scanner/scanner_queue/queue_test.go
 git commit -m "test: add concurrent jobs test"
 ```
 
-- [x] **Шаг 2.2: Написать тест для notify channel blocking**
+- [ ] **Шаг 2.2: Написать тест для notify channel blocking**
 
 ```go
 func TestScannerQueue_NotifyChannelBlocking(t *testing.T)
@@ -552,7 +552,7 @@ git add api/scanner/scanner_queue/queue_test.go
 git commit -m "test: add notify channel blocking test"
 ```
 
-- [x] **Шаг 2.3: Написать тест graceful shutdown**
+- [ ] **Шаг 2.3: Написать тест graceful shutdown**
 
 ```go
 func TestScannerQueue_CloseBackgroundWorker(t *testing.T)
@@ -566,7 +566,7 @@ git add api/scanner/scanner_queue/queue_test.go
 git commit -m "test: add graceful shutdown test"
 ```
 
-- [x] **Шаг 2.4: Написать тест non-fatal errors**
+- [ ] **Шаг 2.4: Написать тест non-fatal errors**
 
 ```go
 func TestAddUserToQueue_NonFatalErrors(t *testing.T)
@@ -580,7 +580,7 @@ git add api/scanner/scanner_queue/queue_test.go
 git commit -m "test: add non-fatal errors test"
 ```
 
-- [x] **Шаг 2.5: Валидация задачи — проверить сборку и запуск контейнера**
+- [ ] **Шаг 2.5: Валидация задачи — проверить сборку и запуск контейнера**
 
 ```bash
 ./scripts/validate-test-build.sh
@@ -597,7 +597,7 @@ git commit -m "test: add non-fatal errors test"
 
 **Приоритет:** CRITICAL
 
-- [x] **Шаг 3.1: Написать тест @isAuthorized**
+- [ ] **Шаг 3.1: Написать тест @isAuthorized**
 
 ```go
 func TestIsAuthorized_WithUser(t *testing.T)
@@ -612,7 +612,7 @@ git add api/graphql/directive_test.go
 git commit -m "test: add @isAuthorized directive tests"
 ```
 
-- [x] **Шаг 3.2: Написать тест @isAdmin**
+- [ ] **Шаг 3.2: Написать тест @isAdmin**
 
 ```go
 func TestIsAdmin_AdminUser(t *testing.T)
@@ -628,7 +628,7 @@ git add api/graphql/directive_test.go
 git commit -m "test: add @isAdmin directive tests"
 ```
 
-- [x] **Шаг 3.3: Валидация задачи — проверить сборку и запуск контейнера**
+- [ ] **Шаг 3.3: Валидация задачи — проверить сборку и запуск контейнера**
 
 ```bash
 ./scripts/validate-test-build.sh
