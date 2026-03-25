@@ -5,6 +5,8 @@ import (
 	"sync/atomic"
 	"testing"
 	"time"
+
+	_ "github.com/photoview/photoview/api/test_utils/flags"
 )
 
 // TestScannerQueue_ConcurrentJobs tests that multiple jobs can be processed

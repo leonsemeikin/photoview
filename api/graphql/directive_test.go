@@ -5,6 +5,7 @@ import (
 	"errors"
 	"testing"
 
+	_ "github.com/photoview/photoview/api/test_utils/flags"
 	"github.com/photoview/photoview/api/graphql/auth"
 	"github.com/photoview/photoview/api/graphql/models"
 	"golang.org/x/crypto/bcrypt"

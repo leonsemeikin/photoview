@@ -4,6 +4,7 @@ import (
 	"context"
 	"testing"
 
+	_ "github.com/photoview/photoview/api/test_utils/flags"
 	"github.com/photoview/photoview/api/graphql/models"
 	"github.com/photoview/photoview/api/scanner/scanner_cache"
 	"github.com/photoview/photoview/api/scanner/scanner_task"

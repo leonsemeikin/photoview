@@ -5,6 +5,7 @@ import (
 	"testing"
 	"time"
 
+	_ "github.com/photoview/photoview/api/test_utils/flags"
 	"github.com/photoview/photoview/api/database/drivers"
 	"github.com/photoview/photoview/api/graphql/models"
 	"github.com/photoview/photoview/api/utils"
