@@ -2,6 +2,7 @@ package scanner_queue
 
 import (
 	"context"
+	"flag"
 	"sync"
 	"sync/atomic"
 	"testing"
@@ -11,6 +12,9 @@ import (
 	"github.com/photoview/photoview/api/scanner/scanner_cache"
 	"github.com/photoview/photoview/api/scanner/scanner_task"
 )
+
+var _ = flag.Bool("database", false, "run database integration tests")
+var _ = flag.Bool("filesystem", false, "run filesystem integration tests")
 
 // TestScannerQueue_ConcurrentJobs tests that multiple jobs can be processed
 // concurrently without race conditions

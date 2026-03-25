@@ -3,12 +3,16 @@ package api
 import (
 	"context"
 	"errors"
+	"flag"
 	"testing"
 
 	"github.com/photoview/photoview/api/graphql/auth"
 	"github.com/photoview/photoview/api/graphql/models"
 	"golang.org/x/crypto/bcrypt"
 )
+
+var _ = flag.Bool("database", false, "run database integration tests")
+var _ = flag.Bool("filesystem", false, "run filesystem integration tests")
 
 // mockResolver is a simple mock for graphql.Resolver
 type mockResolver struct {
