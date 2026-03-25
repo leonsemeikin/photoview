@@ -6,22 +6,10 @@ import (
 	"sync/atomic"
 	"testing"
 	"time"
-
-	"github.com/photoview/photoview/api/graphql/models"
-	"github.com/photoview/photoview/api/scanner/scanner_cache"
-	"github.com/photoview/photoview/api/scanner/scanner_task"
 )
 
 var _ = flag.Bool("database", false, "run database integration tests")
 var _ = flag.Bool("filesystem", false, "run filesystem integration tests")
-
-// makeAlbumWithID creates a test album with a specific ID
-// This uses the same approach as the existing queue_test.go
-func makeAlbumWithID(id int) *models.Album {
-	var album models.Album
-	album.ID = id
-	return &album
-}
 
 // TestScannerQueue_ConcurrentJobs tests that multiple jobs can be processed
 // concurrently without race conditions
