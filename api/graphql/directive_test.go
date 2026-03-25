@@ -1,11 +1,5 @@
 package api
 
-import "flag"
-
-
-var _ = flag.Bool("database", false, "run database integration tests")
-var _ = flag.Bool("filesystem", false, "run filesystem integration tests")
-
 import (
 	"context"
 	"testing"
