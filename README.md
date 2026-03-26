@@ -356,6 +356,13 @@ GitHub Actions runs the complete test suite on every push:
 - Runs UI tests with JUnit reports
 - Validates container health and functionality
 
+**Docker Hub Authentication:**
+CI workflows pull base images from Docker Hub during builds. To avoid rate limiting, the following GitHub secrets are required:
+- `DOCKERHUB_USERNAME` — Your Docker Hub username
+- `DOCKERHUB_TOKEN` — Docker Hub personal access token (create at https://hub.docker.com/settings/security)
+
+These secrets are used in `.github/workflows/tests.yml`, `.github/workflows/build.yml`, and `.github/workflows/build-patched.yml` to authenticate pulls of base images (golang, node, alpine).
+
 ## Contributing
 
 🎉 First off, thanks for your interest in contribution! 🎉

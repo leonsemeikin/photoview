@@ -220,6 +220,29 @@ docker compose -f docker-compose.test.yml down
 - UI tests use MSW for mocking GraphQL requests
 - Test coverage is tracked in CI with codecov
 
+### CI/CD and Docker Hub Authentication
+
+GitHub Actions workflows use Docker Hub for pulling base images during builds. To avoid rate limiting (429 errors) and temporary service errors (500), Docker Hub authentication is configured.
+
+**Required GitHub Secrets:**
+```
+DOCKERHUB_USERNAME    # Docker Hub username (e.g., "leonsem")
+DOCKERHUB_TOKEN       # Docker Hub personal access token (dckr_pat_*)
+```
+
+**Workflows with Docker Hub authentication:**
+- `.github/workflows/tests.yml` — Pulls base images (golang, node) for test builds
+- `.github/workflows/build.yml` — Pulls base images for production builds
+- `.github/workflows/build-patched.yml` — Pulls base images for custom builds
+
+**Why authentication is needed:**
+- GitHub Actions runners use `pull: true` in `docker/build-push-action@v6`
+- This pulls base images (e.g., `golang:1.26`, `node:20-alpine`) from Docker Hub
+- Unauthenticated pulls are rate-limited, causing CI failures
+- Authenticated pulls have much higher limits and more stable service
+
+**Note:** Test workflows use `push: false` and `load: true` — images are NOT pushed to Docker Hub, only loaded locally for running tests. Authentication is still needed for pulling base images during build.
+
 ### GraphQL Schema Generation
 
 After modifying GraphQL schema files (*.graphql in `api/graphql/resolvers/`):
