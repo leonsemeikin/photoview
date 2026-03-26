@@ -213,7 +213,13 @@
 - Тесты client creation (ApolloLink.from, error + main links)
 - **19 тестов**
 
-#### 2. Protected Media Tests (`ProtectedMedia.test.tsx`)
+#### 3. Custom Hooks Tests (3 hooks)**
+- Тесты useURLParameters (getParam, setParam, setParams, URL updates)
+- Тесты useOrderingParams (orderBy, orderDirection, default values, toggle)
+- Тесты useScrollPagination (IntersectionObserver, loading state, data fetching, finished state)
+- **14 тестов** (useURLParameters: 20, useOrderingParams: 9, useScrollPagination: 24)
+
+#### 3. Protected Media Tests (`ProtectedMedia.test.tsx`)
 - Тесты token appending (share path, URL parameters)
 - Тесты lazy loading (native support, IntersectionObserver fallback)
 - Тесты blurhash (показывается при загрузке, скрывается после)
@@ -228,14 +234,14 @@
 - **19 тестов**
 
 ### 📊 Статистика Этапа 3
-- **Всего новых тестов**: 39 (19 + 20)
-- **Добавлено файлов**: 2 (apolloClient.test.ts, ProtectedMedia.test.tsx)
-- **Локальный статус**: ✅ Все 39 тестов проходят
+- **Всего новых тестов**: 92 (19 + 20 + 53)
+- **Добавлено файлов**: 5 (apolloClient.test.ts, ProtectedMedia.test.tsx, 3 hooks)
+- **Локальный статус**: ✅ Все 92 тестов проходят
 
-### 📊 Общая статистика проекта (после Этапа 3, Задачи 7-8)
-- **Всего тестов**: 121 (82 из Этапов 1-2 + 39 из Этапа 3)
-- **Покрытие**: Database, Scanner Queue, GraphQL Directives, Album Actions, Media/Album Resolvers, Scanner Tasks, Scanner User, Periodic Scanner, Routes, Apollo Client, ProtectedMedia
-- **Этап 3 прогресс**: 2/5 задач выполнено
+### 📊 Общая статистика проекта (после Этапа 3, Задачи 7-9)
+- **Всего тестов**: 174 (82 из Этапов 1-2 + 92 из Этапа 3)
+- **Покрытие**: Database, Scanner Queue, GraphQL Directives, Album Actions, Media/Album Resolvers, Scanner Tasks, Scanner User, Periodic Scanner, Routes, Apollo Client, ProtectedMedia, Custom Hooks
+- **Этап 3 прогресс**: 3/5 задач выполнено
 
 ---
 *Обновлено: 2026-03-26*

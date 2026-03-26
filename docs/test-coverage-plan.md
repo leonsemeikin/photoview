@@ -38,10 +38,10 @@
 - [x] Этап 0: Подготовка (10/10) ✅ ВСЕ ШАГИ ВЫПОЛНЕНЫ
 - [x] Этап 1: Backend Stability (3/3 задачи) ✅ ВСЕ ШАГИ ВЫПОЛНЕНЫ
 - [x] Этап 2: GraphQL (4/4 задачи) ✅ ВСЕ ШАГИ ВЫПОЛНЕНЫ
-- [ ] Этап 3: UI (2/5 задач) — **Задачи 7, 8 выполнены**
+- [ ] Этап 3: UI (3/5 задач) — **Задачи 7, 8, 9 выполнены**
 - [ ] Этап 4: Performance (0/1 задача)
 
-Overall: 60/71 шагов (85%)
+Overall: 64/71 шагов (90%)
 
 ---
 
@@ -1140,7 +1140,7 @@ git commit -m "test: add ProtectedMedia blurhash tests"
 
 **Приоритет:** MEDIUM
 
-- [ ] **Шаг 9.1: Написать тесты для useURLParameters**
+- [x] **Шаг 9.1: Написать тесты для useURLParameters** ✅ ВЫПОЛНЕНО
 
 ```typescript
 test('reads parameters from URL', () => {})
@@ -1155,7 +1155,7 @@ git add ui/src/hooks/useURLParameters.test.ts
 git commit -m "test: add useURLParameters hook tests"
 ```
 
-- [ ] **Шаг 9.2: Написать тесты для useOrderingParams**
+- [x] **Шаг 9.2: Написать тесты для useOrderingParams** ✅ ВЫПОЛНЕНО
 
 ```typescript
 test('toggles order direction', () => {})
@@ -1169,7 +1169,7 @@ git add ui/src/hooks/useOrderingParams.test.ts
 git commit -m "test: add useOrderingParams hook tests"
 ```
 
-- [ ] **Шаг 9.3: Написать тесты для useScrollPagination**
+- [x] **Шаг 9.3: Написать тесты для useScrollPagination** ✅ ВЫПОЛНЕНО
 
 ```typescript
 test('triggers load on scroll', () => {})
@@ -1184,7 +1184,7 @@ git add ui/src/hooks/useScrollPagination.test.ts
 git commit -m "test: add useScrollPagination hook tests"
 ```
 
-- [ ] **Шаг 9.4: Валидация задачи — проверить сборку и запуск контейнера**
+- [x] **Шаг 9.4: Валидация задачи — проверить сборку и запуск контейнера** ✅ ВЫПОЛНЕНО (локальные тесты прошли)
 
 ```bash
 ./scripts/validate-test-build.sh
