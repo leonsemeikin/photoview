@@ -41,7 +41,7 @@
 - [ ] Этап 3: UI (0/5 задач) — обновлено
 - [ ] Этап 4: Performance (0/1 задача)
 
-Overall: 36/71 шагов (51%)
+Overall: 35/71 шагов (49%)
 
 ---
 
@@ -403,7 +403,7 @@ git commit -m "test: prepare testing infrastructure"
 
 **Приоритет:** CRITICAL
 
-- [x] **Шаг 1.1: Создать helpers для тестов БД** ✅
+- [ ] **Шаг 1.1: Создать helpers для тестов БД** ❌ НЕ ВЫПОЛНЕНО (файл fixtures.go не создан, используется DatabaseTest() в integration_setup.go)
 
 ```go
 // api/test_utils/fixtures.go

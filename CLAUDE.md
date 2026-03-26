@@ -148,12 +148,12 @@ Implemented comprehensive unit tests for critical backend components:
 
 | Component | Tests | File |
 |-----------|-------|------|
-| Database Layer | 14 | `api/database/database_test.go`, `address_test.go` |
+| Database Layer | 16 | `api/database/database_test.go`, `address_test.go` |
 | Scanner Queue | 5 | `api/scanner/scanner_queue/queue_race_test.go` |
 | GraphQL Directives | 9 | `api/graphql/directive_test.go` |
 | **Total** | **30** | |
 
-**Database Layer Tests** (14 tests):
+**Database Layer Tests** (16 tests):
 - GORM migrations (AutoMigrate, ClearDatabase)
 - URL parsing for SQLite/MySQL/PostgreSQL
 - Retry logic for database connections
@@ -175,6 +175,25 @@ Implemented comprehensive unit tests for critical backend components:
 - Fixed "flag redefined" errors by removing duplicate flag definitions
 - Added blank imports for `test_utils/flags` to all test packages
 - Removed flaky `TestScannerQueue_CloseBackgroundWorker` test
+
+**Stage 2: GraphQL Resolvers & Scanner Tasks** ✅ Partially Completed (2026-03)
+
+Additional tests for GraphQL resolvers and scanner task validation:
+
+| Component | Tests | File |
+|-----------|-------|------|
+| Album Actions | 6 | `api/graphql/models/actions/album_actions_detail_test.go` |
+| Media Resolvers | 11 | `api/graphql/resolvers/media_resolver_test.go` |
+| Album Resolvers | 7 | `api/graphql/resolvers/album_resolver_test.go` |
+| Scanner Tasks | 5 | `api/scanner/scanner_tasks/scanner_tasks_test.go` |
+| **Stage 2 Total** | **29** | |
+
+**Not Completed:**
+- Thumbnail dataloader batch test (Step 5.1)
+- Blurhash task tests (Step 6.2) - requires ImageMagick
+- Scanner User & Periodic Scanner tests (Task 6a)
+
+**Overall:** 59 tests written across Stage 1 and Stage 2
 
 See `TEST_PROGRESS.md` for detailed status and `docs/test-coverage-plan.md` for full roadmap.
 
