@@ -39,9 +39,60 @@
 - **Статус**: ✅ Завершено
 
 ### 🚀 Следующие этапы
-- Этап 2: Scanner Task Tests
-- Этап 3: GraphQL Resolvers Tests
+- Этап 2: GraphQL & Scanner Task Tests
+- Этап 3: Extended Integration Tests
 - Этап 4: UI Tests
 
 ---
-*Обновлено: 2025-03-25*
+
+## Этап 2: GraphQL Resolvers & Scanner Task Tests — ЗАВЕРШЁН
+
+### 🎯 Цель
+Написать модульные тесты для GraphQL резолверов и задач сканера, обеспечивающих корректную обработку медиа и альбомов.
+
+### ✅ Выполненные задачи
+
+#### 1. Album Actions Tests (`album_actions_detail_test.go`)
+- Тесты функции getTopLevelAlbumIDs (определение топ-уровневых альбомов для пользователя)
+- Multi-user сценарии (админ с root+children, обычный пользователь с sub-album)
+- Nested hierarchy и fallback логика
+- **6 тестов**
+
+#### 2. Media Resolver Tests (`media_resolver_test.go`)
+- Тесты авторизации (favorite, myMedia, media queries без пользователя)
+- Тесты связи с альбомом и EXIF данными
+- Тесты форматирования типов (Photo/Video)
+- Тесты shares, HighRes (только для фото), VideoWeb (только для видео)
+- **11 тестов**
+
+#### 3. Album Resolver Tests (`album_resolver_test.go`)
+- Тесты получения медиа, thumbnail, sub-albums
+- Тесты path без пользователя
+- Тесты shares и авторизации (myAlbums, album queries)
+- **7 тестов**
+
+#### 4. Scanner Task Tests (`scanner_tasks_test.go`)
+- Тесты EXIF задачи (newMedia=false пропускает обработку)
+- Тесты VideoMetadata задачи (только для видео, newMedia=false пропускает)
+- Тесты обработки отсутствующих файлов (логирование без ошибки)
+- **5 тестов**
+
+### 🔧 Дополнительные работы
+- Добавлен blank import `test_utils/flags` во все тестовые пакеты
+- Создан `api/testing.env` для локального тестирования с SQLite
+- Создан `admin/` CLI tool для очистки базы данных (clean-users, clean-albums, clean-path)
+- Исправлены имена полей MediaEXIF (Camera, Maker, Exposure, Aperture, Iso, FocalLength)
+- Исправлена подписура NewTaskContext (context.Background(), db, album, cache)
+
+### 📊 Статистика Этапа 2
+- **Всего новых тестов**: 29
+- **Добавлено файлов**: 7 тестов + 3 admin + 1 env
+- **CI статус**: ✅ Все тесты проходят (sqlite, mysql, postgres)
+
+### 📊 Общая статистика проекта
+- **Всего тестов**: 59 (30 из Этапа 1 + 29 из Этапа 2)
+- **Покрытие**: Database, Scanner Queue, GraphQL Directives, Album Actions, Media/Album Resolvers, Scanner Tasks
+- **CI статус**: ✅ Все тесты проходят
+
+---
+*Обновлено: 2026-03-26*
