@@ -28,7 +28,7 @@ func TestRoutes_CacheControlHeaders(t *testing.T) {
 		db := test_utils.DatabaseTest(t)
 
 		// Create user and album
-		user, err := models.RegisterUser(db, "cacheUser", nil, false)
+		user, err := models.RegisterUser(db, "cacheHeadersUser", nil, false)
 		require.NoError(t, err)
 
 		album := models.Album{
@@ -56,6 +56,10 @@ func TestRoutes_CacheControlHeaders(t *testing.T) {
 			ContentType: "image/jpeg",
 		}
 		require.NoError(t, db.Save(&mediaURL).Error)
+
+		// Load Media association for CachedPath to work
+		require.NoError(t, db.Preload("Media").First(&mediaURL, mediaURL.ID).Error)
+		require.NotNil(t, mediaURL.Media, "MediaURL.Media should be loaded after Preload")
 
 		// Create cached file
 		cachePath, err := mediaURL.CachedPath()
@@ -244,6 +248,13 @@ func TestRoutes_AuthRequiredWithoutToken(t *testing.T) {
 	t.Run("media endpoint returns 403 if user does not own album", func(t *testing.T) {
 		db := test_utils.DatabaseTest(t)
 
+		// Clean database to ensure no contamination
+		db.Exec("DELETE FROM media_urls")
+		db.Exec("DELETE FROM media")
+		db.Exec("DELETE FROM user_albums")
+		db.Exec("DELETE FROM albums")
+		db.Exec("DELETE FROM users")
+
 		// Create user A with a unique username
 		userA, err := models.RegisterUser(db, "ownershipTestUserA", nil, false)
 		require.NoError(t, err)
@@ -282,6 +293,11 @@ func TestRoutes_AuthRequiredWithoutToken(t *testing.T) {
 		ownsAlbum, err := userB.OwnsAlbum(db, &album)
 		require.NoError(t, err)
 		require.False(t, ownsAlbum, "userB.OwnsAlbum should return false for userA's album")
+
+		// Double-check by verifying no user_albums entry exists for userB and this album
+		var count int64
+		db.Table("user_albums").Where("user_id = ? AND album_id = ?", userB.ID, album.ID).Count(&count)
+		require.Equal(t, int64(0), count, "No user_albums entry should exist for userB and this album")
 
 		// Request from user B who doesn't own the album
 		req := httptest.NewRequest("GET", "/photo/exclusive.jpg", nil)
