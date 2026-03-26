@@ -41,7 +41,7 @@
 - [ ] Этап 3: UI (0/5 задач) — обновлено
 - [ ] Этап 4: Performance (0/1 задача)
 
-Overall: 43/71 шагов (61%)
+Overall: 38/71 шагов (54%)
 
 ---
 
@@ -306,7 +306,7 @@ CI=true vitest --reporter=junit --reporter=verbose --run --coverage
 - Go: `api/scanner/*_test.go`, `api/graphql/**/*_test.go`, `api/routes/*_test.go`, `api/database/**/*_test.go`
 - UI: `ui/src/**/*.test.ts`, `ui/src/**/*.test.tsx`
 
-- [ ] **Шаг 0.8: Проверить генерируемый код (как в CI)**
+- [x] **Шаг 0.8: Проверить генерируемый код (как в CI)** ✅ ВЫПОЛНЕНО
 
 ```bash
 # Проверить что GraphQL сгенерирован корректно
@@ -325,7 +325,7 @@ echo 'PASS: All generated code is in sync'
 
 Ожидается: PASS — весь сгенерированный код в синхронизации
 
-- [ ] **Шаг 0.9: Создать скрипт для валидации после каждой задачи**
+- [x] **Шаг 0.9: Создать скрипт для валидации после каждой задачи** ✅ ВЫПОЛНЕНО
 
 ```bash
 # Создать файл scripts/validate-test-build.sh
@@ -383,7 +383,7 @@ echo "=== VALIDATION PASSED ==="
 chmod +x scripts/validate-test-build.sh
 ```
 
-- [ ] **Шаг 0.10: Commit подготовительных файлов**
+- [x] **Шаг 0.10: Commit подготовительных файлов** ✅ ВЫПОЛНЕНО
 
 ```bash
 git add docker-compose.test.yml test-data/.gitkeep scripts/validate-test-build.sh api/go.sum ui/package.json ui/package-lock.json
@@ -403,7 +403,7 @@ git commit -m "test: prepare testing infrastructure"
 
 **Приоритет:** CRITICAL
 
-- [ ] **Шаг 1.1: Создать helpers для тестов БД**
+- [x] **Шаг 1.1: Создать helpers для тестов БД** ✅
 
 ```go
 // api/test_utils/fixtures.go
@@ -421,7 +421,7 @@ git add api/test_utils/fixtures.go
 git commit -m "test: add database test helpers"
 ```
 
-- [ ] **Шаг 1.2: Написать тест для SQLite подключения**
+- [x] **Шаг 1.2: Написать тест для SQLite подключения** ✅
 
 ```go
 func TestSetupDatabase_SQLite(t *testing.T)
@@ -435,7 +435,7 @@ git add api/database/database_test.go
 git commit -m "test: add SQLite connection test"
 ```
 
-- [ ] **Шаг 1.3: Написать тест для MySQL подключения**
+- [x] **Шаг 1.3: Написать тест для MySQL подключения** ✅
 
 ```go
 func TestSetupDatabase_MySQL(t *testing.T)
@@ -449,7 +449,7 @@ git add api/database/database_test.go
 git commit -m "test: add MySQL connection test"
 ```
 
-- [ ] **Шаг 1.4: Написать тест для PostgreSQL подключения**
+- [x] **Шаг 1.4: Написать тест для PostgreSQL подключения** ✅
 
 ```go
 func TestSetupDatabase_Postgres(t *testing.T)
@@ -463,7 +463,7 @@ git add api/database/database_test.go
 git commit -m "test: add PostgreSQL connection test"
 ```
 
-- [ ] **Шаг 1.5: Написать тест для retry логики**
+- [x] **Шаг 1.5: Написать тест для retry логики** ✅
 
 ```go
 func TestSetupDatabase_RetryLogic(t *testing.T)
@@ -477,7 +477,7 @@ git add api/database/database_test.go
 git commit -m "test: add database retry logic test"
 ```
 
-- [ ] **Шаг 1.6: Написать тест для WAL режима SQLite**
+- [x] **Шаг 1.6: Написать тест для WAL режима SQLite** ✅
 
 ```go
 func TestGetSqliteAddress_WALMode(t *testing.T)
@@ -491,7 +491,7 @@ git add api/database/address_test.go
 git commit -m "test: add SQLite WAL mode test"
 ```
 
-- [ ] **Шаг 1.7: Написать тесты для миграций**
+- [x] **Шаг 1.7: Написать тесты для миграций** ✅
 
 ```go
 func TestMigrateDatabase_AutoMigrate(t *testing.T)
@@ -506,7 +506,7 @@ git add api/database/database_test.go
 git commit -m "test: add database migration tests"
 ```
 
-- [ ] **Шаг 1.8: Валидация задачи — проверить сборку и запуск контейнера**
+- [x] **Шаг 1.8: Валидация задачи — проверить сборку и запуск контейнера** ✅
 
 ```bash
 ./scripts/validate-test-build.sh
@@ -524,7 +524,7 @@ git commit -m "test: add database migration tests"
 
 **Приоритет:** CRITICAL
 
-- [ ] **Шаг 2.1: Написать тест concurrent jobs**
+- [x] **Шаг 2.1: Написать тест concurrent jobs** ✅
 
 ```go
 func TestScannerQueue_ConcurrentJobs(t *testing.T)
@@ -538,7 +538,7 @@ git add api/scanner/scanner_queue/queue_test.go
 git commit -m "test: add concurrent jobs test"
 ```
 
-- [ ] **Шаг 2.2: Написать тест для notify channel blocking**
+- [x] **Шаг 2.2: Написать тест для notify channel blocking** ✅
 
 ```go
 func TestScannerQueue_NotifyChannelBlocking(t *testing.T)
@@ -552,7 +552,7 @@ git add api/scanner/scanner_queue/queue_test.go
 git commit -m "test: add notify channel blocking test"
 ```
 
-- [ ] **Шаг 2.3: Написать тест graceful shutdown**
+- [x] **Шаг 2.3: Написать тест graceful shutdown** ✅
 
 ```go
 func TestScannerQueue_CloseBackgroundWorker(t *testing.T)
@@ -566,7 +566,7 @@ git add api/scanner/scanner_queue/queue_test.go
 git commit -m "test: add graceful shutdown test"
 ```
 
-- [ ] **Шаг 2.4: Написать тест non-fatal errors**
+- [x] **Шаг 2.4: Написать тест non-fatal errors** ✅
 
 ```go
 func TestAddUserToQueue_NonFatalErrors(t *testing.T)
@@ -580,7 +580,7 @@ git add api/scanner/scanner_queue/queue_test.go
 git commit -m "test: add non-fatal errors test"
 ```
 
-- [ ] **Шаг 2.5: Валидация задачи — проверить сборку и запуск контейнера**
+- [x] **Шаг 2.5: Валидация задачи — проверить сборку и запуск контейнера** ✅
 
 ```bash
 ./scripts/validate-test-build.sh
@@ -597,7 +597,7 @@ git commit -m "test: add non-fatal errors test"
 
 **Приоритет:** CRITICAL
 
-- [ ] **Шаг 3.1: Написать тест @isAuthorized**
+- [x] **Шаг 3.1: Написать тест @isAuthorized** ✅
 
 ```go
 func TestIsAuthorized_WithUser(t *testing.T)
@@ -612,7 +612,7 @@ git add api/graphql/directive_test.go
 git commit -m "test: add @isAuthorized directive tests"
 ```
 
-- [ ] **Шаг 3.2: Написать тест @isAdmin**
+- [x] **Шаг 3.2: Написать тест @isAdmin** ✅
 
 ```go
 func TestIsAdmin_AdminUser(t *testing.T)
@@ -628,7 +628,7 @@ git add api/graphql/directive_test.go
 git commit -m "test: add @isAdmin directive tests"
 ```
 
-- [ ] **Шаг 3.3: Валидация задачи — проверить сборку и запуск контейнера**
+- [x] **Шаг 3.3: Валидация задачи — проверить сборку и запуск контейнера** ✅
 
 ```bash
 ./scripts/validate-test-build.sh
