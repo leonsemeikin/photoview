@@ -196,4 +196,32 @@
 - **Этап 2 полностью завершён**: ✅ 4/4 задачи выполнены
 
 ---
+
+## Этап 3: UI Components и User Flows — В ПРОЦЕССЕ
+
+### 🎯 Цель
+Написать модульные тесты для React/TypeScript фронтенда: Apollo Client, Protected Media, Custom Hooks, Pages.
+
+### ✅ Выполненные задачи
+
+#### 1. Apollo Client Tests (`apolloClient.test.go`)
+- Тесты HTTP link конфигурации (GraphQL endpoint, API endpoint)
+- Тесты WebSocket split (подписки на ws://, wss://)
+- Тесты error handler (401 token clearing, GraphQL errors, network errors)
+- Тесты cache configuration (SiteInfo, MediaURL, Album pagination, Query fields)
+- Тесты cache pagination merge (offset handling, error on missing paginate)
+- Тесты client creation (ApolloLink.from, error + main links)
+- **19 тестов**
+
+### 📊 Статистика Этапа 3
+- **Всего новых тестов**: 19
+- **Добавлено файлов**: 1 (apolloClient.test.ts)
+- **Локальный статус**: ✅ Все 19 тестов проходят
+
+### 📊 Общая статистика проекта (после Этапа 3, Задача 7)
+- **Всего тестов**: 101 (82 из Этапов 1-2 + 19 из Этапа 3)
+- **Покрытие**: Database, Scanner Queue, GraphQL Directives, Album Actions, Media/Album Resolvers, Scanner Tasks, Scanner User, Periodic Scanner, Routes, Apollo Client
+- **Этап 3 прогресс**: 1/5 задач выполнено
+
+---
 *Обновлено: 2026-03-26*

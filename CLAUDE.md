@@ -195,7 +195,7 @@ Additional tests for GraphQL resolvers and scanner task validation:
 - Thumbnail dataloader batch test (Step 5.1) — requires complex dataloader mocking, covered by alternative tests
 - Blurhash task tests (Step 6.2) — requires ImageMagick C library (works in CI Docker only)
 
-**Overall:** 75 tests written across Stage 1 and Stage 2
+**Overall:** 101 tests written across Stage 1, Stage 2, and Stage 3 (Zadača 7)
 
 See `TEST_PROGRESS.md` for detailed status and `docs/test-coverage-plan.md` for full roadmap.
 

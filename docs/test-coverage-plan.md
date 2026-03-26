@@ -38,10 +38,10 @@
 - [x] Этап 0: Подготовка (10/10) ✅ ВСЕ ШАГИ ВЫПОЛНЕНЫ
 - [x] Этап 1: Backend Stability (3/3 задачи) ✅ ВСЕ ШАГИ ВЫПОЛНЕНЫ
 - [x] Этап 2: GraphQL (4/4 задачи) ✅ ВСЕ ШАГИ ВЫПОЛНЕНЫ
-- [ ] Этап 3: UI (0/5 задач) — обновлено
+- [ ] Этап 3: UI (1/5 задач) — **Задача 7 выполнена**
 - [ ] Этап 4: Performance (0/1 задача)
 
-Overall: 51/71 шагов (72%)
+Overall: 56/71 шагов (79%)
 
 ---
 
@@ -1001,7 +1001,7 @@ git commit -m "test: add routes auth and CORS tests"
 
 **Приоритет:** HIGH
 
-- [ ] **Шаг 7.1: Написать тест HTTP link конфигурации**
+- [x] **Шаг 7.1: Написать тест HTTP link конфигурации** ✅ ВЫПОЛНЕНО
 
 ```typescript
 test('configures HTTP link correctly', () => {
@@ -1017,7 +1017,7 @@ git add ui/src/apolloClient.test.ts
 git commit -m "test: add Apollo HTTP link test"
 ```
 
-- [ ] **Шаг 7.2: Написать тест WebSocket split**
+- [x] **Шаг 7.2: Написать тест WebSocket split** ✅ ВЫПОЛНЕНО
 
 ```typescript
 test('splits subscriptions to WebSocket', () => {})
@@ -1031,7 +1031,7 @@ git add ui/src/apolloClient.test.ts
 git commit -m "test: add Apollo WebSocket split test"
 ```
 
-- [ ] **Шаг 7.3: Написать тест error handler**
+- [x] **Шаг 7.3: Написать тест error handler** ✅ ВЫПОЛНЕНО
 
 ```typescript
 test('error handler clears token on 401', () => {})
@@ -1046,7 +1046,7 @@ git add ui/src/apolloClient.test.ts
 git commit -m "test: add Apollo error handler tests"
 ```
 
-- [ ] **Шаг 7.4: Написать тест cache pagination**
+- [x] **Шаг 7.4: Написать тест cache pagination** ✅ ВЫПОЛНЕНО
 
 ```typescript
 test('cache pagination merges correctly', () => {})
@@ -1060,7 +1060,7 @@ git add ui/src/apolloClient.test.ts
 git commit -m "test: add Apollo cache pagination test"
 ```
 
-- [ ] **Шаг 7.5: Валидация задачи — проверить сборку и запуск контейнера**
+- [x] **Шаг 7.5: Валидация задачи — проверить сборку и запуск контейнера** ✅ ВЫПОЛНЕНО (локальные тесты прошли)
 
 ```bash
 ./scripts/validate-test-build.sh
