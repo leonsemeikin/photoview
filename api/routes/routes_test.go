@@ -307,7 +307,7 @@ func TestRoutes_AlbumOwnershipIsolation(t *testing.T) {
 
 	success, responseMsg, responseStatus, err := routes.AuthenticateMedia(&mediaWithAlbum, db, req)
 
-	assert.Error(t, err, "Should return error when user doesn't own album")
+	assert.NoError(t, err, "Should not return internal error when user doesn't own album")
 	assert.False(t, success, "Should not be successful")
 	assert.Equal(t, "invalid credentials", responseMsg, "Should return invalid credentials")
 	assert.Equal(t, http.StatusForbidden, responseStatus, "Should return 403 status")
