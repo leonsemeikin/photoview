@@ -100,7 +100,7 @@ const AlbumGallery = React.forwardRef(
     }
 
     return (
-      <div ref={ref}>
+      <div ref={ref} data-testid="AlbumGallery">
         {showFilter && (
           <AlbumFilter
             onlyFavorites={onlyFavorites}
