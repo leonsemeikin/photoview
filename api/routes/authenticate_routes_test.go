@@ -51,7 +51,7 @@ func TestAuthenticateRoute(t *testing.T) {
 			ctx := auth.AddUserToContext(req.Context(), user)
 			req = req.WithContext(ctx)
 
-			success, responseMessage, responseStatus, err := authenticateMedia(&media, db, req)
+			success, responseMessage, responseStatus, err := AuthenticateMedia(&media, db, req)
 
 			assert.NoError(t, err)
 			assert.True(t, success)
@@ -62,7 +62,7 @@ func TestAuthenticateRoute(t *testing.T) {
 		t.Run("Request without access token", func(t *testing.T) {
 			req := httptest.NewRequest("GET", "/photo/image.jpg", strings.NewReader(imageData))
 
-			success, responseMessage, responseStatus, err := authenticateMedia(&media, db, req)
+			success, responseMessage, responseStatus, err := AuthenticateMedia(&media, db, req)
 
 			assert.Error(t, err)
 			assert.False(t, success)
@@ -87,7 +87,7 @@ func TestAuthenticateRoute(t *testing.T) {
 			}
 			req.AddCookie(&cookie)
 
-			success, responseMessage, responseStatus, err := authenticateMedia(&media, db, req)
+			success, responseMessage, responseStatus, err := AuthenticateMedia(&media, db, req)
 
 			assert.NoError(t, err)
 			assert.True(t, success)
@@ -104,7 +104,7 @@ func TestAuthenticateRoute(t *testing.T) {
 				Value: "whatever",
 			}
 			req.AddCookie(&cookie)
-			success, responseMessage, responseStatus, err := authenticateMedia(&media, db, req)
+			success, responseMessage, responseStatus, err := AuthenticateMedia(&media, db, req)
 			assert.Error(t, err)
 			assert.False(t, success)
 			assert.Equal(t, "unauthorized", responseMessage)
@@ -117,7 +117,7 @@ func TestAuthenticateRoute(t *testing.T) {
 			url := fmt.Sprintf("/photo/image.jpg?token=%s", shareToken.Value)
 			req := httptest.NewRequest("GET", url, strings.NewReader(imageData))
 			// No cookie provided
-			success, responseMessage, responseStatus, err := authenticateMedia(&media, db, req)
+			success, responseMessage, responseStatus, err := AuthenticateMedia(&media, db, req)
 			assert.Error(t, err)
 			assert.False(t, success)
 			assert.Equal(t, "unauthorized", responseMessage)
@@ -134,7 +134,7 @@ func TestAuthenticateRoute(t *testing.T) {
 				Value: "incorrect-password",
 			}
 			req.AddCookie(&cookie)
-			success, responseMessage, responseStatus, err := authenticateMedia(&media, db, req)
+			success, responseMessage, responseStatus, err := AuthenticateMedia(&media, db, req)
 			assert.Error(t, err)
 			assert.False(t, success)
 			assert.Equal(t, "unauthorized", responseMessage)
@@ -152,7 +152,7 @@ func TestAuthenticateRoute(t *testing.T) {
 				Value: tokenPassword,
 			}
 			req.AddCookie(&cookie)
-			success, responseMessage, responseStatus, err := authenticateMedia(&media, db, req)
+			success, responseMessage, responseStatus, err := AuthenticateMedia(&media, db, req)
 			assert.Error(t, err)
 			assert.False(t, success)
 			assert.Equal(t, "unauthorized", responseMessage)
@@ -166,7 +166,7 @@ func TestAuthenticateRoute(t *testing.T) {
 			ctx := auth.AddUserToContext(req.Context(), user)
 			req = req.WithContext(ctx)
 
-			success, responseMessage, responseStatus, err := authenticateAlbum(&album, db, req)
+			success, responseMessage, responseStatus, err := AuthenticateAlbum(&album, db, req)
 
 			assert.NoError(t, err)
 			assert.True(t, success)
@@ -177,7 +177,7 @@ func TestAuthenticateRoute(t *testing.T) {
 		t.Run("Request without access token", func(t *testing.T) {
 			req := httptest.NewRequest("GET", "/download/album/1", strings.NewReader(albumData))
 
-			success, responseMessage, responseStatus, err := authenticateAlbum(&album, db, req)
+			success, responseMessage, responseStatus, err := AuthenticateAlbum(&album, db, req)
 
 			assert.Error(t, err)
 			assert.False(t, success)
@@ -202,7 +202,7 @@ func TestAuthenticateRoute(t *testing.T) {
 			}
 			req.AddCookie(&cookie)
 
-			success, responseMessage, responseStatus, err := authenticateAlbum(&album, db, req)
+			success, responseMessage, responseStatus, err := AuthenticateAlbum(&album, db, req)
 
 			assert.NoError(t, err)
 			assert.True(t, success)
@@ -218,7 +218,7 @@ func TestAuthenticateRoute(t *testing.T) {
 				Value: "whatever",
 			}
 			req.AddCookie(&cookie)
-			success, responseMessage, responseStatus, err := authenticateAlbum(&album, db, req)
+			success, responseMessage, responseStatus, err := AuthenticateAlbum(&album, db, req)
 			assert.Error(t, err)
 			assert.False(t, success)
 			assert.Equal(t, "unauthorized", responseMessage)
@@ -231,7 +231,7 @@ func TestAuthenticateRoute(t *testing.T) {
 			url := fmt.Sprintf("/download/album/1?token=%s", shareToken.Value)
 			req := httptest.NewRequest("GET", url, strings.NewReader(albumData))
 			// No cookie provided
-			success, responseMessage, responseStatus, err := authenticateAlbum(&album, db, req)
+			success, responseMessage, responseStatus, err := AuthenticateAlbum(&album, db, req)
 			assert.Error(t, err)
 			assert.False(t, success)
 			assert.Equal(t, "unauthorized", responseMessage)
@@ -248,7 +248,7 @@ func TestAuthenticateRoute(t *testing.T) {
 				Value: "incorrect-password",
 			}
 			req.AddCookie(&cookie)
-			success, responseMessage, responseStatus, err := authenticateAlbum(&album, db, req)
+			success, responseMessage, responseStatus, err := AuthenticateAlbum(&album, db, req)
 			assert.Error(t, err)
 			assert.False(t, success)
 			assert.Equal(t, "unauthorized", responseMessage)
@@ -266,7 +266,7 @@ func TestAuthenticateRoute(t *testing.T) {
 				Value: tokenPassword,
 			}
 			req.AddCookie(&cookie)
-			success, responseMessage, responseStatus, err := authenticateAlbum(&album, db, req)
+			success, responseMessage, responseStatus, err := AuthenticateAlbum(&album, db, req)
 			assert.Error(t, err)
 			assert.False(t, success)
 			assert.Equal(t, "unauthorized", responseMessage)

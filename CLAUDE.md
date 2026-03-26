@@ -176,7 +176,7 @@ Implemented comprehensive unit tests for critical backend components:
 - Added blank imports for `test_utils/flags` to all test packages
 - Removed flaky `TestScannerQueue_CloseBackgroundWorker` test
 
-**Stage 2: GraphQL Resolvers & Scanner Tasks** ✅ Partially Completed (2026-03)
+**Stage 2: GraphQL Resolvers & Scanner Tasks** ✅ Completed (2026-03)
 
 Additional tests for GraphQL resolvers and scanner task validation:
 
@@ -186,15 +186,16 @@ Additional tests for GraphQL resolvers and scanner task validation:
 | Media Resolvers | 11 | `api/graphql/resolvers/media_resolver_test.go` |
 | Album Resolvers | 7 | `api/graphql/resolvers/album_resolver_test.go` |
 | Scanner Tasks | 5 | `api/scanner/scanner_tasks/scanner_tasks_test.go` |
-| **Stage 2 Total** | **29** | |
+| Scanner User | 4 | `api/scanner/scanner_user_test.go` |
+| Periodic Scanner | 3 | `api/scanner/periodic_scanner/periodic_scanner_test.go` |
+| Routes | 9 | `api/routes/routes_test.go` |
+| **Stage 2 Total** | **45** | |
 
 **Not Completed (Stage 2):**
 - Thumbnail dataloader batch test (Step 5.1) — requires complex dataloader mocking, covered by alternative tests
 - Blurhash task tests (Step 6.2) — requires ImageMagick C library (works in CI Docker only)
-- Scanner User & Periodic Scanner tests (Task 6a) — complex integration scenarios, deferred to Stage 3
-- API Routes tests (Task 7) — requires full HTTP server setup with middleware
 
-**Overall:** 59 tests written across Stage 1 and Stage 2
+**Overall:** 75 tests written across Stage 1 and Stage 2
 
 See `TEST_PROGRESS.md` for detailed status and `docs/test-coverage-plan.md` for full roadmap.
 

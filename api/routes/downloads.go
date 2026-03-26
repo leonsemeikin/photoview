@@ -28,7 +28,7 @@ func RegisterDownloadRoutes(db *gorm.DB, router *mux.Router) {
 			return
 		}
 
-		if success, response, status, err := authenticateAlbum(&album, db, r); !success {
+		if success, response, status, err := AuthenticateAlbum(&album, db, r); !success {
 			if err != nil {
 				log.Printf("WARN: error authenticating album for download: %v\n", err)
 			}

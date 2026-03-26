@@ -16,7 +16,7 @@ import (
 
 const internalServerError = "internal server error"
 
-func authenticateMedia(media *models.Media, db *gorm.DB, r *http.Request) (success bool, responseMessage string, responseStatus int, errorMessage error) {
+func AuthenticateMedia(media *models.Media, db *gorm.DB, r *http.Request) (success bool, responseMessage string, responseStatus int, errorMessage error) {
 	user := auth.UserFromContext(r.Context())
 
 	if user != nil {
@@ -45,7 +45,7 @@ func authenticateMedia(media *models.Media, db *gorm.DB, r *http.Request) (succe
 	return true, "success", http.StatusAccepted, nil
 }
 
-func authenticateAlbum(album *models.Album, db *gorm.DB, r *http.Request) (success bool, responseMessage string, responseStatus int, errorMessage error) {
+func AuthenticateAlbum(album *models.Album, db *gorm.DB, r *http.Request) (success bool, responseMessage string, responseStatus int, errorMessage error) {
 	user := auth.UserFromContext(r.Context())
 
 	if user != nil {

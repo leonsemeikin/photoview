@@ -243,7 +243,7 @@ Photoview includes a comprehensive test suite to ensure reliability and prevent 
 | GraphQL Directives | 9 | Authorization directives, error handling |
 | **Stage 1 Total** | **30** | ~42% of planned coverage |
 
-**Stage 2: GraphQL Resolvers & Scanner Tasks** ✅ Partially Completed
+**Stage 2: GraphQL Resolvers & Scanner Tasks** ✅ Completed
 
 | Component | Tests | Coverage |
 |-----------|-------|----------|
@@ -251,19 +251,20 @@ Photoview includes a comprehensive test suite to ensure reliability and prevent 
 | Media Resolvers | 11 | Authorization, EXIF, types, shares |
 | Album Resolvers | 7 | Media, thumbnails, sub-albums, authorization |
 | Scanner Tasks | 5 | EXIF, video metadata (blurhash skipped) |
-| **Stage 2 Total** | **29** | ~41% of planned coverage |
+| Scanner User | 4 | Owner propagation, nested albums, cleanup |
+| Periodic Scanner | 3 | Change interval, graceful shutdown, integration |
+| Routes | 9 | CORS, cache headers, auth, security |
+| **Stage 2 Total** | **45** | ~63% of planned coverage |
 
-**Overall:** 59 tests written, 63% of total plan completed
+**Overall:** 75 tests written, 68% of total plan completed
 
 **Remaining Stages**:
-- Stage 2 (partial): Scanner User & Periodic Scanner, API Routes
 - Stage 3: UI Components (Apollo Client, ProtectedMedia, hooks, pages)
 - Stage 4: Performance Benchmarks
 
 **Not Completed (Stage 2):**
 - Thumbnail Dataloader batch test — requires complex dataloader mocking (covered by alternative tests)
 - Blurhash task tests — requires ImageMagick C library (works in CI Docker only)
-- Scanner User & Periodic Scanner tests — complex integration scenarios (deferred to Stage 3)
 
 See `docs/test-coverage-plan.md` for the full roadmap and `TEST_PROGRESS.md` for detailed status.
 

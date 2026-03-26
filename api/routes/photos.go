@@ -32,7 +32,7 @@ func RegisterPhotoRoutes(db *gorm.DB, router *mux.Router) {
 			return
 		}
 
-		if success, response, status, err := authenticateMedia(media, db, r); !success {
+		if success, response, status, err := AuthenticateMedia(media, db, r); !success {
 			if err != nil {
 				log.Warn(r.Context(), "Unauthorized access to photo", "reason", err)
 			}

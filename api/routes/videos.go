@@ -132,6 +132,6 @@ func RegisterVideoRoutes(db *gorm.DB, router *mux.Router) {
 
 	router.HandleFunc("/{name}", func(w http.ResponseWriter, r *http.Request) {
 		mediaName := mux.Vars(r)["name"]
-		handleVideoRequest(w, r, db, mediaName, authenticateMedia, generateCacheFilename)
+		handleVideoRequest(w, r, db, mediaName, AuthenticateMedia, generateCacheFilename)
 	})
 }

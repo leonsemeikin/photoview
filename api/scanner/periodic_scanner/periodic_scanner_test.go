@@ -277,3 +277,191 @@ func TestRealScannerQueue(t *testing.T) {
 		// We don't test the actual call since it requires external setup
 	})
 }
+
+func TestChangePeriodicScanInterval(t *testing.T) {
+	t.Run("changes interval from disabled to enabled", func(t *testing.T) {
+		defer resetPeriodicScanner()
+
+		db := test_utils.DatabaseTest(t)
+		assert.NoError(t, createTestSiteInfo(db, 0), "Failed to create site info with disabled scanner")
+
+		mockQueue := &MockScannerQueue{}
+		assert.NoError(t, InitializePeriodicScannerWithQueue(db, mockQueue), "Failed to initialize scanner")
+
+		// Verify ticker is nil initially (disabled)
+		mainPeriodicScanner.tickerLocker.Lock()
+		initialTicker := mainPeriodicScanner.ticker
+		mainPeriodicScanner.tickerLocker.Unlock()
+		assert.Nil(t, initialTicker, "Ticker should be nil when scanner is disabled")
+
+		// Change interval to enabled
+		ChangePeriodicScanInterval(100 * time.Millisecond)
+
+		// Verify new ticker is created
+		mainPeriodicScanner.tickerLocker.Lock()
+		newTicker := mainPeriodicScanner.ticker
+		mainPeriodicScanner.tickerLocker.Unlock()
+		assert.NotNil(t, newTicker, "Ticker should be created after enabling scanner")
+	})
+
+	t.Run("changes interval from enabled to different value", func(t *testing.T) {
+		defer resetPeriodicScanner()
+
+		db := test_utils.DatabaseTest(t)
+		assert.NoError(t, createTestSiteInfo(db, 500), "Failed to create site info with 500ms interval")
+
+		mockQueue := &MockScannerQueue{}
+		assert.NoError(t, InitializePeriodicScannerWithQueue(db, mockQueue), "Failed to initialize scanner")
+
+		mainPeriodicScanner.tickerLocker.Lock()
+		oldTicker := mainPeriodicScanner.ticker
+		mainPeriodicScanner.tickerLocker.Unlock()
+		assert.NotNil(t, oldTicker, "Ticker should exist initially")
+
+		// Change interval
+		ChangePeriodicScanInterval(200 * time.Millisecond)
+
+		// Verify ticker was replaced
+		mainPeriodicScanner.tickerLocker.Lock()
+		newTicker := mainPeriodicScanner.ticker
+		mainPeriodicScanner.tickerLocker.Unlock()
+		assert.NotNil(t, newTicker, "New ticker should exist")
+		assert.NotSame(t, oldTicker, newTicker, "Ticker should be replaced with new instance")
+	})
+
+	t.Run("changes interval from enabled to disabled", func(t *testing.T) {
+		defer resetPeriodicScanner()
+
+		db := test_utils.DatabaseTest(t)
+		assert.NoError(t, createTestSiteInfo(db, 300), "Failed to create site info with 300ms interval")
+
+		mockQueue := &MockScannerQueue{}
+		assert.NoError(t, InitializePeriodicScannerWithQueue(db, mockQueue), "Failed to initialize scanner")
+
+		// Verify ticker exists
+		mainPeriodicScanner.tickerLocker.Lock()
+		oldTicker := mainPeriodicScanner.ticker
+		mainPeriodicScanner.tickerLocker.Unlock()
+		assert.NotNil(t, oldTicker, "Ticker should exist initially")
+
+		// Disable scanner
+		ChangePeriodicScanInterval(0)
+
+		// Verify ticker is nil
+		mainPeriodicScanner.tickerLocker.Lock()
+		newTicker := mainPeriodicScanner.ticker
+		mainPeriodicScanner.tickerLocker.Unlock()
+		assert.Nil(t, newTicker, "Ticker should be nil after disabling scanner")
+	})
+
+	t.Run("handles nil scanner gracefully", func(t *testing.T) {
+		// Ensure scanner is nil
+		resetPeriodicScanner()
+
+		// Should not panic when scanner is nil
+		assert.NotPanics(t, func() {
+			ChangePeriodicScanInterval(100 * time.Millisecond)
+		}, "ChangePeriodicScanInterval should not panic when scanner is nil")
+	})
+}
+
+func TestShutdownPeriodicScanner(t *testing.T) {
+	t.Run("graceful shutdown stops ticker and goroutine", func(t *testing.T) {
+		db := test_utils.DatabaseTest(t)
+		assert.NoError(t, createTestSiteInfo(db, 50), "Failed to create site info with 50ms interval")
+
+		mockQueue := &MockScannerQueue{}
+		mockQueue.On("AddAllToQueue").Return(nil).Maybe()
+
+		assert.NoError(t, InitializePeriodicScannerWithQueue(db, mockQueue), "Failed to initialize scanner")
+
+		// Wait a bit for scanner to start
+		time.Sleep(20 * time.Millisecond)
+
+		// Verify scanner is running
+		assert.NotNil(t, mainPeriodicScanner, "Scanner should be initialized")
+		mainPeriodicScanner.tickerLocker.Lock()
+		tickerBefore := mainPeriodicScanner.ticker
+		mainPeriodicScanner.tickerLocker.Unlock()
+		assert.NotNil(t, tickerBefore, "Ticker should exist before shutdown")
+
+		// Shutdown
+		assert.NotPanics(t, func() {
+			ShutdownPeriodicScanner()
+		}, "ShutdownPeriodicScanner should not panic")
+
+		// Verify scanner was reset
+		assert.Nil(t, mainPeriodicScanner, "mainPeriodicScanner should be nil after shutdown")
+
+		mockQueue.AssertExpectations(t)
+	})
+
+	t.Run("multiple shutdowns are safe", func(t *testing.T) {
+		defer resetPeriodicScanner()
+
+		db := test_utils.DatabaseTest(t)
+		assert.NoError(t, createTestSiteInfo(db, 100), "Failed to create site info")
+
+		mockQueue := &MockScannerQueue{}
+		assert.NoError(t, InitializePeriodicScannerWithQueue(db, mockQueue), "Failed to initialize scanner")
+
+		// First shutdown
+		assert.NotPanics(t, func() {
+			ShutdownPeriodicScanner()
+		}, "First shutdown should not panic")
+
+		// Second shutdown should also be safe
+		assert.NotPanics(t, func() {
+			ShutdownPeriodicScanner()
+		}, "Second shutdown should not panic")
+
+		assert.Nil(t, mainPeriodicScanner, "Scanner should remain nil after multiple shutdowns")
+
+		mockQueue.AssertExpectations(t)
+	})
+
+	t.Run("shutdown when scanner is nil is safe", func(t *testing.T) {
+		resetPeriodicScanner()
+
+		assert.NotPanics(t, func() {
+			ShutdownPeriodicScanner()
+		}, "Shutdown should not panic when scanner is already nil")
+	})
+}
+
+func TestPeriodicScannerIntegration(t *testing.T) {
+	t.Run("full lifecycle: init, change interval, shutdown", func(t *testing.T) {
+		defer resetPeriodicScanner()
+
+		db := test_utils.DatabaseTest(t)
+		assert.NoError(t, createTestSiteInfo(db, 200), "Failed to create site info")
+
+		mockQueue := &MockScannerQueue{}
+		mockQueue.On("AddAllToQueue").Return(nil).Maybe()
+
+		// Initialize
+		assert.NoError(t, InitializePeriodicScannerWithQueue(db, mockQueue), "Failed to initialize")
+		assert.NotNil(t, mainPeriodicScanner, "Scanner should be initialized")
+
+		// Change interval
+		ChangePeriodicScanInterval(100 * time.Millisecond)
+		time.Sleep(30 * time.Millisecond)
+
+		// Disable
+		ChangePeriodicScanInterval(0)
+		time.Sleep(30 * time.Millisecond)
+
+		// Re-enable
+		ChangePeriodicScanInterval(50 * time.Millisecond)
+		time.Sleep(30 * time.Millisecond)
+
+		// Shutdown
+		assert.NotPanics(t, func() {
+			ShutdownPeriodicScanner()
+		}, "Shutdown should not panic")
+
+		assert.Nil(t, mainPeriodicScanner, "Scanner should be nil after shutdown")
+
+		mockQueue.AssertExpectations(t)
+	})
+}

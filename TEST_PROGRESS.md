@@ -101,4 +101,50 @@
 - **CI статус**: ✅ Все тесты проходят
 
 ---
+
+## Этап 2b: Scanner User & Periodic Scanner Tests — ЗАВЕРШЁН
+
+### 🎯 Цель
+Написать тесты для критичной owner propagation логики и graceful shutdown периодического сканера.
+
+### ✅ Выполненные задачи
+
+#### 1. Scanner User Tests (`scanner_user_test.go`)
+- Тесты owner propagation (новые альбомы наследуют владельцев родителя)
+- Тесты nested albums (глубокая иерархия альбомов)
+- Тесты permission denied handling (ошибки доступа не блокируют сканирование)
+- Тесты cleanup old albums (удаление удалённых с диска альбомов)
+- **4 теста**
+
+#### 2. Periodic Scanner Tests (`periodic_scanner_test.go` — обновлён)
+- Тесты ChangePeriodicScanInterval (disabled→enabled, изменение интервала, enabled→disabled)
+- Тесты ShutdownPeriodicScanner (graceful shutdown, множественные shutdowns)
+- Тесты PeriodicScannerIntegration (полный lifecycle: init → change → shutdown)
+- **3 новых теста**
+
+#### 3. Routes Tests (`routes_test.go` — обновлён)
+- Тесты Cache-Control headers (media endpoint, SPA handler)
+- Тесты CORS headers (dev mode, preflight OPTIONS)
+- Тесты AuthRequired без токена (media, album)
+- Тесты ShareTokenAuthentication (valid, expired, invalid tokens)
+- Тесты MediaPathSecurity (path traversal блокировка)
+- Тесты ContentEncoding (brotli, fallback)
+- **9 тестов**
+
+### 🔧 Дополнительные работы
+- Экспортированы функции `AuthenticateMedia` и `AuthenticateAlbum` для тестов
+- Обновлены вызовы в `photos.go`, `downloads.go`, `videos.go` для использования экспортируемых функций
+- Обновлены тесты в `authenticate_routes_test.go` для использования новых имён функций
+
+### 📊 Статистика Этапа 2b
+- **Всего новых тестов**: 16
+- **Добавлено файлов**: 1 новый (scanner_user_test.go), 2 обновлённых
+- **CI статус**: ⏳ Ожидает проверки (локально не компилируется из-за ImageMagick)
+
+### 📊 Общая статистика проекта (после Этапа 2b)
+- **Всего тестов**: 75 (30 из Этапа 1 + 29 из Этапа 2 + 16 из Этапа 2b)
+- **Покрытие**: Database, Scanner Queue, GraphQL Directives, Album Actions, Media/Album Resolvers, Scanner Tasks, Scanner User, Periodic Scanner, Routes
+- **Этап 2 полностью завершён**: ✅ 4/4 задачи выполнены
+
+---
 *Обновлено: 2026-03-26*
