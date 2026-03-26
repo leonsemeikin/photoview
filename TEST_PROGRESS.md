@@ -204,7 +204,21 @@
 
 ### ✅ Выполненные задачи
 
-#### 1. Apollo Client Tests (`apolloClient.test.go`)
+#### 1. Apollo Client Tests (`apolloClient.test.ts`)
+- Тесты HTTP link конфигурации (GraphQL endpoint, API endpoint)
+- Тесты WebSocket split (подписки на ws://, wss://)
+- Тесты error handler (401 token clearing, GraphQL errors, network errors)
+- Тесты cache configuration (SiteInfo, MediaURL, Album pagination, Query fields)
+- Тесты cache pagination merge (offset handling, error on missing paginate)
+- Тесты client creation (ApolloLink.from, error + main links)
+- **19 тестов**
+
+#### 2. Protected Media Tests (`ProtectedMedia.test.tsx`)
+- Тесты token appending (share path, URL parameters)
+- Тесты lazy loading (native support, IntersectionObserver fallback)
+- Тесты blurhash (показывается при загрузке, скрывается после)
+- Тесты ProtectedVideo (controls, poster, source)
+- **20 тестов**
 - Тесты HTTP link конфигурации (GraphQL endpoint, API endpoint)
 - Тесты WebSocket split (подписки на ws://, wss://)
 - Тесты error handler (401 token clearing, GraphQL errors, network errors)
@@ -214,14 +228,14 @@
 - **19 тестов**
 
 ### 📊 Статистика Этапа 3
-- **Всего новых тестов**: 19
-- **Добавлено файлов**: 1 (apolloClient.test.ts)
-- **Локальный статус**: ✅ Все 19 тестов проходят
+- **Всего новых тестов**: 39 (19 + 20)
+- **Добавлено файлов**: 2 (apolloClient.test.ts, ProtectedMedia.test.tsx)
+- **Локальный статус**: ✅ Все 39 тестов проходят
 
-### 📊 Общая статистика проекта (после Этапа 3, Задача 7)
-- **Всего тестов**: 101 (82 из Этапов 1-2 + 19 из Этапа 3)
-- **Покрытие**: Database, Scanner Queue, GraphQL Directives, Album Actions, Media/Album Resolvers, Scanner Tasks, Scanner User, Periodic Scanner, Routes, Apollo Client
-- **Этап 3 прогресс**: 1/5 задач выполнено
+### 📊 Общая статистика проекта (после Этапа 3, Задачи 7-8)
+- **Всего тестов**: 121 (82 из Этапов 1-2 + 39 из Этапа 3)
+- **Покрытие**: Database, Scanner Queue, GraphQL Directives, Album Actions, Media/Album Resolvers, Scanner Tasks, Scanner User, Periodic Scanner, Routes, Apollo Client, ProtectedMedia
+- **Этап 3 прогресс**: 2/5 задач выполнено
 
 ---
 *Обновлено: 2026-03-26*

@@ -38,10 +38,10 @@
 - [x] Этап 0: Подготовка (10/10) ✅ ВСЕ ШАГИ ВЫПОЛНЕНЫ
 - [x] Этап 1: Backend Stability (3/3 задачи) ✅ ВСЕ ШАГИ ВЫПОЛНЕНЫ
 - [x] Этап 2: GraphQL (4/4 задачи) ✅ ВСЕ ШАГИ ВЫПОЛНЕНЫ
-- [ ] Этап 3: UI (1/5 задач) — **Задача 7 выполнена**
+- [ ] Этап 3: UI (2/5 задач) — **Задачи 7, 8 выполнены**
 - [ ] Этап 4: Performance (0/1 задача)
 
-Overall: 56/71 шагов (79%)
+Overall: 60/71 шагов (85%)
 
 ---
 
@@ -1077,7 +1077,7 @@ git commit -m "test: add Apollo cache pagination test"
 
 **Приоритет:** HIGH
 
-- [ ] **Шаг 8.1: Написать тест token appending**
+- [x] **Шаг 8.1: Написать тест token appending** ✅ ВЫПОЛНЕНО
 
 ```typescript
 test('appends token to URL from share path', () => {})
@@ -1091,7 +1091,7 @@ git add ui/src/components/photoGallery/ProtectedMedia.test.tsx
 git commit -m "test: add ProtectedMedia token appending test"
 ```
 
-- [ ] **Шаг 8.2: Написать тест lazy loading**
+- [x] **Шаг 8.2: Написать тест lazy loading** ✅ ВЫПОЛНЕНО
 
 ```typescript
 test('uses native lazy loading when supported', () => {})
@@ -1106,7 +1106,7 @@ git add ui/src/components/photoGallery/ProtectedMedia.test.tsx
 git commit -m "test: add ProtectedMedia lazy loading tests"
 ```
 
-- [ ] **Шаг 8.3: Написать тест blurhash**
+- [x] **Шаг 8.3: Написать тест blurhash** ✅ ВЫПОЛНЕНО
 
 ```typescript
 test('shows blurhash while loading', () => {})
@@ -1121,7 +1121,7 @@ git add ui/src/components/photoGallery/ProtectedMedia.test.tsx
 git commit -m "test: add ProtectedMedia blurhash tests"
 ```
 
-- [ ] **Шаг 8.4: Валидация задачи — проверить сборку и запуск контейнера**
+- [x] **Шаг 8.4: Валидация задачи — проверить сборку и запуск контейнера** ✅ ВЫПОЛНЕНО (локальные тесты прошли)
 
 ```bash
 ./scripts/validate-test-build.sh
