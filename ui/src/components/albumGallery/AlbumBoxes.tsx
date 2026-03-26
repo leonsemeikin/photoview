@@ -27,7 +27,7 @@ const AlbumBoxes = ({ error, albums, getCustomLink }: AlbumBoxesProps) => {
     }
   }
 
-  return <div className="-mx-3 my-6">{albumElements}</div>
+  return <div className="-mx-3 my-6" data-testid="AlbumBoxes">{albumElements}</div>
 }
 
 export default AlbumBoxes

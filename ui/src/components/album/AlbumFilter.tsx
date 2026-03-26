@@ -144,7 +144,7 @@ const AlbumFilter = ({
   sortingOptions,
 }: AlbumFilterProps) => {
   return (
-    <div className="flex items-end gap-4 flex-wrap mb-4">
+    <div className="flex items-end gap-4 flex-wrap mb-4" data-testid="AlbumFilter">
       {ordering && setOrdering ? (
         <SortingOptions
           ordering={ordering}
