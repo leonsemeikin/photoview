@@ -38,10 +38,18 @@ func TestRoutes_CacheControlHeaders(t *testing.T) {
 		require.NoError(t, db.Save(&album).Error)
 		require.NoError(t, db.Model(user).Association("Albums").Append(&album))
 
+		// Create a test media (needed for MediaURL foreign key constraint)
+		media := &models.Media{
+			Title:   "test_photo.jpg",
+			Path:    filepath.Join(t.TempDir(), "test_photo.jpg"),
+			AlbumID: album.ID,
+		}
+		require.NoError(t, db.Save(media).Error)
+
 		// Create a test media URL
 		mediaURL := models.MediaURL{
 			MediaName:   "test_photo.jpg",
-			MediaID:     1,
+			MediaID:     media.ID,
 			Purpose:     models.PhotoThumbnail,
 			Width:       200,
 			Height:      200,
@@ -236,14 +244,14 @@ func TestRoutes_AuthRequiredWithoutToken(t *testing.T) {
 	t.Run("media endpoint returns 403 if user does not own album", func(t *testing.T) {
 		db := test_utils.DatabaseTest(t)
 
-		// Create user A
-		userA, err := models.RegisterUser(db, "userA", nil, false)
+		// Create user A with a unique username
+		userA, err := models.RegisterUser(db, "ownershipTestUserA", nil, false)
 		require.NoError(t, err)
 
-		// Create album owned by user A only
+		// Create album owned by user A only (no parent)
 		album := models.Album{
-			Title: "userA_album",
-			Path:  "/userA",
+			Title: "userA_exclusive_album",
+			Path:  "/userA/exclusive",
 		}
 		require.NoError(t, db.Save(&album).Error)
 		require.NoError(t, db.Model(userA).Association("Albums").Append(&album))
@@ -256,19 +264,24 @@ func TestRoutes_AuthRequiredWithoutToken(t *testing.T) {
 		// Create media in user A's album
 		media := &models.Media{
 			Title:   "exclusive.jpg",
-			Path:    "/userA/exclusive.jpg",
+			Path:    "/userA/exclusive/exclusive.jpg",
 			AlbumID: album.ID,
 		}
 		require.NoError(t, db.Save(media).Error)
 
-		// Create user B (who does NOT own the album)
-		userB, err := models.RegisterUser(db, "userB", nil, false)
+		// Create user B (who does NOT own the album) with a unique username
+		userB, err := models.RegisterUser(db, "ownershipTestUserB", nil, false)
 		require.NoError(t, err)
 
-		// Verify userB does NOT own the album
+		// Verify userB does NOT own the album via direct association
 		var userBAlbums []models.Album
 		require.NoError(t, db.Model(userB).Association("Albums").Find(&userBAlbums))
 		require.Len(t, userBAlbums, 0, "userB should not own the album")
+
+		// Also verify using OwnsAlbum directly
+		ownsAlbum, err := userB.OwnsAlbum(db, &album)
+		require.NoError(t, err)
+		require.False(t, ownsAlbum, "userB.OwnsAlbum should return false for userA's album")
 
 		// Request from user B who doesn't own the album
 		req := httptest.NewRequest("GET", "/photo/exclusive.jpg", nil)
