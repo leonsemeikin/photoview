@@ -137,9 +137,9 @@
 - Обновлены тесты в `authenticate_routes_test.go` для использования новых имён функций
 
 ### 📊 Статистика Этапа 2b
-- **Всего новых тестов**: 16
-- **Добавлено файлов**: 1 новый (scanner_user_test.go), 2 обновлённых
-- **CI статус**: ⏳ Ожидает проверки (локально не компилируется из-за ImageMagick)
+- **Всего новых тестов**: 16 + 1 (AlbumOwnershipIsolation)
+- **Добавлено файлов**: 1 новый (scanner_user_test.go), 3 обновлённых
+- **CI статус**: ✅ Все тесты проходят (sqlite, mysql, postgres)
 
 ### 📊 Общая статистика проекта (после Этапа 2b)
 - **Всего тестов**: 75 (30 из Этапа 1 + 29 из Этапа 2 + 16 из Этапа 2b)
@@ -181,7 +181,9 @@
 - Обновлены вызовы в `photos.go`, `downloads.go`, `videos.go` для использования экспортируемых функций
 - Обновлены тесты в `authenticate_routes_test.go` для использования новых имён функций
 - **ИСПРАВЛЕНО:** FK constraint violation в cache headers тесте (создаётся Media перед MediaURL)
-- **ИСПРАВЛЕНО:** Ownership test использует уникальные имена пользователей и прямую проверку OwnsAlbum
+- **ИСПРАВЛЕНО:** CacheControlHeaders test теперь загружает Media через Preload
+- **ИСПРАВЛЕНО:** Ownership assertion - изменен с assert.Error на assert.NoError, так как AuthenticateMedia возвращает err=nil при success=false (access denied)
+- **ИСПРАВЛЕНО:** Ownership test перемещён в отдельную top-level функцию TestRoutes_AlbumOwnershipIsolation для полной изоляции
 
 ### 📊 Статистика Этапа 2b
 - **Всего новых тестов**: 16
