@@ -187,11 +187,18 @@ func TestRoutes_AuthRequiredWithoutToken(t *testing.T) {
 	t.Run("media endpoint returns 403 without auth", func(t *testing.T) {
 		db := test_utils.DatabaseTest(t)
 
+		// Create album first (to satisfy foreign key constraint)
+		album := &models.Album{
+			Title: "protected_album",
+			Path:  "/protected",
+		}
+		require.NoError(t, db.Save(album).Error)
+
 		// Create media that requires auth
 		media := &models.Media{
 			Title:   "protected.jpg",
 			Path:    "/protected.jpg",
-			AlbumID: 1,
+			AlbumID: album.ID,
 		}
 		require.NoError(t, db.Save(media).Error)
 
@@ -233,13 +240,18 @@ func TestRoutes_AuthRequiredWithoutToken(t *testing.T) {
 		userA, err := models.RegisterUser(db, "userA", nil, false)
 		require.NoError(t, err)
 
-		// Create album owned by user A
+		// Create album owned by user A only
 		album := models.Album{
 			Title: "userA_album",
 			Path:  "/userA",
 		}
 		require.NoError(t, db.Save(&album).Error)
 		require.NoError(t, db.Model(userA).Association("Albums").Append(&album))
+
+		// Verify userA owns the album
+		var userAAlbums []models.Album
+		require.NoError(t, db.Model(userA).Association("Albums").Find(&userAAlbums))
+		require.Len(t, userAAlbums, 1, "userA should own the album")
 
 		// Create media in user A's album
 		media := &models.Media{
@@ -249,16 +261,25 @@ func TestRoutes_AuthRequiredWithoutToken(t *testing.T) {
 		}
 		require.NoError(t, db.Save(media).Error)
 
-		// Create user B
+		// Create user B (who does NOT own the album)
 		userB, err := models.RegisterUser(db, "userB", nil, false)
 		require.NoError(t, err)
+
+		// Verify userB does NOT own the album
+		var userBAlbums []models.Album
+		require.NoError(t, db.Model(userB).Association("Albums").Find(&userBAlbums))
+		require.Len(t, userBAlbums, 0, "userB should not own the album")
 
 		// Request from user B who doesn't own the album
 		req := httptest.NewRequest("GET", "/photo/exclusive.jpg", nil)
 		ctx := auth.AddUserToContext(req.Context(), userB)
 		req = req.WithContext(ctx)
 
-		success, responseMsg, responseStatus, err := routes.AuthenticateMedia(media, db, req)
+		// Need to reload media with its album for the authentication check
+		var mediaWithAlbum models.Media
+		require.NoError(t, db.Preload("Album").First(&mediaWithAlbum, media.ID).Error)
+
+		success, responseMsg, responseStatus, err := routes.AuthenticateMedia(&mediaWithAlbum, db, req)
 
 		assert.Error(t, err, "Should return error when user doesn't own album")
 		assert.False(t, success, "Should not be successful")
@@ -350,6 +371,10 @@ func TestRoutes_MediaPathSecurity(t *testing.T) {
 	t.Run("SPA handler blocks path traversal attempts", func(t *testing.T) {
 		tempDir := t.TempDir()
 
+		// Create index.html (required by NewSpaHandler)
+		indexPath := filepath.Join(tempDir, "index.html")
+		require.NoError(t, os.WriteFile(indexPath, []byte("<html></html>"), 0644))
+
 		// Create a safe file
 		safePath := filepath.Join(tempDir, "safe.html")
 		require.NoError(t, os.WriteFile(safePath, []byte("safe content"), 0644))
@@ -370,6 +395,10 @@ func TestRoutes_MediaPathSecurity(t *testing.T) {
 
 	t.Run("SPA handler normalizes paths", func(t *testing.T) {
 		tempDir := t.TempDir()
+
+		// Create index.html (required by NewSpaHandler)
+		indexPath := filepath.Join(tempDir, "index.html")
+		require.NoError(t, os.WriteFile(indexPath, []byte("<html></html>"), 0644))
 
 		// Create test file
 		testPath := filepath.Join(tempDir, "test.txt")

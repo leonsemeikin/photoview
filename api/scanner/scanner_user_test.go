@@ -92,9 +92,10 @@ func TestFindAlbumsForUser_OwnerPropagation(t *testing.T) {
 		// Clean database for this subtest
 		db.Exec("DELETE FROM user_albums")
 		db.Exec("DELETE FROM albums")
+		db.Exec("DELETE FROM users")
 
 		// Create user A with root album
-		userA, err := models.RegisterUser(db, "userA", nil, false)
+		userA, err := models.RegisterUser(db, "existing_userA", nil, false)
 		require.NoError(t, err, "Failed to register user A")
 
 		rootAlbum := models.Album{
@@ -110,7 +111,7 @@ func TestFindAlbumsForUser_OwnerPropagation(t *testing.T) {
 		assert.Empty(t, scanErrors, "Initial scan should complete without errors")
 
 		// Create user B and bind to same root album
-		userB, err := models.RegisterUser(db, "userB", nil, false)
+		userB, err := models.RegisterUser(db, "existing_userB", nil, false)
 		require.NoError(t, err, "Failed to register user B")
 		require.NoError(t, db.Model(userB).Association("Albums").Append(&rootAlbum), "Failed to bind root album to user B")
 
