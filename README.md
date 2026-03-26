@@ -238,15 +238,27 @@ Photoview includes a comprehensive test suite to ensure reliability and prevent 
 
 | Component | Tests | Coverage |
 |-----------|-------|----------|
-| Database Layer | 14 | GORM migrations, URL parsing, retry logic |
+| Database Layer | 16 | GORM migrations, URL parsing, retry logic |
 | Scanner Queue | 5 | Race conditions, concurrent jobs, notify channels |
 | GraphQL Directives | 9 | Authorization directives, error handling |
-| **Stage 1 Total** | **30** | ~38% of planned coverage |
+| **Stage 1 Total** | **30** | ~42% of planned coverage |
 
-**Next Stages**:
-- Stage 2: Scanner Task Tests
-- Stage 3: GraphQL Resolvers Tests
-- Stage 4: UI Tests
+**Stage 2: GraphQL Resolvers & Scanner Tasks** ✅ Partially Completed
+
+| Component | Tests | Coverage |
+|-----------|-------|----------|
+| Album Actions | 6 | getTopLevelAlbumIDs, multi-user scenarios |
+| Media Resolvers | 11 | Authorization, EXIF, types, shares |
+| Album Resolvers | 7 | Media, thumbnails, sub-albums, authorization |
+| Scanner Tasks | 5 | EXIF, video metadata (blurhash skipped) |
+| **Stage 2 Total** | **29** | ~41% of planned coverage |
+
+**Overall:** 59 tests written, 51% of total plan completed
+
+**Remaining Stages**:
+- Stage 2 (partial): Scanner User & Periodic Scanner, Thumbnail Dataloader
+- Stage 3: UI Components (Apollo Client, ProtectedMedia, hooks, pages)
+- Stage 4: Performance Benchmarks
 
 See `docs/test-coverage-plan.md` for the full roadmap and `TEST_PROGRESS.md` for detailed status.
 

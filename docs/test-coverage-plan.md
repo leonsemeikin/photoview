@@ -41,7 +41,7 @@
 - [ ] Этап 3: UI (0/5 задач) — обновлено
 - [ ] Этап 4: Performance (0/1 задача)
 
-Overall: 37/71 шагов (52%)
+Overall: 36/71 шагов (51%)
 
 ---
 
@@ -552,7 +552,7 @@ git add api/scanner/scanner_queue/queue_test.go
 git commit -m "test: add notify channel blocking test"
 ```
 
-- [x] **Шаг 2.3: Написать тест graceful shutdown** ✅
+- [ ] **Шаг 2.3: Написать тест graceful shutdown** ❌ НЕ ВЫПОЛНЕНО (тест был создан, но удалён как нестабильный)
 
 ```go
 func TestScannerQueue_CloseBackgroundWorker(t *testing.T)
@@ -639,12 +639,12 @@ git commit -m "test: add @isAdmin directive tests"
 ### ✅ РЕАЛИЗАЦИЯ ЗАВЕРШЕНА (2026-03-25)
 
 **Созданные файлы:**
-- `api/database/database_test.go` — 14 тестов (подключение, миграции, retry логика)
+- `api/database/database_test.go` — 6 тестов (подключение, миграции)
 - `api/database/address_test.go` — 10 тестов (парсинг URL, WAL mode)
 - `api/graphql/directive_test.go` — 9 тестов (@isAuthorized, @isAdmin)
-- `api/scanner/scanner_queue/queue_race_test.go` — 5 тестов (race conditions, notify channels)
+- `api/scanner/scanner_queue/queue_race_test.go` — 5 тестов (race conditions, notify channels, graceful shutdown test удалён)
 
-**Всего тестов:** 38 (включая существующие)
+**Всего тестов:** 30 (Stage 1)
 
 **Статус CI:** ✅ Все тесты проходят (postgres, mysql, sqlite)
 
