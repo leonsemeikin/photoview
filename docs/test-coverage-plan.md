@@ -41,7 +41,7 @@
 - [ ] Этап 3: UI (0/5 задач) — обновлено
 - [ ] Этап 4: Performance (0/1 задача)
 
-Overall: 48/71 шагов (68%)
+Overall: 51/71 шагов (72%)
 
 ---
 
@@ -71,7 +71,7 @@ Overall: 48/71 шагов (68%)
   - ✅ Задача 4: Album Actions (6 тестов) + Album Resolvers (7 тестов) = 13 тестов
   - ✅ Задача 5: Media Resolvers (11 тестов) — Thumbnail Dataloader тест заменён на альтернативные
   - ✅ Задача 6: Scanner Tasks (5 тестов) — Blurhash тест пропущен (требует ImageMagick)
-  - ✅ Задача 6a: Scanner User (4 теста), Periodic Scanner (3 теста), Routes (9 тестов) = 16 тестов
+  - ✅ Задача 6a: Scanner User (4 теста), Periodic Scanner (3 теста), Routes (16 тестов) = 23 теста
   - Покрытие graphql/resolvers: ~50%
 - [ ] **Checkpoint 3:** Этап 3 (UI Components)
   - Покрытие UI: ~60%
@@ -982,7 +982,7 @@ git add api/routes/routes_test.go
 git commit -m "test: add routes auth and CORS tests"
 ```
 
-- [x] **Шаг 6a.4: Валидация задачи — проверить сборку и запуск контейнера** ✅ ВЫПОЛНЕНО (CI pending)
+- [x] **Шаг 6a.4: Валидация задачи — проверить сборку и запуск контейнера** ✅ ВЫПОЛНЕНО (CI passed)
 
 ```bash
 ./scripts/validate-test-build.sh

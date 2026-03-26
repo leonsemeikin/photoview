@@ -129,7 +129,7 @@
 - Тесты ShareTokenAuthentication (valid, expired, invalid tokens)
 - Тесты MediaPathSecurity (path traversal блокировка)
 - Тесты ContentEncoding (brotli, fallback)
-- **9 тестов**
+- **16 тестов**
 
 ### 🔧 Дополнительные работы
 - Экспортированы функции `AuthenticateMedia` и `AuthenticateAlbum` для тестов
@@ -174,7 +174,7 @@
 - Тесты ShareTokenAuthentication (valid, expired, invalid tokens)
 - Тесты MediaPathSecurity (path traversal блокировка)
 - Тесты ContentEncoding (brotli, fallback)
-- **9 тестов**
+- **16 тестов**
 
 ### 🔧 Дополнительные работы
 - Экспортированы функции `AuthenticateMedia` и `AuthenticateAlbum` для тестов
@@ -186,12 +186,12 @@
 - **ИСПРАВЛЕНО:** Ownership test перемещён в отдельную top-level функцию TestRoutes_AlbumOwnershipIsolation для полной изоляции
 
 ### 📊 Статистика Этапа 2b
-- **Всего новых тестов**: 16
+- **Всего новых тестов**: 23 (4 + 3 + 16)
 - **Добавлено файлов**: 1 новый (scanner_user_test.go), 3 обновлённых
 - **CI статус**: ✅ Все тесты проходят (sqlite, mysql, postgres)
 
 ### 📊 Общая статистика проекта (после Этапа 2b)
-- **Всего тестов**: 75 (30 из Этапа 1 + 45 из Этапа 2)
+- **Всего тестов**: 82 (30 из Этапа 1 + 29 из Этапа 2 + 23 из Этапа 2b)
 - **Покрытие**: Database, Scanner Queue, GraphQL Directives, Album Actions, Media/Album Resolvers, Scanner Tasks, Scanner User, Periodic Scanner, Routes
 - **Этап 2 полностью завершён**: ✅ 4/4 задачи выполнены
 
