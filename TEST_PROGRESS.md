@@ -233,15 +233,26 @@
 - Тесты client creation (ApolloLink.from, error + main links)
 - **19 тестов**
 
-### 📊 Статистика Этапа 3
-- **Всего новых тестов**: 92 (19 + 20 + 53)
-- **Добавлено файлов**: 5 (apolloClient.test.ts, ProtectedMedia.test.tsx, 3 hooks)
-- **Локальный статус**: ✅ Все 92 тестов проходят
+#### 4. Pages Tests (AlbumsPage, TimelinePage, SettingsPage)
+- Тесты AlbumsPage (GraphQL query myAlbums, AlbumFilter, AlbumBoxes)
+- Тесты TimelinePage (TimelineGallery rendering)
+- Тесты SettingsPage (admin-only sections, conditional rendering)
+- Тесты styled components (SectionTitle, InputLabelTitle, InputLabelDescription)
+- **22 теста**
 
-### 📊 Общая статистика проекта (после Этапа 3, Задачи 7-9)
-- **Всего тестов**: 174 (82 из Этапов 1-2 + 92 из Этапа 3)
-- **Покрытие**: Database, Scanner Queue, GraphQL Directives, Album Actions, Media/Album Resolvers, Scanner Tasks, Scanner User, Periodic Scanner, Routes, Apollo Client, ProtectedMedia, Custom Hooks
-- **Этап 3 прогресс**: 3/5 задач выполнено
+### 🔧 Дополнительные работы
+- Добавлены data-testid атрибуты в AlbumFilter и AlbumBoxes для тестирования
+- Созданы моки для Layout, useIsAdmin, TimelineGallery
+
+### 📊 Статистика Этапа 3
+- **Всего новых тестов**: 114 (19 + 20 + 53 + 22)
+- **Добавлено файлов**: 8 (apolloClient.test.ts, ProtectedMedia.test.tsx, 3 hooks, 3 pages)
+- **Локальный статус**: ✅ Все 114 тестов проходят
+
+### 📊 Общая статистика проекта (после Этапа 3, Задачи 7-10)
+- **Всего тестов**: 196 (82 из Этапов 1-2 + 114 из Этапа 3)
+- **Покрытие**: Database, Scanner Queue, GraphQL Directives, Album Actions, Media/Album Resolvers, Scanner Tasks, Scanner User, Periodic Scanner, Routes, Apollo Client, ProtectedMedia, Custom Hooks, Pages
+- **Этап 3 прогресс**: 4/5 задач выполнено
 
 ---
 *Обновлено: 2026-03-26*

@@ -38,10 +38,10 @@
 - [x] Этап 0: Подготовка (10/10) ✅ ВСЕ ШАГИ ВЫПОЛНЕНЫ
 - [x] Этап 1: Backend Stability (3/3 задачи) ✅ ВСЕ ШАГИ ВЫПОЛНЕНЫ
 - [x] Этап 2: GraphQL (4/4 задачи) ✅ ВСЕ ШАГИ ВЫПОЛНЕНЫ
-- [ ] Этап 3: UI (3/5 задач) — **Задачи 7, 8, 9 выполнены**
+- [ ] Этап 3: UI (4/5 задач) — **Задачи 7, 8, 9, 10 выполнены**
 - [ ] Этап 4: Performance (0/1 задача)
 
-Overall: 64/71 шагов (90%)
+Overall: 66/71 шагов (93%)
 
 ---
 
@@ -1194,14 +1194,22 @@ git commit -m "test: add useScrollPagination hook tests"
 
 ---
 
-### Задача 10: Pages Tests
+### Задача 10: Pages Tests ✅ ВЫПОЛНЕНО
 
 **Файлы:**
-- Создать: `ui/src/Pages/AlbumsPage.test.tsx`
-- Создать: `ui/src/Pages/TimelinePage.test.tsx`
-- Создать: `ui/src/Pages/SettingsPage.test.tsx`
+- Создать: `ui/src/Pages/AlbumsPage.test.tsx` ✅
+- Создать: `ui/src/Pages/TimelinePage.test.tsx` ✅
+- Создать: `ui/src/Pages/SettingsPage.test.tsx` ✅
 
 **Приоритет:** MEDIUM
+
+- [x] **Шаг 10.1: Создать тесты для AlbumsPage, TimelinePage, SettingsPage** ✅ ВЫПОЛНЕНО
+
+```bash
+git commit -m "feat: add comprehensive page tests for AlbumsPage, TimelinePage, and SettingsPage"
+```
+
+**Результат:** 22 теста создано и проходят
 
 ---
 
@@ -1260,16 +1268,16 @@ git commit -m "test: add AlbumPage tests"
 
 ---
 
-### Задача 12: Pages Tests (Update)
+### Задача 12: Pages Tests (Update) ✅ ВЫПОЛНЕНО (в рамках Задачи 10)
 
 **Файлы:**
-- Создать: `ui/src/Pages/AlbumsPage.test.tsx`
-- Создать: `ui/src/Pages/TimelinePage.test.tsx`
-- Создать: `ui/src/Pages/SettingsPage.test.tsx`
+- Создать: `ui/src/Pages/AlbumsPage.test.tsx` ✅
+- Создать: `ui/src/Pages/TimelinePage.test.tsx` ✅
+- Создать: `ui/src/Pages/SettingsPage.test.tsx` ✅
 
 **Приоритет:** MEDIUM
 
-- [ ] **Шаг 10.1: Написать базовые рендер тесты**
+- [x] **Шаг 10.1: Написать базовые рендер тесты** ✅ ВЫПОЛНЕНО (в рамках Задачи 10)
 
 ```typescript
 test('renders page without crashing', () => {})
