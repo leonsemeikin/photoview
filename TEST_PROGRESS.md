@@ -84,6 +84,12 @@
 - Исправлены имена полей MediaEXIF (Camera, Maker, Exposure, Aperture, Iso, FocalLength)
 - Исправлена подписура NewTaskContext (context.Background(), db, album, cache)
 
+### ❌ Не выполнено в Этапе 2
+- **Thumbnail dataloader batch test** — требует сложного мокирования dataloader (покрыто альтернативными тестами)
+- **Blurhash task tests** — требует ImageMagick C library (работает только в CI Docker)
+- **Scanner User & Periodic Scanner tests** — сложные интеграционные сценарии (отложено до Stage 3)
+- **API Routes tests** — требуют полный HTTP server setup с middleware (отложено до Stage 3)
+
 ### 📊 Статистика Этапа 2
 - **Всего новых тестов**: 29
 - **Добавлено файлов**: 7 тестов + 3 admin + 1 env

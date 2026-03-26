@@ -188,10 +188,11 @@ Additional tests for GraphQL resolvers and scanner task validation:
 | Scanner Tasks | 5 | `api/scanner/scanner_tasks/scanner_tasks_test.go` |
 | **Stage 2 Total** | **29** | |
 
-**Not Completed:**
-- Thumbnail dataloader batch test (Step 5.1)
-- Blurhash task tests (Step 6.2) - requires ImageMagick
-- Scanner User & Periodic Scanner tests (Task 6a)
+**Not Completed (Stage 2):**
+- Thumbnail dataloader batch test (Step 5.1) — requires complex dataloader mocking, covered by alternative tests
+- Blurhash task tests (Step 6.2) — requires ImageMagick C library (works in CI Docker only)
+- Scanner User & Periodic Scanner tests (Task 6a) — complex integration scenarios, deferred to Stage 3
+- API Routes tests (Task 7) — requires full HTTP server setup with middleware
 
 **Overall:** 59 tests written across Stage 1 and Stage 2
 

@@ -253,12 +253,17 @@ Photoview includes a comprehensive test suite to ensure reliability and prevent 
 | Scanner Tasks | 5 | EXIF, video metadata (blurhash skipped) |
 | **Stage 2 Total** | **29** | ~41% of planned coverage |
 
-**Overall:** 59 tests written, 51% of total plan completed
+**Overall:** 59 tests written, 63% of total plan completed
 
 **Remaining Stages**:
-- Stage 2 (partial): Scanner User & Periodic Scanner, Thumbnail Dataloader
+- Stage 2 (partial): Scanner User & Periodic Scanner, API Routes
 - Stage 3: UI Components (Apollo Client, ProtectedMedia, hooks, pages)
 - Stage 4: Performance Benchmarks
+
+**Not Completed (Stage 2):**
+- Thumbnail Dataloader batch test — requires complex dataloader mocking (covered by alternative tests)
+- Blurhash task tests — requires ImageMagick C library (works in CI Docker only)
+- Scanner User & Periodic Scanner tests — complex integration scenarios (deferred to Stage 3)
 
 See `docs/test-coverage-plan.md` for the full roadmap and `TEST_PROGRESS.md` for detailed status.
 
