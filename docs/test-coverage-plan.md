@@ -37,11 +37,11 @@
 
 - [x] Этап 0: Подготовка (10/10) ✅ ВСЕ ШАГИ ВЫПОЛНЕНЫ
 - [x] Этап 1: Backend Stability (3/3 задачи) ✅ ВСЕ ШАГИ ВЫПОЛНЕНЫ
-- [x] Этап 2: GraphQL (3/4 задачи) — частично выполнено ✅ Задачи 4,5,6 (Задача 6a не выполнена)
+- [ ] Этап 2: GraphQL (2/4 задачи) — частично выполнено ✅ Задачи 4,6 (Задача 5 частично, Задача 6a не выполнена)
 - [ ] Этап 3: UI (0/5 задач) — обновлено
 - [ ] Этап 4: Performance (0/1 задача)
 
-Overall: 38/71 шагов (54%)
+Overall: 37/71 шагов (52%)
 
 ---
 
@@ -67,10 +67,10 @@ Overall: 38/71 шагов (54%)
   - Покрытие database: ~80%
   - Покрытие scanner_queue: ~90%
   - Покрытие graphql/directive: 100%
-- [ ] **Checkpoint 2:** Этап 2 (GraphQL Resolvers + Scanner User) — частично выполнено (3/4 задачи)
-  - Покрытие graphql/resolvers: ~70%
-  - Альбом actions, media resolvers, scanner_user протестированы
-  - periodic_scanner и routes протестированы
+- [ ] **Checkpoint 2:** Этап 2 (GraphQL Resolvers + Scanner User) — частично выполнено (2.5/4 задачи)
+  - Покрытие graphql/resolvers: ~50%
+  - Альбом actions, media/album resolvers (частично), scanner tasks протестированы
+  - periodic_scanner и routes — НЕ протестированы
 - [ ] **Checkpoint 3:** Этап 3 (UI Components)
   - Покрытие UI: ~60%
   - Apollo Client, ProtectedMedia, PhotoGallery, AlbumPage протестированы
@@ -788,9 +788,9 @@ git commit -m "test: add getTopLevelAlbumIDs tests"
 
 **Приоритет:** HIGH
 
-**ПРИМЕЧАНИЕ:** Написаны альтернативные тесты: Media resolver (11 тестов) + Album resolver (7 тестов) вместо запланированного Thumbnail dataloader теста
+**ПРИМЕЧАНИЕ:** Thumbnail dataloader тест НЕ написан. Вместо него написаны другие Media/Album resolver тесты (11 + 7 тестов)
 
-- [x] **Шаг 5.1: Написать тест Thumbnail с dataloader** ⚠️ АЛЬТЕРНАТИВА: написаны другие Media/Album resolver тесты
+- [ ] **Шаг 5.1: Написать тест Thumbnail с dataloader** ❌ НЕ ВЫПОЛНЕНО (написаны альтернативные тесты)
 
 ```go
 func TestMediaResolver_Thumbnail_Dataloader(t *testing.T)
