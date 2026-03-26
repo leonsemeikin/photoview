@@ -245,14 +245,14 @@
 - Созданы моки для Layout, useIsAdmin, TimelineGallery
 
 ### 📊 Статистика Этапа 3
-- **Всего новых тестов**: 114 (19 + 20 + 53 + 22)
-- **Добавлено файлов**: 8 (apolloClient.test.ts, ProtectedMedia.test.tsx, 3 hooks, 3 pages)
-- **Локальный статус**: ✅ Все 114 тестов проходят
+- **Всего новых тестов**: 141 (19 + 20 + 53 + 22 + 27)
+- **Добавлено файлов**: 8 (apolloClient.test.ts, ProtectedMedia.test.tsx, 3 hooks, 3 pages, 2 expanded)
+- **Локальный статус**: ✅ Все 141 тестов проходят
 
-### 📊 Общая статистика проекта (после Этапа 3, Задачи 7-10)
-- **Всего тестов**: 196 (82 из Этапов 1-2 + 114 из Этапа 3)
-- **Покрытие**: Database, Scanner Queue, GraphQL Directives, Album Actions, Media/Album Resolvers, Scanner Tasks, Scanner User, Periodic Scanner, Routes, Apollo Client, ProtectedMedia, Custom Hooks, Pages
-- **Этап 3 прогресс**: 4/5 задач выполнено
+### 📊 Общая статистика проекта (после Этапа 3, Задачи 7-11)
+- **Всего тестов**: 223 (82 из Этапов 1-2 + 141 из Этапа 3)
+- **Покрытие**: Database, Scanner Queue, GraphQL Directives, Album Actions, Media/Album Resolvers, Scanner Tasks, Scanner User, Periodic Scanner, Routes, Apollo Client, ProtectedMedia, Custom Hooks, Pages, MediaGallery, AlbumPage
+- **Этап 3 прогресс**: 5/5 задач выполнено ✅
 
 ---
 *Обновлено: 2026-03-26*

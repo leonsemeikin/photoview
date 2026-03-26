@@ -38,10 +38,10 @@
 - [x] Этап 0: Подготовка (10/10) ✅ ВСЕ ШАГИ ВЫПОЛНЕНЫ
 - [x] Этап 1: Backend Stability (3/3 задачи) ✅ ВСЕ ШАГИ ВЫПОЛНЕНЫ
 - [x] Этап 2: GraphQL (4/4 задачи) ✅ ВСЕ ШАГИ ВЫПОЛНЕНЫ
-- [ ] Этап 3: UI (4/5 задач) — **Задачи 7, 8, 9, 10 выполнены**
+- [x] Этап 3: UI (5/5 задач) — **Все задачи выполнены ✅**
 - [ ] Этап 4: Performance (0/1 задача)
 
-Overall: 66/71 шагов (93%)
+Overall: 68/71 шагов (96%)
 
 ---
 
@@ -1213,17 +1213,44 @@ git commit -m "feat: add comprehensive page tests for AlbumsPage, TimelinePage, 
 
 ---
 
-### Задача 11: PhotoGallery Component Tests
+### Задача 11: PhotoGallery Component Tests ✅ ВЫПОЛНЕНО
 
 **Файлы:**
-- Создать: `ui/src/components/photoGallery/PhotoGallery.test.tsx`
-- Создать: `ui/src/Pages/AlbumPage.test.tsx`
+- Расширено: `ui/src/components/photoGallery/MediaGallery.test.tsx` ✅
+- Расширено: `ui/src/Pages/AlbumPage/AlbumPage.test.tsx` ✅
 
 **Приоритет:** HIGH
 
 **Почему это критично:** PhotoGallery — основной компонент для отображения медиа, AlbumPage — основной роут. Отсутствие тестов означает риск краша при edge cases (пустой альбом, загрузка ошибок).
 
-- [ ] **Шаг 11.1: Написать тест PhotoGallery**
+- [x] **Шаг 11.1: Написать тест PhotoGallery** ✅ ВЫПОЛНЕНО
+
+```typescript
+test('renders empty state when no media', () => {}) ✅
+test('renders media grid with items', () => {}) ✅
+test('handles loading state', () => {}) ✅
+test('handles error state', () => {}) ✅
+test('calls onScrollEnd when scrolling', () => {}) ✅
+```
+
+Запуск: `cd ui && npm test MediaGallery.test.tsx`
+Результат: PASS (15 тестов)
+
+- [x] **Шаг 11.2: Написать тест AlbumPage** ✅ ВЫПОЛНЕНО
+
+```typescript
+test('renders with album data', () => {}) ✅
+test('shows loading spinner initially', () => {}) ✅
+test('shows error message', () => {}) ✅
+test('renders media grid', () => {}) ✅
+test('handles pagination', () => {}) ✅
+```
+
+Запуск: `cd ui && npm test AlbumPage.test.tsx`
+Результат: PASS (5 тестов)
+
+**Всего тестов в Задаче 11:** 20 (15 + 5)
+**Общий итог:** 214 (194 + 20)
 
 ```typescript
 test('renders empty state when no media', () => {})
