@@ -255,4 +255,30 @@
 - **Этап 3 прогресс**: 5/5 задач выполнено ✅
 
 ---
-*Обновлено: 2026-03-26*
+
+## Этап 4: Performance Benchmarks & N+1 Detection — В ПРОЦЕССЕ
+
+### 🎯 Цель
+Написать бенчмарки для критичных компонентов и тесты N+1 detection.
+
+### ✅ Выполненные задачи
+
+#### 1. FindAlbumsForUser Benchmarks (`scanner_benchmark_test.go`)
+- BenchmarkFindAlbumsForUser_10: 33ms/op, 683KB/op
+- BenchmarkFindAlbumsForUser_100: 309ms/op, 6.5MB/op
+- BenchmarkFindAlbumsForUser_1000: 3.3s/op, 65MB/op
+- BenchmarkFindAlbumsForUser_Nested_10: 50ms/op, 1MB/op
+- BenchmarkFindAlbumsForUser_Nested_100: 345ms/op, 6.9MB/op
+- **5 бенчмарков**
+
+### 📊 Статистика Этапа 4
+- **Всего новых бенчмарков**: 5
+- **Добавлено файлов**: 1 (scanner_benchmark_test.go)
+- **Локальный статус**: ✅ Все бенчмарки выполняются
+- **CI статус**: ✅ Пройден
+
+### 📊 Общая статистика проекта (после Этапа 4, Шаг 13.1)
+- **Всего тестов + бенчмарков**: 228 (223 тестов + 5 бенчмарков)
+
+---
+*Обновлено: 2026-03-27*

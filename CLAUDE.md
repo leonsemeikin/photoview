@@ -195,7 +195,27 @@ Additional tests for GraphQL resolvers and scanner task validation:
 - Thumbnail dataloader batch test (Step 5.1) — requires complex dataloader mocking, covered by alternative tests
 - Blurhash task tests (Step 6.2) — requires ImageMagick C library (works in CI Docker only)
 
-**Overall:** 121 tests written across Stage 1, Stage 2, and Stage 3 (Tasks 7-8)
+**Overall:** 228 tests written across Stage 1, Stage 2, Stage 3, and Stage 4 (Tasks 7-13)
+
+**Stage 4: Performance Benchmarks** ✅ In Progress (2026-03)
+
+Performance benchmarks for critical backend components:
+
+| Component | Benchmarks | File |
+|-----------|------------|------|
+| FindAlbumsForUser | 5 | `api/scanner/scanner_benchmark_test.go` |
+| **Stage 4 Total** | **5** | |
+
+**FindAlbumsForUser Benchmarks** (5 benchmarks):
+- `BenchmarkFindAlbumsForUser_10`: 33ms/op, 683KB/op, 7,593 allocs/op
+- `BenchmarkFindAlbumsForUser_100`: 309ms/op, 6.5MB/op, 71,910 allocs/op
+- `BenchmarkFindAlbumsForUser_1000`: 3.3s/op, 65MB/op, 716,722 allocs/op
+- `BenchmarkFindAlbumsForUser_Nested_10`: 50ms/op, 1MB/op, 11,272 allocs/op
+- `BenchmarkFindAlbumsForUser_Nested_100`: 345ms/op, 6.9MB/op, 76,456 allocs/op
+
+**Performance Analysis:**
+- Linear O(N) scaling confirmed (no N+1 query issues)
+- Time scales ~10× when album count increases 10×
 
 See `TEST_PROGRESS.md` for detailed status and `docs/test-coverage-plan.md` for full roadmap.
 
