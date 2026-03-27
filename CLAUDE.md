@@ -195,16 +195,18 @@ Additional tests for GraphQL resolvers and scanner task validation:
 - Thumbnail dataloader batch test (Step 5.1) — requires complex dataloader mocking, covered by alternative tests
 - Blurhash task tests (Step 6.2) — requires ImageMagick C library (works in CI Docker only)
 
-**Overall:** 228 tests written across Stage 1, Stage 2, Stage 3, and Stage 4 (Tasks 7-13)
+**Overall:** 241 tests written across Stage 1, Stage 2, Stage 3, and Stage 4 (Tasks 7-13)
 
-**Stage 4: Performance Benchmarks** ✅ In Progress (2026-03)
+**Stage 4: Performance Benchmarks** ✅ Completed (2026-03)
 
 Performance benchmarks for critical backend components:
 
 | Component | Benchmarks | File |
 |-----------|------------|------|
 | FindAlbumsForUser | 5 | `api/scanner/scanner_benchmark_test.go` |
-| **Stage 4 Total** | **5** | |
+| Scanner Queue | 7 | `api/scanner/scanner_queue/queue_benchmark_test.go` |
+| Database | 6 | `api/database/performance_test.go` |
+| **Stage 4 Total** | **18** | |
 
 **FindAlbumsForUser Benchmarks** (5 benchmarks):
 - `BenchmarkFindAlbumsForUser_10`: 33ms/op, 683KB/op, 7,593 allocs/op
@@ -213,9 +215,27 @@ Performance benchmarks for critical backend components:
 - `BenchmarkFindAlbumsForUser_Nested_10`: 50ms/op, 1MB/op, 11,272 allocs/op
 - `BenchmarkFindAlbumsForUser_Nested_100`: 345ms/op, 6.9MB/op, 76,456 allocs/op
 
+**Scanner Queue Benchmarks** (7 benchmarks):
+- `BenchmarkScannerQueue_AddJob_10`: 29us/op, 12KB/op, 103 allocs/op
+- `BenchmarkScannerQueue_AddJob_100`: 590us/op, 196KB/op, 1,003 allocs/op
+- `BenchmarkScannerQueue_AddJob_1000`: 49ms/op, 9.5MB/op, 10,003 allocs/op
+- `BenchmarkScannerQueue_JobOnQueue_10`: 20us/op, 12KB/op, 100 allocs/op
+- `BenchmarkScannerQueue_JobOnQueue_100`: 645us/op, 291KB/op, 1,000 allocs/op
+- `BenchmarkScannerQueue_Notify`: 6ns/op, 0B/op, 0 allocs/op
+- `BenchmarkScannerQueue_ConcurrentAdds`: 552us/op, 180KB/op, 924 allocs/op
+
+**Database Benchmarks** (6 benchmarks):
+- `BenchmarkDatabase_SQLite_Insert`: 1.1ms/op, 11KB/op, 136 allocs/op
+- `BenchmarkDatabase_SQLite_Select_FullScan`: 89us/op, 6KB/op, 115 allocs/op
+- `BenchmarkDatabase_SQLite_Transaction_Commit`: 588us/op, 8KB/op, 114 allocs/op
+- `BenchmarkDatabase_SQLite_Transaction_Rollback`: 171us/op, 8KB/op, 112 allocs/op
+- `BenchmarkDatabase_SQLite_Connection_Pool`: 13us/op, 1.8KB/op, 31 allocs/op
+- `BenchmarkDatabase_SQLite_WAL_Read`: 34us/op, 3KB/op, 32 allocs/op
+
 **Performance Analysis:**
-- Linear O(N) scaling confirmed (no N+1 query issues)
-- Time scales ~10× when album count increases 10×
+- Linear O(N) scaling confirmed for FindAlbumsForUser (no N+1 query issues)
+- Scanner Queue shows efficient concurrent operations with low allocations
+- Database transactions are fast (< 1ms) with WAL mode improving read performance
 
 See `TEST_PROGRESS.md` for detailed status and `docs/test-coverage-plan.md` for full roadmap.
 
