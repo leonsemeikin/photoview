@@ -381,6 +381,30 @@ CI workflows pull base images from Docker Hub during builds. To avoid rate limit
 
 These secrets are used in `.github/workflows/tests.yml`, `.github/workflows/build.yml`, and `.github/workflows/build-patched.yml` to authenticate pulls of base images (golang, node, alpine).
 
+**JUnit Test Reports:**
+After each CI run, JUnit XML reports are available as GitHub Actions artifacts for detailed test analysis:
+
+| Artifact | Contains | Database |
+|----------|----------|----------|
+| `junit-report-api-sqlite` | ~82 Go tests | SQLite |
+| `junit-report-api-mysql` | ~82 Go tests | MySQL/MariaDB |
+| `junit-report-api-postgres` | ~82 Go tests | PostgreSQL 18 |
+| `junit-report-ui` | ~140 React/Vitest tests | N/A |
+
+Download artifacts from the Actions page:
+```
+https://github.com/leonsemeikin/photoview/actions/runs/<RUN_ID>
+```
+
+Locally generate reports:
+```bash
+# API tests (after running tests)
+cat ./api/test-api-coverage-report.xml
+
+# UI tests (after running tests)
+cat ./ui/junit-report.xml
+```
+
 ## Contributing
 
 🎉 First off, thanks for your interest in contribution! 🎉

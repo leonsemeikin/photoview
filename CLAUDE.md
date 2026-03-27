@@ -281,6 +281,30 @@ docker compose -f docker-compose.test.yml down
 - UI tests use MSW for mocking GraphQL requests
 - Test coverage is tracked in CI with codecov
 
+**JUnit Test Reports:**
+After each CI run, JUnit XML reports are available as GitHub Actions artifacts:
+
+| Artifact | Contains | Source |
+|----------|----------|--------|
+| `junit-report-api-sqlite` | ~82 Go tests (SQLite) | `api/test-api-coverage-report.xml` |
+| `junit-report-api-mysql` | ~82 Go tests (MySQL) | `api/test-api-coverage-report.xml` |
+| `junit-report-api-postgres` | ~82 Go tests (PostgreSQL) | `api/test-api-coverage-report.xml` |
+| `junit-report-ui` | ~140 React/Vitest tests | `ui/junit-report.xml` |
+
+Download artifacts from:
+```
+https://github.com/leonsemeikin/photoview/actions/runs/<RUN_ID>
+```
+
+Locally view reports:
+```bash
+# UI tests
+cat ./ui/junit-report.xml
+
+# API tests (after running)
+cat ./api/test-api-coverage-report.xml
+```
+
 ### CI/CD and Docker Hub Authentication
 
 GitHub Actions workflows use Docker Hub for pulling base images during builds. To avoid rate limiting (429 errors) and temporary service errors (500), Docker Hub authentication is configured.
