@@ -185,17 +185,21 @@ Additional tests for GraphQL resolvers and scanner task validation:
 | Album Actions | 6 | `api/graphql/models/actions/album_actions_detail_test.go` |
 | Media Resolvers | 11 | `api/graphql/resolvers/media_resolver_test.go` |
 | Album Resolvers | 7 | `api/graphql/resolvers/album_resolver_test.go` |
-| Scanner Tasks | 5 | `api/scanner/scanner_tasks/scanner_tasks_test.go` |
+| Scanner Tasks | 10 | `api/scanner/scanner_tasks/scanner_tasks_test.go`, `blurhash_task_test.go` |
 | Scanner User | 4 | `api/scanner/scanner_user_test.go` |
 | Periodic Scanner | 3 | `api/scanner/periodic_scanner/periodic_scanner_test.go` |
 | Routes | 9 | `api/routes/routes_test.go` |
-| **Stage 2 Total** | **45** | |
+| **Stage 2 Total** | **50** | |
+
+**Scanner Tasks Tests** (10 tests):
+- EXIF task tests (2): AfterMediaFound with newMedia=false, non-existent file handling
+- VideoMetadata task tests (3): newMedia=false, photo media (not video), non-existent file
+- Blurhash task tests (5): generate, skip when exists, regenerate on update, error handling
 
 **Not Completed (Stage 2):**
 - Thumbnail dataloader batch test (Step 5.1) — requires complex dataloader mocking, covered by alternative tests
-- Blurhash task tests (Step 6.2) — requires ImageMagick C library (works in CI Docker only)
 
-**Overall:** 241 tests written across Stage 1, Stage 2, Stage 3, and Stage 4 (Tasks 7-13)
+**Overall:** 247 tests written across Stage 1, Stage 2, Stage 3, and Stage 4 (Tasks 7-13)
 
 **Stage 4: Performance Benchmarks** ✅ Completed (2026-03)
 

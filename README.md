@@ -250,13 +250,13 @@ Photoview includes a comprehensive test suite to ensure reliability and prevent 
 | Album Actions | 6 | getTopLevelAlbumIDs, multi-user scenarios |
 | Media Resolvers | 11 | Authorization, EXIF, types, shares |
 | Album Resolvers | 7 | Media, thumbnails, sub-albums, authorization |
-| Scanner Tasks | 5 | EXIF, video metadata (blurhash skipped) |
+| Scanner Tasks | 10 | EXIF, video metadata, blurhash ✅ (5 tests, requires ImageMagick) |
 | Scanner User | 4 | Owner propagation, nested albums, cleanup |
 | Periodic Scanner | 3 | Change interval, graceful shutdown, integration |
 | Routes | 9 | CORS, cache headers, auth, security |
-| **Stage 2 Total** | **45** | ~63% of planned coverage |
+| **Stage 2 Total** | **50** | ~65% of planned coverage |
 
-**Overall:** 75 tests written, 68% of total plan completed
+**Overall:** 80 tests written (Stage 2 fully completed ✅) |
 
 **Remaining Stages**:
 - Stage 3: UI Components (Apollo Client, ProtectedMedia, hooks, pages)
@@ -264,7 +264,6 @@ Photoview includes a comprehensive test suite to ensure reliability and prevent 
 
 **Not Completed (Stage 2):**
 - Thumbnail Dataloader batch test — requires complex dataloader mocking (covered by alternative tests)
-- Blurhash task tests — requires ImageMagick C library (works in CI Docker only)
 
 See `docs/test-coverage-plan.md` for the full roadmap and `TEST_PROGRESS.md` for detailed status.
 
